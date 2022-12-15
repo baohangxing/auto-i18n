@@ -1,0 +1,49 @@
+{
+  "name": "auto-vue-i18n",
+  "version": "0.0.1",
+  "description": "A cli tool help you auto trans your vue project to an i18n-project",
+  "author": "H1mple<https://github.com/baohangxing>",
+  "license": "MIT",
+  "homepage": "https://github.com/baohangxing/auto-vue-i18n#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baohangxing/auto-vue-i18n.git"
+  },
+  "bugs": {
+    "url": "https://github.com/baohangxing/auto-vue-i18n/issues"
+  },
+  "keywords": [
+    "vue",
+    "i18n",
+    "ts",
+    "auto",
+    "cli"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "auto": "bin/index.mjs"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "unbuild"
+  },
+  "dependencies": {
+    "@vue/compiler-sfc": "^3.2.45",
+    "commander": "^9.4.1",
+    "consola": "^2.15.3",
+    "vue-sfc-gen": "workspace:*"
+  }
+}
