@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "./types",
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {},
+    "lib": [
+      "esnext",
+      "scripthost",
+      "DOM"
+    ]
+  },
+  "include": [
+    "packages"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.md",
+    "**/dist",
+    "packages/.test",
+    "packages/_docs"
+  ]
+}
