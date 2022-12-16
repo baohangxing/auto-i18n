@@ -3,7 +3,7 @@ import path from 'path'
 import { generateSFC } from 'vue-sfc-gen'
 import { parse } from '@vue/compiler-sfc'
 import consola from 'consola'
-import type { TransCommandOption } from '../types/trans'
+import type { TransCommandOption } from '../types'
 
 const trans = (option: TransCommandOption) => {
   const filePath = path.resolve(option.filePath)
