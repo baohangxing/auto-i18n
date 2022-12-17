@@ -1,6 +1,6 @@
 {
   "name": "auto-vue-i18n",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "A cli tool help you auto trans your vue project to an i18n-project",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
@@ -39,7 +39,6 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "unbuild",
-    "release": "bumpp && npm publish",
     "test": "echo test //TODO"
   },
   "dependencies": {
