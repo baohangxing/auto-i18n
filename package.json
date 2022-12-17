@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "packageManager": "pnpm@7.6.0",
   "description": "auto-vue-i18n monorepo",
@@ -7,12 +7,15 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --cache .",
-    "lint:fix": "nr lint --fix"
+    "lint:fix": "nr lint --fix",
+    "test": "echo TODO test",
+    "release": "bumpp && npm publish"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
     "@antfu/ni": "^0.18.8",
     "@types/node": "^18.11.15",
+    "bumpp": "^8.2.1",
     "eslint": "^8.27.0",
     "esno": "^0.16.3",
     "fast-glob": "^3.2.12",
