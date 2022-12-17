@@ -4,4 +4,4 @@ interface TransCommandOption {
     newFileName: string;
 }
 
-export { TransCommandOption }
+export type { TransCommandOption }

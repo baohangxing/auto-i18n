@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.4",
   "private": true,
   "packageManager": "pnpm@7.6.0",
   "description": "auto-vue-i18n monorepo",
@@ -7,15 +7,21 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --cache .",
-    "lint:fix": "nr lint --fix"
+    "lint:fix": "nr lint --fix",
+    "release": "esno ./scripts/release",
+    "build": "nr --dir ./packages/core build && nr --dir ./packages/vue-sfc-gen build",
+    "test": "nr --dir ./packages/core test && nr --dir ./packages/vue-sfc-gen test"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
     "@antfu/ni": "^0.18.8",
+    "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.15",
+    "bumpp": "^8.2.1",
     "eslint": "^8.27.0",
     "esno": "^0.16.3",
     "fast-glob": "^3.2.12",
+    "fs-extra": "^11.1.0",
     "pnpm": "^7.18.2",
     "simple-git": "^3.15.1",
     "simple-git-hooks": "^2.8.1",
