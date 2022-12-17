@@ -1,6 +1,6 @@
 {
   "name": "vue-sfc-gen",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "utils for generating vue-sfc with AST parsed by @vue/compile-sfc",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
@@ -19,15 +19,10 @@
     "AST",
     "compile-dom"
   ],
-  "scripts": {
-    "prepublishOnly": "npm run build",
-    "build": "unbuild",
-    "test": "echo test //TODO"
-  },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -36,6 +31,11 @@
     "dist",
     "global.d.ts"
   ],
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "unbuild",
+    "test": "echo test //TODO"
+  },
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.45"
   }

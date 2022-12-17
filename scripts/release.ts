@@ -1,6 +1,9 @@
 import { execSync } from 'child_process'
 import { readJSONSync } from 'fs-extra'
 
+import { packages } from '../meta/packages'
+import { changePackageVersion } from './utils'
+
 const { version: oldVersion } = readJSONSync('package.json')
 
 execSync('bumpp --no-commit --no-tag --no-push', { stdio: 'inherit' })
@@ -11,6 +14,9 @@ if (oldVersion === version) {
   console.log('canceled')
   process.exit()
 }
+
+for (const { path } of packages)
+  changePackageVersion(path, version)
 
 execSync('pnpm run build', { stdio: 'inherit' })
 execSync('git add .', { stdio: 'inherit' })
