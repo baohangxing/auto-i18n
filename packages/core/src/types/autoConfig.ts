@@ -1,10 +1,12 @@
-interface AutoCongfig {
+import { LangJson } from ".";
+
+interface AutoConfig {
     /**
-     * local Locales-Json Path, all user json file will found in this path
+     * local Locales-Json directory Paths, all user json file should found in this paths
      * 
      * @example `./src/lang/locales` | [`/Users/XXX/GM/src/lang/locales`]
      */
-    localesJsonPath: string | string[];
+    localesJsonDirs: string | string[];
 
     /**
      * locales used, the locale will not trans if not in `locales`
@@ -21,12 +23,14 @@ interface AutoCongfig {
     baseLocale: string;
 
     /**
+     * translate word rule when not translated
      * 
-     * @param word 
-     * @param locale current locale like `ja-jp`
+     * @param word
+     * @param locale the word current locale, your baseLocale
+     * @param toLocale to translate locale like `ja-jp`
      * @returns
      */
-    transLacaleWord: (word: string, locale: string) => string;
+    transLacaleWord: (word: string, locale: string, toLocale: string) => Promise<string>;
 
 
     /**
@@ -39,6 +43,20 @@ interface AutoCongfig {
 
     includes: string[]
 
+
+    /**
+     * output filed directory path, 
+     * the default output filed directory path is your project path
+     * 
+     * @default `./`
+     */
+    outputFileDir?: string
 }
 
-export type { AutoCongfig }
+
+interface Config {
+    baseLangJson: LangJson
+    otherLangJsons: LangJson[]
+}
+
+export type { AutoConfig, Config }

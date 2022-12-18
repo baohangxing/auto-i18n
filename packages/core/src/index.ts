@@ -2,6 +2,7 @@ import { Command } from 'commander'
 import { version } from '../package.json'
 import { trans } from './command/trans'
 import { updateLocales } from './command/updateLocales'
+import { updateLocalesFromExcel } from './command/updateLocalesFromExcel'
 import type { TransCommandOption } from './types/command'
 
 const program = new Command()
@@ -26,6 +27,7 @@ program.command('trans')
     trans(transCommandOption)
   })
 
+// TODO
 program.command('transAll')
   .description('trans a single file')
   .argument('<string>', 'file path')
@@ -46,6 +48,13 @@ program.command('updateLocales')
     updateLocales()
   })
 
+program.command('updateLocalesFromExcel')
+  .description('trans excel to locales json files, the frirt line of in the first sheet of the excel should have all locales-name and the `key`')
+  .argument('<string>', 'Excel file path')
+  .action((filePath: string) => {
+    updateLocalesFromExcel(filePath)
+  })
+
 program.parse()
 
-export type { AutoCongfig } from './types'
+export type { AutoConfig } from './types'

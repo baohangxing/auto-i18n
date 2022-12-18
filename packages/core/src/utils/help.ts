@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import { ESLint } from 'eslint'
+import consola from 'consola'
 
 const lexicalComparator = (a: string, b: string) => {
   a = a.toString()
@@ -46,19 +47,18 @@ const writeToJsonFile = async (
   obj: object,
 ) => {
   const jsonPath = path.join(writeToPath, `${name}.json`)
-  fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj)), 'utf8')
+  fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 4), 'utf8')
   const eslint = new ESLint({
     fix: true,
-    useEslintrc: false,
+    useEslintrc: true,
     baseConfig: require(path.join(path.resolve(), '.eslintrc.js')),
   })
   const results = await eslint.lintFiles(jsonPath)
 
   if (results[0].output)
     fs.writeFileSync(jsonPath, results[0].output, 'utf8')
-
   else
-    console.log('eslint Error!', results[0])
+    consola.error('eslint Error!', results[0])
 }
 
 const getValueByKey = (obj: any, key: string) => {
@@ -72,7 +72,6 @@ const getValueByKey = (obj: any, key: string) => {
 
     if (path && temp[path] !== undefined)
       temp = temp[path]
-
     else
       return undefined
   }

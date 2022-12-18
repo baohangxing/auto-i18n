@@ -36,21 +36,29 @@ importers:
 
   packages/core:
     specifiers:
+      '@babel/parser': ^7.20.5
       '@types/eslint': ^8.4.10
+      '@types/fs-extra': ^9.0.13
       '@vue/compiler-sfc': ^3.2.45
+      auto-vue-i18n: ^0.0.6
       commander: ^9.4.1
       consola: ^2.15.3
       eslint: ^8.29.0
       fast-glob: ^3.2.12
+      fs-extra: ^11.1.0
       node-xlsx: ^0.21.0
-      vue-sfc-gen: workspace:*
+      vue-sfc-gen: workspace:^
     dependencies:
+      '@babel/parser': 7.20.5
       '@types/eslint': 8.4.10
+      '@types/fs-extra': 9.0.13
       '@vue/compiler-sfc': 3.2.45
+      auto-vue-i18n: 'link:'
       commander: 9.4.1
       consola: 2.15.3
       eslint: 8.29.0
       fast-glob: 3.2.12
+      fs-extra: 11.1.0
       node-xlsx: 0.21.0
       vue-sfc-gen: link:../vue-sfc-gen
 
@@ -623,7 +631,6 @@ packages:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
       '@types/node': 18.11.15
-    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
@@ -640,7 +647,6 @@ packages:
 
   /@types/node/18.11.15:
     resolution: {integrity: sha512-VkhBbVo2+2oozlkdHXLrb3zjsRkpdnaU2bXmX8Wgle3PUi569eLRaHGlgETQHR7lLL1w7GiG3h9SnePhxNDecw==}
-    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -1949,7 +1955,6 @@ packages:
       graceful-fs: 4.2.10
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -2080,7 +2085,6 @@ packages:
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
-    dev: true
 
   /grapheme-splitter/1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
@@ -2395,7 +2399,6 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.10
-    dev: true
 
   /kleur/3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
@@ -3244,7 +3247,6 @@ packages:
   /universalify/2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
-    dev: true
 
   /untyped/1.2.0:
     resolution: {integrity: sha512-nG0A55YEhUU5UCEM+nhIhCVkA8a4L1spIVtzO0937WDjEA6jrKpu184O2K9iv5UuJNHnwhu+Q3TXiSJh/JrjlQ==}
