@@ -16,25 +16,20 @@ yarn add auto-vue-i18n #or
 
 - 第二步: 给你项目添加 [Vue I18n]([Vue I18n | Vue I18n (intlify.dev)](https://vue-i18n.intlify.dev/))，创建 locales文件夹以及多语言json文件
 
-- 第三步: 配置 `auto.config.ts` / `auto.config.js`
+- 第三步: 配置 `auto.config.mjs` / `auto.config.cjs`
 
 
 举例: 
 
-```ts
-import { AutoConfig } from 'auto-vue-i18n'
-
-const autoConfig: AutoConfig = {
-  localesJsonDirs: '',
-  locales: [],
-  baseLocale: '',
-  transLacaleWord(word: string, locale: string): string {
-    return ''
-  },
+```js
+const config = {
+  localesJsonDirs: './src/lang/locales',
+  locales: ['ja-jp', 'zh-cn', 'en'],
+  baseLocale: 'en',
   includes: [],
 }
 
-export default autoConfig
+export default config
 ```
 
 
@@ -88,35 +83,35 @@ auto transAll -p -k <keyTemplatePath>
 
  将 `AutoConfig.includes`所匹配的所有的文件进行提取多语言转换，替代原来的文件，支持的文件为vue, ts, tsx, js, jsx。 
 
-- 参数`-p`/`--preview` 表示预览模式，将不进行替换，而是生成一个excel 文件，以供预览，生成的地址可在 `AutoConfig.outputFileDir` 配置。
+- 参数`-p`/`--preview` 表示预览模式，将不进行替换，而是生成一个xlsx 文件，以供预览，生成的地址可在 `AutoConfig.outputFileDir` 配置。
 
-  **在使用的时候先根据预览生成excel， 在手动指定 key, 然后在进行批量处理**
+  **在使用的时候先根据预览生成xlsx， 在手动指定 key, 然后在进行批量处理**
 
-- 参数`-k`/`--keyTemplatePath` 提供一个 JSON-key 的 excel文件，转换时候将该语句的 key 写入JSON文件，未提供时，使用`AutoConfig.generateKey` 得到。
+- 参数`-k`/`--keyTemplatePath` 提供一个 JSON-key 的 xlsx文件，转换时候将该语句的 key 写入JSON文件，未提供时，使用`AutoConfig.generateKey` 得到。
 
 ```shell
 #for example
 auto transAll -p
-auto transAll -k ./src/keyTemplatePath.excel
+auto transAll -k ./src/keyTemplatePath.xlsx
 ```
 
 **注意：该命令不一定能完全正确的处理的你的文件，请在运行时候先保存提交你的代码。**
 
 
 
-### updateLocalesFromExcel
+### updateLocalesFromXlsx
 
 ```sh
-auto updateLocalesFromExcel <excelFile>
+auto updateLocalesFromXlsx <xlsxFile>
 ```
 
-根据excel文件 `excelFile` 更新 `AutoConfig.localesJsonDirs` 下的 JSON 文件。
+根据xlsx文件 `xlsxFile` 更新 `AutoConfig.localesJsonDirs` 下的 JSON 文件。
 
-**excel文件每个sheet的第一行需要包含`locales`以及 `key` 作为表头**
+**xlsx文件每个sheet的第一行需要包含`locales`以及 `key` 作为表头**
 
 ```shell
 #for example
-auto updateLocalesFromExcel ./src/keyTemplatePath.excel
+auto updateLocalesFromXlsx ./src/keyTemplatePath.xlsx
 ```
 
 
@@ -132,11 +127,11 @@ auto updateLocales
 
 
 
-### generateExcel
+### generateXlsx
 
-将所有的语言包导出为一个excel文件，第一行需要会包含`locales`以及 `key` 作为表头。生成的地址可在 `AutoConfig.outputFileDir` 配置。
+将所有的语言包导出为一个xlsx文件，第一行需要会包含`locales`以及 `key` 作为表头。生成的地址可在 `AutoConfig.outputFileDir` 配置。
 
 ```shell
 #for example
-auto generateExcel
+auto generateXlsx
 ```

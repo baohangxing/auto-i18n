@@ -22,6 +22,14 @@ interface AutoConfig {
      */
     baseLocale: string;
 
+
+    /**
+     * 
+     * @param locale 
+     * @returns 
+     */
+    untransSymbol?: (locale: string) => string
+
     /**
      * translate word rule when not translated
      * 
@@ -30,7 +38,7 @@ interface AutoConfig {
      * @param toLocale to translate locale like `ja-jp`
      * @returns
      */
-    transLacaleWord: (word: string, locale: string, toLocale: string) => Promise<string>;
+    transLacaleWord?: (word: string, locale: string, toLocale: string) => Promise<string>;
 
 
     /**
@@ -55,8 +63,11 @@ interface AutoConfig {
 
 
 interface Config {
+    keySymbolInXlsx: string
+    generateXlsxName:string
     baseLangJson: LangJson
     otherLangJsons: LangJson[]
+    isUnTransed: (str: string, locale: string) => boolean
 }
 
 export type { AutoConfig, Config }

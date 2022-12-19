@@ -3,6 +3,19 @@ import fs from 'fs'
 import { ESLint } from 'eslint'
 import consola from 'consola'
 
+const createFileName = (fileName = 'fileName') => {
+  const data = new Date()
+  const name = `${fileName}(${
+    data.getMonth() + 1
+  }-${data.getDate()} ${data.getHours()}:${
+    data.getMinutes() <= 9 ? `0${data.getMinutes()}` : data.getMinutes()
+  }:${
+    data.getSeconds() <= 9 ? `0${data.getSeconds()}` : data.getSeconds()
+  })}`
+
+  return name
+}
+
 const lexicalComparator = (a: string, b: string) => {
   a = a.toString()
   b = b.toString()
@@ -48,17 +61,21 @@ const writeToJsonFile = async (
 ) => {
   const jsonPath = path.join(writeToPath, `${name}.json`)
   fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 4), 'utf8')
-  const eslint = new ESLint({
-    fix: true,
-    useEslintrc: true,
-    baseConfig: require(path.join(path.resolve(), '.eslintrc.js')),
-  })
-  const results = await eslint.lintFiles(jsonPath)
 
-  if (results[0].output)
-    fs.writeFileSync(jsonPath, results[0].output, 'utf8')
-  else
-    consola.error('eslint Error!', results[0])
+  const eslintrcPath = path.join(path.resolve(), '.eslintrc.js')
+  if (fs.existsSync(eslintrcPath)) {
+    const eslint = new ESLint({
+      fix: true,
+      useEslintrc: true,
+      baseConfig: (await import(eslintrcPath)).default,
+    })
+    const results = await eslint.lintFiles(jsonPath)
+
+    if (results[0].output)
+      fs.writeFileSync(jsonPath, results[0].output, 'utf8')
+    else
+      consola.error('eslint Error!', results[0])
+  }
 }
 
 const getValueByKey = (obj: any, key: string) => {
@@ -81,10 +98,8 @@ const getValueByKey = (obj: any, key: string) => {
 const setValueByKey = (obj: any, key: string, val: string) => {
   const paths = key.split('.').filter(x => x !== '')
 
-  if (paths.length <= 1) {
-    console.error(`can not set ${val} to the ${key}`)
+  if (paths.length === 0)
     return
-  }
 
   let temp = obj
   while (paths.length > 1) {
@@ -96,7 +111,7 @@ const setValueByKey = (obj: any, key: string, val: string) => {
 
       temp = temp[path]
       if (typeof temp !== 'object') {
-        console.error(`can not set ${val} to the ${key}`)
+        consola.error(`can not set ${val} to the ${key}`)
         return
       }
     }
@@ -111,9 +126,10 @@ const getKeys = (obj: any) => {
     for (const k of Object.keys(obj)) {
       if (typeof obj[k] === 'string')
         res.push(_before === '' ? k : `${_before}.${k}`)
-
-      else
+      else if (typeof obj[k] === 'object' && !(Array.isArray(obj[k])))
         res.push(..._getKeys(obj[k], _before === '' ? k : `${_before}.${k}`))
+      else
+        consola.error(`the i18n JSON value only support string (${k}: ${obj[k]})`)
     }
     return res
   }
@@ -127,4 +143,5 @@ export {
   getValueByKey,
   setValueByKey,
   getKeys,
+  createFileName,
 }

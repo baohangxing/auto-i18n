@@ -3,7 +3,7 @@ import type { WorkSheet } from 'node-xlsx'
 import xlsx from 'node-xlsx'
 import consola from 'consola'
 
-const writeExcelFile = (
+const writeXlsxFile = (
   firstRows: string[][],
   sheetNameArr: string[],
   sheetsDatas: string[][][],
@@ -28,7 +28,7 @@ const writeExcelFile = (
   })
 }
 
-const readExcelFile = (filePath: string) => {
+const readXlsxFile = (filePath: string) => {
   if (fs.existsSync(filePath)) {
     const obj = xlsx.parse(filePath)
     return obj as {
@@ -41,4 +41,4 @@ const readExcelFile = (filePath: string) => {
   }
 }
 
-export { writeExcelFile, readExcelFile }
+export { writeXlsxFile, readXlsxFile }

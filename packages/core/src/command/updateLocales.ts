@@ -3,29 +3,37 @@ import consola from 'consola'
 import fsExtra from 'fs-extra'
 import { getKeys, getValueByKey, setValueByKey, sortObjectKey, writeToJsonFile } from '../utils/help'
 
-import { config, getAutoConfig } from '../utils/config'
+import { getAutoConfig, getConfig } from '../utils/config'
 
 const { readJsonSync } = fsExtra
 
 const updateLocales = async () => {
+  const autoConfig = await getAutoConfig()
+  const config = await getConfig()
   const baseLangJsonObj = readJsonSync(config.baseLangJson.path)
+
+  // sort baseLangJson Obj key
+  await writeToJsonFile(path.parse(config.baseLangJson.path).dir, config.baseLangJson.name, baseLangJsonObj)
 
   for (const langJson of config.otherLangJsons) {
     const langJsonObj = readJsonSync(langJson.path)
     const baseJsonKeySet = new Set(getKeys(baseLangJsonObj))
     const langJsonKeySet = new Set(getKeys(langJsonObj))
-    const newObj = sortObjectKey(baseLangJsonObj)
+    const newObj = sortObjectKey(langJsonObj)
     for (const x of baseJsonKeySet) {
       const baseValue = getValueByKey(baseLangJsonObj, x)
       const langValue = getValueByKey(langJsonObj, x)
 
-      if (typeof langValue !== 'string') {
-        setValueByKey(newObj, x,
-          await getAutoConfig().transLacaleWord(
-            baseValue,
-            config.baseLangJson.name,
-            langJson.name,
-          ))
+      if (langValue === undefined
+        || langValue === null
+        || langValue === ''
+        || config.isUnTransed(langValue, langJson.name)) {
+        const transedWord = await autoConfig.transLacaleWord(
+          baseValue,
+          config.baseLangJson.name,
+          langJson.name,
+        )
+        setValueByKey(newObj, x, transedWord)
       }
       langJsonKeySet.delete(x)
     }

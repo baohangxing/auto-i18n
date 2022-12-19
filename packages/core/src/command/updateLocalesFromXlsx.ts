@@ -8,15 +8,16 @@ import {
   sortObjectKey,
   writeToJsonFile,
 } from '../utils/help'
-import { readExcelFile } from '../utils/excel'
+import { readXlsxFile } from '../utils/excel'
 
-import { config } from '../utils/config'
+import { getConfig } from '../utils/config'
 
 const { readJsonSync } = fsExtra
 
-const updateLocalesFromExcel = async (filePath: string) => {
-  const res = readExcelFile(path.join(path.resolve(), filePath))
+const updateLocalesFromXlsx = async (filePath: string) => {
+  const res = readXlsxFile(path.join(path.resolve(), filePath))
 
+  const config = await getConfig()
   if (res) {
     const baseLangJsonObj = readJsonSync(config.baseLangJson.path)
 
@@ -49,4 +50,4 @@ const updateLocalesFromExcel = async (filePath: string) => {
   }
 }
 
-export { updateLocalesFromExcel }
+export { updateLocalesFromXlsx }
