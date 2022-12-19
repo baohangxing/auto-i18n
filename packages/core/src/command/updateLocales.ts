@@ -1,46 +1,55 @@
+import path from 'path'
+import consola from 'consola'
+import fsExtra from 'fs-extra'
 import { getKeys, getValueByKey, setValueByKey, sortObjectKey, writeToJsonFile } from '../utils/help'
 
-interface Task {
-  json: any
-  fileName: string
-  UniKey: string
-}
+import { getAutoConfig, getConfig } from '../utils/config'
+
+const { readJsonSync } = fsExtra
 
 const updateLocales = async () => {
-  const tasks: Task[] = []
-  for (const task of tasks) {
-    const typeJsonKeySet = new Set(getKeys({}))
-    const langJsonKeySet = new Set(getKeys(task.json))
-    const newObj = sortObjectKey({ })
-    for (const x of typeJsonKeySet) {
-      const typeValue = getValueByKey({}, x)
-      const langValue = getValueByKey(task.json, x)
+  const autoConfig = await getAutoConfig()
+  const config = await getConfig()
+  const baseLangJsonObj = readJsonSync(config.baseLangJson.path)
 
-      if (typeof langValue === 'string') {
-        setValueByKey(
-          newObj,
-          x,
-          langValue.includes(task.UniKey) ? task.UniKey + typeValue : langValue,
+  // sort baseLangJson Obj key
+  await writeToJsonFile(path.parse(config.baseLangJson.path).dir, config.baseLangJson.name, baseLangJsonObj)
+
+  for (const langJson of config.otherLangJsons) {
+    const langJsonObj = readJsonSync(langJson.path)
+    const baseJsonKeySet = new Set(getKeys(baseLangJsonObj))
+    const langJsonKeySet = new Set(getKeys(langJsonObj))
+    const newObj = sortObjectKey(langJsonObj)
+    for (const x of baseJsonKeySet) {
+      const baseValue = getValueByKey(baseLangJsonObj, x)
+      const langValue = getValueByKey(langJsonObj, x)
+
+      if (langValue === undefined
+        || langValue === null
+        || langValue === ''
+        || config.isUnTransed(langValue, langJson.name)) {
+        const transedWord = await autoConfig.transLacaleWord(
+          baseValue,
+          config.baseLangJson.name,
+          langJson.name,
         )
-      }
-      else {
-        setValueByKey(newObj, x, task.UniKey + typeValue)
+        setValueByKey(newObj, x, transedWord)
       }
       langJsonKeySet.delete(x)
     }
     if (langJsonKeySet.size > 0) {
       for (const x of langJsonKeySet) {
-        console.log(
-            `${x} : ${getValueByKey(task.json, x)} in ${
-              task.fileName
-            }.json is deleted`,
+        consola.info(
+          `${x}: ${getValueByKey(langJsonObj, x)} in ${langJson.name
+          }.json is deleted, Pleace check it is used in project!`,
         )
-        console.error(`pleace check ${x} is used in project!!!`)
       }
     }
 
-    await writeToJsonFile('', task.fileName, newObj)
+    await writeToJsonFile(path.parse(langJson.path).dir, langJson.name, newObj)
   }
+
+  consola.success('updateLocales success')
 }
 
 export { updateLocales }
