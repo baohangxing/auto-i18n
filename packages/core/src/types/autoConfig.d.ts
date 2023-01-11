@@ -64,7 +64,7 @@ interface AutoConfig {
 
 interface Config {
     keySymbolInXlsx: string
-    generateXlsxName:string
+    generateXlsxName: string
     baseLangJson: LangJson
     otherLangJsons: LangJson[]
     isUnTransed: (str: string, locale: string) => boolean

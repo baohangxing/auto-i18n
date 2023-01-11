@@ -1,16 +1,16 @@
 {
-  "name": "auto-vue-i18n",
+  "name": "yo-auto-i18n",
   "version": "0.0.7",
   "description": "A cli tool help you auto trans your vue project to an i18n-project",
-  "author": "H1mple<https://github.com/baohangxing>",
+  "author": "H1mple<https://gitcn.yostar.net:8888/hangxing.bao>",
   "license": "MIT",
-  "homepage": "https://github.com/baohangxing/auto-vue-i18n#readme",
+  "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/baohangxing/auto-vue-i18n.git"
+    "url": "git+https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n.git"
   },
   "bugs": {
-    "url": "https://github.com/baohangxing/auto-vue-i18n/issues"
+    "url": "https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n/issues"
   },
   "keywords": [
     "vue",
@@ -35,7 +35,8 @@
   "files": [
     "dist",
     "bin",
-    "global.d.ts"
+    "global.d.ts",
+    "README.md"
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
@@ -47,14 +48,13 @@
     "@types/eslint": "^8.4.10",
     "@types/fs-extra": "^9.0.13",
     "@vue/compiler-sfc": "^3.2.45",
-    "auto-vue-i18n": "^0.0.6",
+    "chalk": "^5.2.0",
     "commander": "^9.4.1",
     "consola": "^2.15.3",
     "eslint": "^8.29.0",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
     "node-xlsx": "^0.21.0",
-    "source-map": "^0.7.4",
-    "vue-sfc-gen": "workspace:^"
+    "source-map": "^0.7.4"
   }
 }

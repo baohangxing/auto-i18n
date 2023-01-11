@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import { generateSFC } from 'vue-sfc-gen'
 import { parse } from '@vue/compiler-sfc'
 import consola from 'consola'
+import { generateSFC } from '../generate'
 import type { TransCommandOption } from '../types'
 
 const trans = (option: TransCommandOption) => {

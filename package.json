@@ -2,15 +2,15 @@
   "version": "0.0.7",
   "private": true,
   "packageManager": "pnpm@7.6.0",
-  "description": "auto-vue-i18n monorepo",
-  "author": "H1mple<https://github.com/baohangxing>",
+  "description": "yo-auto-i18n monorepo",
+  "author": "H1mple<https://gitcn.yostar.net:8888/hangxing.bao>",
   "license": "MIT",
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",
     "release": "esno ./scripts/release",
-    "build": "nr --dir ./packages/core build && nr --dir ./packages/vue-sfc-gen build",
-    "test": "nr --dir ./packages/core test && nr --dir ./packages/vue-sfc-gen test"
+    "build": "nr --dir ./packages/core build",
+    "test": "nr --dir ./packages/core test"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
