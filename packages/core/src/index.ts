@@ -1,17 +1,24 @@
 import { Command } from 'commander'
 import { version } from '../package.json'
 import { generateXlsx } from './command/generateXlsx'
+import { init } from './command/init'
 import { trans } from './command/trans'
 import { updateLocales } from './command/updateLocales'
 import { updateLocalesFromXlsx } from './command/updateLocalesFromXlsx'
-import type { TransCommandOption } from './types/command'
+import type { TransCommandOption } from './type/index'
 
 const program = new Command()
 
 program
   .name('auto')
-  .description('CLI to help you auto trans your vue project to an i18n-project')
+  .description('A CLI to help you auto trans your project to an i18n-project')
   .version(version)
+
+program.command('init')
+  .description('init yo-auto-i18n, generate an new default config file')
+  .action(() => {
+    init()
+  })
 
 program.command('trans')
   .description('trans a single file')
@@ -31,7 +38,7 @@ program.command('trans')
 program.command('transAll')
   .description('trans a single file')
   .argument('<filePath>', 'file path')
-  .option('--gen', 'generate a new file')
+  .option('--gen', 'generate new files')
   .option('-n, --name <string>', 'new file name', '')
   .action((filePath, options) => {
     const transCommandOption: TransCommandOption = {
@@ -43,16 +50,11 @@ program.command('transAll')
   })
 
 program.command('updateLocales')
-  .description('update other Locales-Json file by base Locales-Json file')
-  .action(() => {
-    updateLocales()
-  })
-
-program.command('updateLocalesFromXlsx')
-  .description('trans xlsx to locales json files, the frirt line of in the first sheet of the xlsx should have all locales-name and the `key`')
-  .argument('<XlsxTemplate>', 'Xlsx file path')
-  .action((filePath: string) => {
-    updateLocalesFromXlsx(filePath)
+  .description('update other Locales-Json files by base Locales-Json file')
+  .option('-t, --templateXlsx <string>', 'update locales json files by the Xlsx template file, the frirt line of the first sheet should have all locales-name and the `key`', '')
+  .action(async (options) => {
+    await updateLocales()
+    options.templateXlsx && (await updateLocalesFromXlsx(options.templateXlsx))
   })
 
 program.command('generateXlsx')
@@ -63,4 +65,4 @@ program.command('generateXlsx')
 
 program.parse()
 
-export * from './types'
+export * from './type'

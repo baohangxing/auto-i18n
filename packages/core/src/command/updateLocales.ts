@@ -1,21 +1,21 @@
 import path from 'path'
-import consola from 'consola'
 import fsExtra from 'fs-extra'
 import { getKeys, getValueByKey, setValueByKey, sortObjectKey, writeToJsonFile } from '../utils/help'
 
-import { getAutoConfig, getConfig } from '../utils/config'
+import { getAutoConfig, getJsonPath, isUnTransed, unTransLocale } from '../utils/config'
+import log from '../utils/log'
 
 const { readJsonSync } = fsExtra
 
 const updateLocales = async () => {
-  const autoConfig = await getAutoConfig()
-  const config = await getConfig()
-  const baseLangJsonObj = readJsonSync(config.baseLangJson.path)
+  const autoConfig = getAutoConfig()
+  const { baseLangJson, otherLangJsons } = getJsonPath()
+  const baseLangJsonObj = readJsonSync(baseLangJson.path)
 
   // sort baseLangJson Obj key
-  await writeToJsonFile(path.parse(config.baseLangJson.path).dir, config.baseLangJson.name, baseLangJsonObj)
+  await writeToJsonFile(path.parse(baseLangJson.path).dir, baseLangJson.name, baseLangJsonObj)
 
-  for (const langJson of config.otherLangJsons) {
+  for (const langJson of otherLangJsons) {
     const langJsonObj = readJsonSync(langJson.path)
     const baseJsonKeySet = new Set(getKeys(baseLangJsonObj))
     const langJsonKeySet = new Set(getKeys(langJsonObj))
@@ -27,19 +27,25 @@ const updateLocales = async () => {
       if (langValue === undefined
         || langValue === null
         || langValue === ''
-        || config.isUnTransed(langValue, langJson.name)) {
-        const transedWord = await autoConfig.transLacaleWord(
-          baseValue,
-          config.baseLangJson.name,
-          langJson.name,
-        )
+        || isUnTransed(langValue, langJson.name)) {
+        let transedWord = ''
+        if (autoConfig.transLacaleWord) {
+          transedWord = await autoConfig.transLacaleWord(
+            baseValue,
+            baseLangJson.name,
+            langJson.name,
+          )
+        }
+        else {
+          transedWord = unTransLocale(baseValue, langJson.name)
+        }
         setValueByKey(newObj, x, transedWord)
       }
       langJsonKeySet.delete(x)
     }
     if (langJsonKeySet.size > 0) {
       for (const x of langJsonKeySet) {
-        consola.info(
+        log.info(
           `${x}: ${getValueByKey(langJsonObj, x)} in ${langJson.name
           }.json is deleted, Pleace check it is used in project!`,
         )
@@ -49,7 +55,7 @@ const updateLocales = async () => {
     await writeToJsonFile(path.parse(langJson.path).dir, langJson.name, newObj)
   }
 
-  consola.success('updateLocales success')
+  log.success('updateLocales success')
 }
 
 export { updateLocales }

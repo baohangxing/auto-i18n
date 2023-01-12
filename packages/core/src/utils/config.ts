@@ -1,51 +1,43 @@
 import fs from 'fs'
 import path from 'path'
-import consola from 'consola'
-import type { AutoConfig, Config, LangJson } from '../types'
+import { cosmiconfigSync } from 'cosmiconfig'
+import type { AutoConfig, LangJson } from '../type'
+import log from './log'
+import { CLI_CONFIG_NAME } from './constants'
+import defaultAutoConfig from './defaultAutoConfig'
 
-const configNames = ['auto.config.mjs', 'auto.config.cjs'] // TODO support ts
+const readLocalAutoConfig = (configPath?: string): AutoConfig | null => {
+  const explorer = cosmiconfigSync(CLI_CONFIG_NAME)
+  const result = configPath ? explorer.load(configPath) : explorer.search()
 
-const defaultAutoConfig: Required<AutoConfig> = {
-  localesJsonDirs: './src/lang/locales',
-  locales: ['zh-cn', 'ja-jp', 'ko-kr'],
-  baseLocale: 'zh-cn',
-  untransSymbol: (locale: string) => {
-    return `[${locale.toUpperCase()}]`
-  },
-  transLacaleWord(word: string, locale: string, toLocale: string) {
-    return Promise.resolve(`[${toLocale.toUpperCase()}]${word}`)
-  },
-  includes: [],
-  outputFileDir: './',
+  if (!result?.config) {
+    log.error(`Pleace add ${CLI_CONFIG_NAME} config file in your project(${process.cwd()})`)
+    process.exit(1)
+  }
+
+  return result?.config
 }
 
-const readAutoConfig = async (): Promise<AutoConfig> => {
-  for (const configName of configNames) {
-    const configFilePath = path.join(process.cwd(), configName)
-    if (fs.existsSync(configFilePath)) {
-      const res = await import(configFilePath)
-      if (res.default)
-        return res.default
+const getAutoConfig = (() => {
+  let autoConfig: AutoConfig | null = null
+
+  return (): AutoConfig => {
+    if (autoConfig) {
+      return autoConfig
+    }
+    else {
+      autoConfig = Object.assign({}, defaultAutoConfig, readLocalAutoConfig())
+      return autoConfig
     }
   }
-  consola.error(`Pleace add ${configNames.join(' or ')} file in your project(${process.cwd()}) and export default AutoConfig`)
-  process.exit(1)
-}
+})()
 
-const getAutoConfig = ((() => {
-  let autoConfig: Required<AutoConfig>
-  return async () => {
-    if (autoConfig)
-      return autoConfig
-    autoConfig = Object.assign({}, defaultAutoConfig, await readAutoConfig())
-    return autoConfig
-  }
-})())
-
-const getJsonPath = (autoConfig: AutoConfig): {
+const getJsonPath = (): {
   baseLangJson: LangJson
   otherLangJsons: LangJson[]
 } => {
+  const autoConfig = getAutoConfig()
+
   const dirs = typeof autoConfig.localesJsonDirs === 'string'
     ? [autoConfig.localesJsonDirs]
     : autoConfig.localesJsonDirs
@@ -80,7 +72,7 @@ const getJsonPath = (autoConfig: AutoConfig): {
       }
     }
     if (!findFlag) {
-      consola.error(`No json file(${x}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
+      log.error(`No json file(${x}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
       process.exit(1)
     }
   }
@@ -97,7 +89,7 @@ const getJsonPath = (autoConfig: AutoConfig): {
       }
     }
     if (!baseLangJson.path) {
-      consola.error(`No json file(${autoConfig.baseLocale}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
+      log.error(`No json file(${autoConfig.baseLocale}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
       process.exit(1)
     }
   }
@@ -107,26 +99,14 @@ const getJsonPath = (autoConfig: AutoConfig): {
     otherLangJsons,
   }
 }
-
-const getConfig = async (): Promise<Config> => {
-  const autoConfig = await getAutoConfig()
-
-  const keySymbolInXlsx = 'key'
-
-  const generateXlsxName = 'generateXlsxName'
-
-  const isUnTransed = (str: string, locale: string) => {
-    return str.indexOf(autoConfig.untransSymbol(locale)) === 0
-  }
-
-  const { baseLangJson, otherLangJsons } = getJsonPath(autoConfig)
-  return {
-    keySymbolInXlsx,
-    baseLangJson,
-    generateXlsxName,
-    otherLangJsons,
-    isUnTransed,
-  }
+const isUnTransed = (str: string, locale: string) => {
+  const autoConfig = getAutoConfig()
+  return str.indexOf(autoConfig.untransSymbol(locale)) === 0
 }
 
-export { getAutoConfig, getConfig }
+const unTransLocale = (str: string, locale: string) => {
+  const autoConfig = getAutoConfig()
+  return autoConfig.untransSymbol(locale) + str
+}
+
+export { getAutoConfig, getJsonPath, isUnTransed, unTransLocale }

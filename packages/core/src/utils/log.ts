@@ -1,6 +1,5 @@
 import chalk from 'chalk'
-
-const LOG_PREFIX = 'yo-auto-i18n'
+import { LOG_PREFIX } from './constants'
 
 const log = {
   info: (msg: string) => console.log(chalk.bgCyan(`${LOG_PREFIX} INFO`), chalk.cyan(msg)),
@@ -17,10 +16,3 @@ const log = {
 }
 
 export default log
-
-log.info('11212')
-log.warning('11212')
-log.success('11212')
-log.error('11212', 1111)
-log.verbose('11212')
-log.debug('11212')
