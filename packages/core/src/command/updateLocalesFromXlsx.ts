@@ -1,7 +1,6 @@
 import path from 'path'
 import fsExtra from 'fs-extra'
 
-import consola from 'consola'
 import {
   getKeys,
   setValueByKey,
@@ -10,18 +9,19 @@ import {
 } from '../utils/help'
 import { readXlsxFile } from '../utils/excel'
 
-import { getConfig } from '../utils/config'
+import log from '../utils/log'
+import { getJsonPath } from '../utils/config'
 
 const { readJsonSync } = fsExtra
 
 const updateLocalesFromXlsx = async (filePath: string) => {
   const res = readXlsxFile(path.join(path.resolve(), filePath))
 
-  const config = await getConfig()
+  const { baseLangJson, otherLangJsons } = getJsonPath()
   if (res) {
-    const baseLangJsonObj = readJsonSync(config.baseLangJson.path)
+    const baseLangJsonObj = readJsonSync(baseLangJson.path)
 
-    for (const langJson of config.otherLangJsons) {
+    for (const langJson of otherLangJsons) {
       const langJsonObj = readJsonSync(langJson.path)
       const typeJsonKeySet = new Set(getKeys(baseLangJsonObj))
       const newJsonObj = sortObjectKey(langJsonObj)
@@ -45,7 +45,7 @@ const updateLocalesFromXlsx = async (filePath: string) => {
         }
       }
       await writeToJsonFile(path.parse(langJson.path).dir, langJson.name, newJsonObj)
-      consola.success(`Write to Json file success in ${langJson.path}`)
+      log.success(`Write to Json file success in ${langJson.path}`)
     }
   }
 }

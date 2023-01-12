@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import { ESLint } from 'eslint'
-import consola from 'consola'
+import log from './log'
 
 const createFileName = (fileName = 'fileName') => {
   const data = new Date()
@@ -11,7 +11,7 @@ const createFileName = (fileName = 'fileName') => {
     data.getMinutes() <= 9 ? `0${data.getMinutes()}` : data.getMinutes()
   }:${
     data.getSeconds() <= 9 ? `0${data.getSeconds()}` : data.getSeconds()
-  })}`
+  })`
 
   return name
 }
@@ -54,6 +54,18 @@ const sortObjectKey = (obj: any): any => {
   return a
 }
 
+const format = async (filePath: string) => {
+  const eslint = new ESLint({
+    fix: true,
+  })
+  const results = await eslint.lintFiles(filePath)
+
+  if (results[0].output)
+    fs.writeFileSync(filePath, results[0].output, 'utf8')
+  else
+    log.error('eslint Error!', results[0])
+}
+
 const writeToJsonFile = async (
   writeToPath: string,
   name: string,
@@ -62,20 +74,7 @@ const writeToJsonFile = async (
   const jsonPath = path.join(writeToPath, `${name}.json`)
   fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 4), 'utf8')
 
-  const eslintrcPath = path.join(path.resolve(), '.eslintrc.js')
-  if (fs.existsSync(eslintrcPath)) {
-    const eslint = new ESLint({
-      fix: true,
-      useEslintrc: true,
-      baseConfig: (await import(eslintrcPath)).default,
-    })
-    const results = await eslint.lintFiles(jsonPath)
-
-    if (results[0].output)
-      fs.writeFileSync(jsonPath, results[0].output, 'utf8')
-    else
-      consola.error('eslint Error!', results[0])
-  }
+  await format(jsonPath)
 }
 
 const getValueByKey = (obj: any, key: string) => {
@@ -111,7 +110,7 @@ const setValueByKey = (obj: any, key: string, val: string) => {
 
       temp = temp[path]
       if (typeof temp !== 'object') {
-        consola.error(`can not set ${val} to the ${key}`)
+        log.error(`can not set ${val} to the ${key}`)
         return
       }
     }
@@ -129,7 +128,7 @@ const getKeys = (obj: any) => {
       else if (typeof obj[k] === 'object' && !(Array.isArray(obj[k])))
         res.push(..._getKeys(obj[k], _before === '' ? k : `${_before}.${k}`))
       else
-        consola.error(`the i18n JSON value only support string (${k}: ${obj[k]})`)
+        log.error(`the i18n JSON value only support string (${k}: ${obj[k]})`)
     }
     return res
   }
@@ -144,4 +143,5 @@ export {
   setValueByKey,
   getKeys,
   createFileName,
+  format,
 }

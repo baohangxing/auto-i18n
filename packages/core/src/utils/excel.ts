@@ -1,7 +1,7 @@
 import fs from 'fs'
 import type { WorkSheet } from 'node-xlsx'
 import xlsx from 'node-xlsx'
-import consola from 'consola'
+import log from './log'
 
 const writeXlsxFile = (
   firstRows: string[][],
@@ -23,8 +23,8 @@ const writeXlsxFile = (
 
   fs.writeFile(fileWritePath, buffer, (err) => {
     if (err)
-      consola.error(err)
-    consola.info(`Write to xls has finished: ${fileWritePath}`)
+      log.error(err)
+    log.info(`Write to xls has finished: ${fileWritePath}`)
   })
 }
 
@@ -37,7 +37,7 @@ const readXlsxFile = (filePath: string) => {
     }[]
   }
   else {
-    consola.error(`not exists ${filePath}`)
+    log.error(`not exists ${filePath}`)
   }
 }
 

@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import { parse } from '@vue/compiler-sfc'
-import consola from 'consola'
 import { generateSFC } from '../generate'
-import type { TransCommandOption } from '../types'
+import type { TransCommandOption } from '../type'
+import log from '../utils/log'
 
 const trans = (option: TransCommandOption) => {
   const filePath = path.resolve(option.filePath)
@@ -17,11 +17,11 @@ const trans = (option: TransCommandOption) => {
       fs.writeFileSync(path.join(dir, `${option.newFileName ? option.newFileName : `${name}_transed`}${ext}`), res)
     }
     else {
-      consola.success(`${fileContent} transed:`)
-      consola.log(res)
+      log.success(`${fileContent} transed:`)
+      log.info(res)
     }
   }
-  else { consola.error(`no this file: ${filePath}`) }
+  else { log.error(`no this file: ${filePath}`) }
 }
 
 export { trans }
