@@ -1,12 +1,14 @@
 import fsExtra from 'fs-extra'
-import { getJsonPath, isUnTransed } from '../utils/config'
-import { KEY_SYMBOL_IN_XLSX, XLSX_NAME } from '../utils/constants'
+import { getAutoConfig, getJsonPath, isUnTransed } from '../config/config'
+import { KEY_SYMBOL_IN_XLSX } from '../config/constants'
 import { writeXlsxFile } from '../utils/excel'
 import { createFileName, getKeys, getValueByKey } from '../utils/help'
 
 const { readJsonSync } = fsExtra
 
 const generateXlsx = async () => {
+  const autoConfig = getAutoConfig()
+
   const { baseLangJson, otherLangJsons } = getJsonPath()
 
   const baseLangJsonObj = readJsonSync(baseLangJson.path)
@@ -38,7 +40,8 @@ const generateXlsx = async () => {
     sheetsDatas.push(newRow)
   }
 
-  writeXlsxFile([firstRows], ['gm'], [sheetsDatas], `${createFileName(XLSX_NAME)}.xlsx`)
+  writeXlsxFile([firstRows], ['all'], [sheetsDatas],
+    `${createFileName(autoConfig.outputXlsxNameBy.genXlsx)}.xlsx`)
 }
 
 export { generateXlsx }

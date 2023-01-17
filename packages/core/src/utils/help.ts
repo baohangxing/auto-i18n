@@ -1,17 +1,23 @@
 import path from 'path'
 import fs from 'fs'
-import { ESLint } from 'eslint'
+import { getAutoConfig } from '../config/config'
 import log from './log'
+import { checkInPatterns } from './glob'
+import { format } from './format'
 
-const createFileName = (fileName = 'fileName') => {
+const includeChinese = (code: string) => {
+  return /[\u4E00-\u9FFF]/g.test(code)
+}
+
+const createFileName = (fileName = '') => {
   const data = new Date()
-  const name = `${fileName}(${
+  const name = `${fileName}_${
     data.getMonth() + 1
-  }-${data.getDate()} ${data.getHours()}:${
+  }_${data.getDate()} ${data.getHours()}_${
     data.getMinutes() <= 9 ? `0${data.getMinutes()}` : data.getMinutes()
-  }:${
+  }_${
     data.getSeconds() <= 9 ? `0${data.getSeconds()}` : data.getSeconds()
-  })`
+  }`
 
   return name
 }
@@ -54,27 +60,17 @@ const sortObjectKey = (obj: any): any => {
   return a
 }
 
-const format = async (filePath: string) => {
-  const eslint = new ESLint({
-    fix: true,
-  })
-  const results = await eslint.lintFiles(filePath)
-
-  if (results[0].output)
-    fs.writeFileSync(filePath, results[0].output, 'utf8')
-  else
-    log.error('eslint Error!', results[0])
-}
-
 const writeToJsonFile = async (
   writeToPath: string,
   name: string,
   obj: object,
 ) => {
   const jsonPath = path.join(writeToPath, `${name}.json`)
-  fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 4), 'utf8')
+  const autoConfig = getAutoConfig()
+  fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 2), 'utf8')
 
-  await format(jsonPath)
+  if (autoConfig.autoFormat && checkInPatterns(jsonPath, autoConfig.autoFormatRules))
+    await format(jsonPath)
 }
 
 const getValueByKey = (obj: any, key: string) => {
@@ -135,6 +131,10 @@ const getKeys = (obj: any) => {
   return _getKeys(obj, '')
 }
 
+const escapeQuotes = (value: string): string => {
+  return value.replaceAll('\'', '\\\'').replaceAll('"', '\\"')
+}
+
 export {
   writeToJsonFile,
   lexicalComparator,
@@ -143,5 +143,6 @@ export {
   setValueByKey,
   getKeys,
   createFileName,
-  format,
+  includeChinese,
+  escapeQuotes,
 }

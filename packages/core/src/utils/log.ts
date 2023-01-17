@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { LOG_PREFIX } from './constants'
+import { LOG_PREFIX } from '../config/constants'
 
 const log = {
   info: (msg: string) => console.log(chalk.bgCyan(`${LOG_PREFIX} INFO`), chalk.cyan(msg)),
@@ -10,9 +10,11 @@ const log = {
     chalk.red(err),
     chalk.red(msg)),
   verbose: (label: string, msg: unknown = '') =>
-    process.env.AUTO_I18N_VERBOSE && console.log(chalk.bgGray(`${LOG_PREFIX} VERBOSE`), chalk.gray(label), msg),
+    process.env.AUTO_I18N_VERBOSE && console.log(chalk.bgGray(`${LOG_PREFIX} VERBOSE`),
+      chalk.gray(label), msg),
   debug: (label: string, msg: unknown = '') =>
-    process.env.AUTO_I18N_DEBUG && console.log(chalk.bgMagenta(`${LOG_PREFIX} DEBUG`), chalk.magenta(label), msg),
+    process.env.AUTO_I18N_DEBUG && console.log(chalk.bgMagenta(`${LOG_PREFIX} DEBUG`),
+      chalk.magenta(label), msg),
 }
 
 export default log
