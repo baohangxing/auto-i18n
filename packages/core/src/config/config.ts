@@ -1,8 +1,8 @@
-import fs from 'fs'
 import path from 'path'
 import { cosmiconfigSync } from 'cosmiconfig'
-import type { AutoConfig, LangJson } from '../type'
-import log from './log'
+import type { AutoConfig, LangJson } from '../types/config'
+import log from '../utils/log'
+import { fgSync } from '../utils/glob'
 import { CLI_CONFIG_NAME } from './constants'
 import defaultAutoConfig from './defaultAutoConfig'
 
@@ -38,24 +38,9 @@ const getJsonPath = (): {
 } => {
   const autoConfig = getAutoConfig()
 
-  const dirs = typeof autoConfig.localesJsonDirs === 'string'
-    ? [autoConfig.localesJsonDirs]
-    : autoConfig.localesJsonDirs
-
   let otherLangJsons: LangJson[] = []
 
-  const files: string[] = []
-
-  for (const dir of dirs) {
-    if (fs.existsSync(dir) && fs.statSync(dir).isDirectory()) {
-      const children = fs.readdirSync(dir)
-      for (const x of children) {
-        const childPath = path.join(dir, x)
-        if (fs.statSync(childPath).isFile())
-          files.push(childPath)
-      }
-    }
-  }
+  const files: string[] = fgSync(autoConfig.localesJsonDirs)
 
   for (const x of autoConfig.locales) {
     let findFlag = false
@@ -89,7 +74,7 @@ const getJsonPath = (): {
       }
     }
     if (!baseLangJson.path) {
-      log.error(`No json file(${autoConfig.baseLocale}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
+      log.error(`No base json file in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
       process.exit(1)
     }
   }
@@ -99,7 +84,9 @@ const getJsonPath = (): {
     otherLangJsons,
   }
 }
-const isUnTransed = (str: string, locale: string) => {
+const isUnTransed = (str: string | null | undefined, locale: string) => {
+  if (str === undefined || str === null)
+    return false
   const autoConfig = getAutoConfig()
   return str.indexOf(autoConfig.untransSymbol(locale)) === 0
 }

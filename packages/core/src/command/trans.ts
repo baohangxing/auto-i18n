@@ -1,27 +1,29 @@
-import fs from 'fs'
 import path from 'path'
-import { parse } from '@vue/compiler-sfc'
-import { generateSFC } from '../generate'
-import type { TransCommandOption } from '../type'
+import fs from 'fs'
+import type { FileExtension, TransCommandOption } from '../types/config'
 import log from '../utils/log'
+import { transform } from '../transform'
+import { getAutoConfig } from '../config/config'
+
+const transformSingle = (filePath: string) => {
+  const autoConfig = getAutoConfig()
+  const ext = path.parse(filePath).ext.slice(1) as FileExtension
+  const source = fs.readFileSync(filePath, 'utf8')
+  const { code } = transform(source, ext, autoConfig.i18nCallRules)
+  return code
+}
 
 const trans = (option: TransCommandOption) => {
-  const filePath = path.resolve(option.filePath)
-
-  if (fs.existsSync(filePath)) {
-    const fileContent = fs.readFileSync(path.resolve(option.filePath)).toString()
-    const res = generateSFC(parse(fileContent).descriptor)
-
-    if (option.generateNewFile) {
-      const { ext, dir, name } = path.parse(filePath)
-      fs.writeFileSync(path.join(dir, `${option.newFileName ? option.newFileName : `${name}_transed`}${ext}`), res)
-    }
-    else {
-      log.success(`${fileContent} transed:`)
-      log.info(res)
-    }
+  console.log(option)
+  if (option.transPath) {
+    const filePath = path.resolve(process.cwd(), option.transPath)
+    const code = transformSingle(filePath)
+    log.info(code)
   }
-  else { log.error(`no this file: ${filePath}`) }
+  else {
+    // TODO
+    log.info('TODO')
+  }
 }
 
 export { trans }

@@ -23,7 +23,7 @@ const writeXlsxFile = (
 
   fs.writeFile(fileWritePath, buffer, (err) => {
     if (err)
-      log.error(err)
+      log.error(err.name, err)
     log.info(`Write to xls has finished: ${fileWritePath}`)
   })
 }
