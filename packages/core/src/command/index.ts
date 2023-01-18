@@ -35,7 +35,7 @@ program.command('trans')
   .description('Transform a single file or all files.')
   .argument('[transPath]', 'file or directory path')
   .option('--modify', 'whether to modify on the source file')
-  .option('-t, --template <string>', 'template xlsx file which inclues all language key')
+  .option('-t, --template <string>', 'template json file which inclues all language key')
   .action((transPath, options) => {
     const transCommandOption: TransCommandOption = {
       transPath: transPath ?? '',
