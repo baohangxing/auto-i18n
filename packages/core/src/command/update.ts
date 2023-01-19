@@ -13,13 +13,31 @@ import { KEY_SYMBOL_IN_XLSX } from '../config/constants'
 
 const { readJsonSync } = fsExtra
 
+const updateBaseLocale = async (replaceObj?: any) => {
+  const { baseLangJson } = getJsonPath()
+  let baseLangJsonObj
+
+  if (replaceObj) {
+    baseLangJsonObj = {}
+    const addKeySet = new Set(getKeys(replaceObj))
+
+    for (const k of addKeySet) {
+      const v = getValueByKey(replaceObj, k)
+      setValueByKey(baseLangJsonObj, k, v)
+    }
+  }
+  else {
+    baseLangJsonObj = readJsonSync(baseLangJson.path)
+  }
+  await writeToJsonFile(path.parse(baseLangJson.path).dir, baseLangJson.name, baseLangJsonObj)
+}
+
 const updateLocales = async () => {
   const autoConfig = getAutoConfig()
   const { baseLangJson, otherLangJsons } = getJsonPath()
   const baseLangJsonObj = readJsonSync(baseLangJson.path)
 
-  // sort baseLangJson Obj key
-  await writeToJsonFile(path.parse(baseLangJson.path).dir, baseLangJson.name, baseLangJsonObj)
+  await updateBaseLocale()
 
   for (const langJson of otherLangJsons) {
     const langJsonObj = readJsonSync(langJson.path)
@@ -100,4 +118,4 @@ const updateLocalesFromXlsx = async (filePath: string) => {
   }
 }
 
-export { updateLocalesFromXlsx, updateLocales }
+export { updateLocalesFromXlsx, updateLocales, updateBaseLocale }

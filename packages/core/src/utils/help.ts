@@ -79,6 +79,10 @@ const getValueByKey = (obj: any, key: string) => {
   const paths = key.split('.').filter(x => x !== '')
 
   let temp = obj
+
+  if (temp[key] && typeof temp[key] === 'string')
+    return temp[key]
+
   while (paths.length) {
     const path = paths.shift()
 

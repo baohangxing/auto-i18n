@@ -73,6 +73,7 @@
     "lodash-es": "^4.17.21",
     "mustache": "^4.2.0",
     "node-xlsx": "^0.21.0",
+    "pinyin": "3.0.0-alpha.4",
     "serialize-javascript": "^6.0.0",
     "source-map": "^0.7.4"
   },
