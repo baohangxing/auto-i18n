@@ -1,13 +1,81 @@
+import { createRequire } from 'module'
+import fsExtra from 'fs-extra'
+import { updateBaseLocale } from '../command/update'
+import { getJsonPath } from '../config/config'
+import { getKeys, getValueByKey } from '../utils/help'
 import log from '../utils/log'
 
+const require = createRequire(import.meta.url)
+const pinyin = require('pinyin').default
+
+const getPinyin = (chinese: string): string => {
+  return pinyin(chinese, {
+    style: 'normal',
+  }).join('-').replace(/\s/g, '')
+}
+
 class Collector {
-  static keyMap: Record<string, string> = {}
+  static keyZhMap: Record<string, string> = {}
+  static zhKeyMap: Record<string, string> = {}
+
+  static inited = false
 
   private constructor() {}
 
-  static add(key: string) {
-    log.verbose('Extract Chinese: ', key)
-    Collector.keyMap[key] = key
+  static add(chinese: string) {
+    log.verbose('Extract Chinese: ', `${chinese}: ${Collector.getKey(chinese)}`)
+  }
+
+  static getKey(chinese: string): string {
+    if (Collector.zhKeyMap[chinese])
+      return Collector.zhKeyMap[chinese]
+
+    let newKey = getPinyin(chinese)
+    let index = 0
+
+    while (Collector.keyZhMap[newKey])
+      newKey = `${getPinyin(chinese)}-{${++index}}`
+
+    Collector.keyZhMap[newKey] = chinese
+    Collector.zhKeyMap[chinese] = newKey
+
+    return newKey
+  }
+
+  static init(keyJsonPath?: string) {
+    if (!Collector.inited) {
+      const { baseLangJson } = getJsonPath()
+      const baseLangJsonObj = fsExtra.readJsonSync(baseLangJson.path)
+
+      const keys = new Set(getKeys(baseLangJsonObj))
+      for (const k of keys) {
+        const v = getValueByKey(baseLangJsonObj, k)
+
+        Collector.keyZhMap[k] = v
+        Collector.zhKeyMap[v] = k
+      }
+      if (keyJsonPath) {
+        const jsonObj = fsExtra.readJsonSync(baseLangJson.path)
+        const keys = new Set(getKeys(jsonObj))
+        for (const k of keys) {
+          const v = getValueByKey(jsonObj, k)
+          if (Collector.keyZhMap[k] && Collector.keyZhMap[k] !== v) {
+            log.error(`json key ${k} have 2 kinds of val: ${Collector.keyZhMap[k]} ans ${v}`)
+          }
+          else {
+            Collector.keyZhMap[k] = v
+            Collector.zhKeyMap[v] = k
+          }
+        }
+      }
+    }
+    else {
+      log.error('Collector has inited')
+    }
+  }
+
+  static async updataJson() {
+    await updateBaseLocale(Collector.keyZhMap)
   }
 }
 

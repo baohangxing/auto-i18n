@@ -22,5 +22,7 @@ export interface I18nCallRule {
 export interface transformOptions {
   rule: I18nCallRule
   parse: (code: string) => ParseResult | null
+
+  /** handle js in vue */
   isJsInVue?: boolean
 }

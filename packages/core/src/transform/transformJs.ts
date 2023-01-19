@@ -9,10 +9,8 @@ import type {
   JSXText,
   MemberExpression,
   ObjectExpression,
-  ObjectMethod,
   ObjectProperty,
   Program,
-  SpreadElement,
   StringLiteral,
   TemplateLiteral,
 } from '@babel/types'
@@ -20,14 +18,17 @@ import type { GeneratorResult } from '@babel/generator'
 import template from '@babel/template'
 import { isEmpty, isObject } from 'lodash-es'
 import t from '@babel/types'
+import type * as traverseType from '@babel/traverse/index'
+import type * as generatorType from '@babel/generator/index'
 import type { transformOptions } from '../types'
 import { escapeQuotes, includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
 import Collector from './collector'
+
 const require = createRequire(import.meta.url)
 // see https://github.com/babel/babel/issues/13855
-const traverse = require('@babel/traverse').default
-const babelGenerator = require('@babel/generator').default
+const traverse: typeof traverseType.default = require('@babel/traverse').default
+const babelGenerator: typeof generatorType.default = require('@babel/generator').default
 
 interface TemplateParams {
   [k: string]:
@@ -39,7 +40,7 @@ interface TemplateParams {
 }
 
 function getObjectExpression(obj: TemplateParams): ObjectExpression {
-  const ObjectPropertyArr: Array<ObjectMethod | ObjectProperty | SpreadElement> = []
+  const ObjectPropertyArr: ObjectProperty[] = []
   Object.keys(obj).forEach((k) => {
     const tempValue = obj[k]
     let newValue: Expression
@@ -54,8 +55,17 @@ function getObjectExpression(obj: TemplateParams): ObjectExpression {
   return ast
 }
 
-// 判断节点是否是props属性的默认值
-function isPropNode(path: NodePath<StringLiteral>): boolean {
+/**
+ * 判断节点是否是vue组件props属性的默认值，例如：
+ * ```
+ * props: {
+    title: {
+      default: '标题'
+    }
+  }
+ * ```
+ */
+function isPropDefaultStringLiteralNode(path: NodePath<StringLiteral>): boolean {
   const objWithProps = path.parentPath?.parentPath?.parentPath?.parentPath?.parent
   const rootNode
     = path.parentPath?.parentPath?.parentPath?.parentPath?.parentPath?.parentPath?.parent
@@ -112,11 +122,10 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
     value = escapeQuotes(value)
     const { transCaller, transIdentifier } = rule
     // 表达式结构 obj.fn('xx',{xx:xx})
-    let expression
+    let expression: string
     // i18n标记有参数的情况
     if (params) {
-      // TODO
-      const keyLiteral = getStringLiteral(value)
+      const keyLiteral = getStringLiteral(Collector.getKey(value))
       if (transCaller) {
         return t.callExpression(
           t.memberExpression(t.identifier(transCaller), t.identifier(transIdentifier)),
@@ -132,7 +141,7 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
     }
     else {
       // i18n标记没参数的情况
-      expression = getCallExpression(value)
+      expression = getCallExpression(Collector.getKey(value))
       return template.expression(expression)()
     }
   }
@@ -158,10 +167,9 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
         },
 
         StringLiteral(path: NodePath<StringLiteral>) {
-          if (includeChinese(path.node.value) && options.isJsInVue && isPropNode(path)) {
-            const expression = `function() {
-              return ${getCallExpression(path.node.value)}
-            }`
+          if (includeChinese(path.node.value) && options.isJsInVue && isPropDefaultStringLiteralNode(path)) {
+            const expression = `() => ${getCallExpression(path.node.value)}`
+            hasTransformed = true
             Collector.add(path.node.value)
             path.replaceWith(template.expression(expression)())
             path.skip()
@@ -257,7 +265,7 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
             return
           }
 
-          // 有调用对象的情况，例如this.$t('xx')、i18n.$t('xx)
+          // 有调用对象的情况，例如this.$t('xx')、i18n.$t('xx')
           if (callee.type === 'MemberExpression') {
             if (callee.property && callee.property.type === 'Identifier') {
               if (callee.property.name === transIdentifier) {
@@ -302,7 +310,7 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
   const ast = transformAST(code, options)
 
   const result = (!ast ? code : babelGenerator(ast)) as GeneratorResult
-  // 文件里没有出现任何导入语句的情况
+
   if (!hasImportI18n && hasTransformed) {
     const { importDeclaration } = rule
     result.code = `${importDeclaration}\n${result.code}`

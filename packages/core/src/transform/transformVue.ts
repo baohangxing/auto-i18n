@@ -51,8 +51,7 @@ function handleTemplate(code: string, rule: I18nCallRule): string {
   function getReplaceValue(value: string): string {
     value = escapeQuotes(value)
     const { transIdentifier } = rule
-    // 表达式结构 $t('xx')
-    const expression = `${transIdentifier}('${value}')`
+    const expression = `${transIdentifier}('${Collector.getKey(value)}')`
     return expression
   }
 
@@ -182,7 +181,7 @@ function handleTemplate(code: string, rule: I18nCallRule): string {
 function handleScript(source: string, rule: I18nCallRule): string {
   const { code } = transformJs(source, {
     rule,
-    isJsInVue: true, // 标记处理vue里的js
+    isJsInVue: true,
     parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
   })
   return `\n${code}\n`
