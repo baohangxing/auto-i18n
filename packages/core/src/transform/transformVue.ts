@@ -17,7 +17,7 @@ import transformJs from './transformJs'
 import { initParse } from './parse'
 import Collector from './collector'
 
-type Handler = (source: string, rule: I18nCallRule) => string
+type Handler = (source: string, rule: I18nCallRule, replace: boolean) => string
 const COMMENT_TYPE = '!'
 
 function parseJsSyntax(source: string, rule: I18nCallRule): string {
@@ -45,7 +45,7 @@ function parseJsSyntax(source: string, rule: I18nCallRule): string {
   return stylizedCode.endsWith('\n') ? stylizedCode.slice(0, stylizedCode.length - 1) : stylizedCode
 }
 
-function handleTemplate(code: string, rule: I18nCallRule): string {
+function handleTemplate(code: string, rule: I18nCallRule, replace = true): string {
   let htmlString = ''
 
   function getReplaceValue(value: string): string {
@@ -89,15 +89,17 @@ function handleTemplate(code: string, rule: I18nCallRule): string {
             // attrValue.startsWith是为了排除:xx="$t('xx')"的情况
             if (attrValue === source && !attrValue.startsWith(rule.transIdentifier)) {
               Collector.add(removeQuotes(attrValue))
-              attrs += ` ${key}="${getReplaceValue(removeQuotes(attrValue))}" `
+              if (replace)
+                attrs += ` ${key}="${getReplaceValue(removeQuotes(attrValue))}" `
             }
             else {
               attrs += ` ${key}="${source}" `
             }
           }
           else if (includeChinese(attrValue) && !isVueDirective) {
-            attrs += ` :${key}="${getReplaceValue(attrValue)}" `
             Collector.add(attrValue)
+            if (replace)
+              attrs += ` :${key}="${getReplaceValue(attrValue)}" `
           }
           else if (attrValue === '') {
             attrs += key
@@ -123,8 +125,9 @@ function handleTemplate(code: string, rule: I18nCallRule): string {
           if (includeChinese(value)) {
             value = formatValue(value)
             if (type === 'text') {
-              str += `{{${getReplaceValue(value)}}}`
               Collector.add(value)
+              if (replace)
+                str += `{{${getReplaceValue(value)}}}`
             }
             else if (type === 'name') {
               const source = parseJsSyntax(value, rule)
@@ -178,12 +181,13 @@ function handleTemplate(code: string, rule: I18nCallRule): string {
   return htmlString
 }
 
-function handleScript(source: string, rule: I18nCallRule): string {
+function handleScript(source: string, rule: I18nCallRule, replace: boolean): string {
   const { code } = transformJs(source, {
     rule,
     isJsInVue: true,
     parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
-  })
+  },
+  replace)
   return `\n${code}\n`
 }
 
@@ -223,9 +227,10 @@ function generateSource(
   sfcBlock: SFCTemplateBlock | SFCScriptBlock,
   handler: Handler,
   rule: I18nCallRule,
+  replace: boolean,
 ): string {
   const wrapperTemplate = getWrapperTemplate(sfcBlock)
-  const source = handler(sfcBlock.content, rule)
+  const source = handler(sfcBlock.content, rule, replace)
   return ejs.render(wrapperTemplate, {
     code: source,
   })
@@ -257,12 +262,13 @@ function getFileComment(descriptor: SFCDescriptor): string {
 function transformVue(
   code: string,
   rule: I18nCallRule,
+  replace = true,
 ): {
     code: string
   } {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    log.error('vue文件解析出现错误：', errors[0].toString())
+    log.error('parse vue error', errors[0].toString())
     return {
       code,
     }
@@ -276,13 +282,13 @@ function transformVue(
   const fileComment = getFileComment(descriptor)
 
   if (template)
-    templateCode = generateSource(template, handleTemplate, rule)
+    templateCode = generateSource(template, handleTemplate, rule, replace)
 
   if (script)
-    scriptCode = generateSource(script, handleScript, rule)
+    scriptCode = generateSource(script, handleScript, rule, replace)
 
   if (scriptSetup)
-    scriptCode = generateSource(scriptSetup, handleScript, rule)
+    scriptCode = generateSource(scriptSetup, handleScript, rule, replace)
 
   if (styles) {
     for (const style of styles) {

@@ -1,6 +1,7 @@
 import { createRequire } from 'module'
+import path from 'path'
 import fsExtra from 'fs-extra'
-import { updateBaseLocale } from '../command/update'
+import { updateBaseLocale, updateLocales } from '../command/update'
 import { getJsonPath } from '../config/config'
 import { getKeys, getValueByKey } from '../utils/help'
 import log from '../utils/log'
@@ -18,11 +19,15 @@ class Collector {
   static keyZhMap: Record<string, string> = {}
   static zhKeyMap: Record<string, string> = {}
 
+  static unExistZhSet = new Set<string>()
+
   static inited = false
 
   private constructor() {}
 
   static add(chinese: string) {
+    if (!Collector.zhKeyMap[chinese])
+      Collector.unExistZhSet.add(chinese)
     log.verbose('Extract Chinese: ', `${chinese}: ${Collector.getKey(chinese)}`)
   }
 
@@ -55,12 +60,12 @@ class Collector {
         Collector.zhKeyMap[v] = k
       }
       if (keyJsonPath) {
-        const jsonObj = fsExtra.readJsonSync(baseLangJson.path)
+        const jsonObj = fsExtra.readJsonSync(path.join(process.cwd(), keyJsonPath))
         const keys = new Set(getKeys(jsonObj))
         for (const k of keys) {
           const v = getValueByKey(jsonObj, k)
           if (Collector.keyZhMap[k] && Collector.keyZhMap[k] !== v) {
-            log.error(`json key ${k} have 2 kinds of val: ${Collector.keyZhMap[k]} ans ${v}`)
+            log.error(`json key ${k} have 2 kinds of val: ${Collector.keyZhMap[k]} and ${v}`)
           }
           else {
             Collector.keyZhMap[k] = v
@@ -76,6 +81,7 @@ class Collector {
 
   static async updataJson() {
     await updateBaseLocale(Collector.keyZhMap)
+    await updateLocales()
   }
 }
 

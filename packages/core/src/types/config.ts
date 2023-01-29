@@ -109,7 +109,7 @@ export interface AutoConfig {
 export interface TransCommandOption {
   transPath: string
   modifyMode: boolean
-  templateFileName: string
+  templateFile: string
 }
 
 export interface LangJson {

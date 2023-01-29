@@ -40,7 +40,7 @@ program.command('trans')
     const transCommandOption: TransCommandOption = {
       transPath: transPath ?? '',
       modifyMode: !!options.modify,
-      templateFileName: options.template ?? '',
+      templateFile: options.template ?? '',
     }
     trans(transCommandOption)
   })

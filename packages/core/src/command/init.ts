@@ -13,7 +13,7 @@ const eslintExist = (): boolean => {
   const maybeNames = ['.eslintrc.js', '.eslintrc.cjs',
     '.eslintrc.yaml', '.eslintrc', '.eslintrc.yml', '.eslintrc.json']
   for (const name of maybeNames) {
-    const eslintrcPath = path.resolve(process.cwd(), name)
+    const eslintrcPath = path.resolve(name)
     if (fs.existsSync(eslintrcPath))
       return true
   }
@@ -39,7 +39,7 @@ const init = async () => {
     log.info('the project had inited, so skipped')
   }
   else {
-    const configPath = path.resolve(process.cwd(), `${CLI_CONFIG_NAME}.config.cjs`)
+    const configPath = path.resolve(`${CLI_CONFIG_NAME}.config.cjs`)
 
     const config = { ...defaultAutoConfig }
 
@@ -51,11 +51,11 @@ const init = async () => {
     if (eslintExist())
       config.autoFormat = true
 
-    const code = `
-    module.exports = ${serialize(config, {
+    const code
+    = `module.exports = ${serialize(config, {
       unsafe: true,
-    })}
-  `
+    })}`
+
     fs.outputFileSync(configPath, code)
 
     if (config.autoFormat)

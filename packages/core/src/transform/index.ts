@@ -9,6 +9,7 @@ function transform(
   code: string,
   ext: FileExtension,
   rules: I18nCallRules,
+  replace = true,
 ): {
     code: string
   } {
@@ -20,15 +21,15 @@ function transform(
       return transformJs(code, {
         rule: rules[ext],
         parse: initParse(),
-      })
+      }, replace)
     case 'ts':
     case 'tsx':
       return transformJs(code, {
         rule: rules[ext],
         parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
-      })
+      }, replace)
     case 'vue':
-      return transformVue(code, rules[ext])
+      return transformVue(code, rules[ext], replace)
     default:
       log.error(`not support transform .${ext} extension`)
       return { code }

@@ -14,8 +14,8 @@ export interface I18nCallRule {
   variableDeclaration: string
 
   /**
-     * import i18n t Declaration
-     */
+    * import i18n t Declaration
+    */
   importDeclaration: string
 }
 
