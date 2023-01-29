@@ -83,7 +83,7 @@ const updateLocales = async () => {
 }
 
 const updateLocalesFromXlsx = async (filePath: string) => {
-  const res = readXlsxFile(path.join(path.resolve(), filePath))
+  const res = readXlsxFile(path.resolve(filePath))
 
   const { baseLangJson, otherLangJsons } = getJsonPath()
   if (res) {

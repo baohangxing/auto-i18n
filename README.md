@@ -31,10 +31,18 @@
 
 ```sh
 npm i yo-auto-i18n -D
+```
 
-pnpm i yo-auto-i18n -D #or 
+or 
 
-yarn add yo-auto-i18n -D #or
+```sh
+yarn add yo-auto-i18n -D
+```
+
+or 
+
+```sh
+pnpm i yo-auto-i18n -D
 ```
 
 - 第二步: 给你项目添加 I18n 库，创建 locales 文件夹以及多语言 json 文件

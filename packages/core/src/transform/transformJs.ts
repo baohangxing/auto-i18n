@@ -20,7 +20,7 @@ import { isEmpty, isObject } from 'lodash-es'
 import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'
-import type { transformOptions } from '../types'
+import type { I18nCallRule, transformOptions } from '../types'
 import { escapeQuotes, includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
 import Collector from './collector'
@@ -39,7 +39,7 @@ interface TemplateParams {
   }
 }
 
-function getObjectExpression(obj: TemplateParams): ObjectExpression {
+const getObjectExpression = (obj: TemplateParams): ObjectExpression => {
   const ObjectPropertyArr: ObjectProperty[] = []
   Object.keys(obj).forEach((k) => {
     const tempValue = obj[k]
@@ -65,7 +65,7 @@ function getObjectExpression(obj: TemplateParams): ObjectExpression {
   }
  * ```
  */
-function isPropDefaultStringLiteralNode(path: NodePath<StringLiteral>): boolean {
+const isPropDefaultStringLiteralNode = (path: NodePath<StringLiteral>): boolean => {
   const objWithProps = path.parentPath?.parentPath?.parentPath?.parentPath?.parent
   const rootNode
     = path.parentPath?.parentPath?.parentPath?.parentPath?.parentPath?.parentPath?.parent
@@ -97,7 +97,7 @@ function isPropDefaultStringLiteralNode(path: NodePath<StringLiteral>): boolean 
   return isMeetProp && isMeetKey && isMeetContainer
 }
 
-function getStringLiteral(value: string): StringLiteral {
+const getStringLiteral = (value: string): StringLiteral => {
   return Object.assign(t.stringLiteral(value), {
     extra: {
       raw: `'${value}'`,
@@ -106,45 +106,54 @@ function getStringLiteral(value: string): StringLiteral {
   })
 }
 
-function transformJs(code: string, options: transformOptions): GeneratorResult {
-  const rule = options.rule
-  let hasImportI18n = false // 文件是否导入过i18n
-  let hasTransformed = false // 文件里是否存在中文转换，有的话才有必要导入i18n
+const getCallExpression = (rule: I18nCallRule, identifier: string, quote = '\''): string => {
+  const { transCaller, transIdentifier } = rule
+  const transCallerName = transCaller ? `${transCaller}.` : ''
+  const expression = `${transCallerName}${transIdentifier}(${quote}${identifier}${quote})`
+  return expression
+}
 
-  function getCallExpression(identifier: string, quote = '\''): string {
-    const { transCaller, transIdentifier } = rule
-    const transCallerName = transCaller ? `${transCaller}.` : ''
-    const expression = `${transCallerName}${transIdentifier}(${quote}${identifier}${quote})`
-    return expression
-  }
-
-  function getReplaceValue(value: string, params?: TemplateParams) {
-    value = escapeQuotes(value)
-    const { transCaller, transIdentifier } = rule
-    // 表达式结构 obj.fn('xx',{xx:xx})
-    let expression: string
-    // i18n标记有参数的情况
-    if (params) {
-      const keyLiteral = getStringLiteral(Collector.getKey(value))
-      if (transCaller) {
-        return t.callExpression(
-          t.memberExpression(t.identifier(transCaller), t.identifier(transIdentifier)),
-          [keyLiteral, getObjectExpression(params)],
-        )
-      }
-      else {
-        return t.callExpression(t.identifier(transIdentifier), [
-          keyLiteral,
-          getObjectExpression(params),
-        ])
-      }
+/**
+ *
+ * @param rule
+ * @param value
+ * @param params params of i18n
+ * @returns
+ */
+const getReplaceValue = (rule: I18nCallRule, value: string, params?: TemplateParams): Expression => {
+  value = escapeQuotes(value)
+  const { transCaller, transIdentifier } = rule
+  // 表达式结构 obj.fn('xx',{xx:xx})
+  let expression: string
+  if (params) {
+    const keyLiteral = getStringLiteral(Collector.getKey(value))
+    if (transCaller) {
+      // TODO replace with array params
+      return t.callExpression(
+        t.memberExpression(t.identifier(transCaller), t.identifier(transIdentifier)),
+        [keyLiteral, getObjectExpression(params)],
+      )
     }
     else {
-      // i18n标记没参数的情况
-      expression = getCallExpression(Collector.getKey(value))
-      return template.expression(expression)()
+      return t.callExpression(t.identifier(transIdentifier), [
+        keyLiteral,
+        getObjectExpression(params),
+      ])
     }
   }
+  else {
+    expression = getCallExpression(rule, Collector.getKey(value))
+    return template.expression(expression)()
+  }
+}
+
+const transformJs = (code: string, options: transformOptions, replace = true): GeneratorResult => {
+  const rule = options.rule
+  // 文件是否导入过i18n
+  let hasImportI18n = false
+
+  // 文件里是否存在中文转换，有的话才有必要导入i18n
+  let hasTransformed = false
 
   function transformAST(code: string, options: transformOptions) {
     function getTraverseOptions() {
@@ -168,18 +177,22 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
 
         StringLiteral(path: NodePath<StringLiteral>) {
           if (includeChinese(path.node.value) && options.isJsInVue && isPropDefaultStringLiteralNode(path)) {
-            const expression = `() => ${getCallExpression(path.node.value)}`
-            hasTransformed = true
             Collector.add(path.node.value)
-            path.replaceWith(template.expression(expression)())
+            if (replace) {
+              const expression = `() => ${getCallExpression(rule, Collector.getKey(path.node.value))}`
+              path.replaceWith(template.expression(expression)())
+              hasTransformed = true
+            }
             path.skip()
             return
           }
 
           if (includeChinese(path.node.value)) {
-            hasTransformed = true
             Collector.add(path.node.value)
-            path.replaceWith(getReplaceValue(path.node.value))
+            if (replace) {
+              path.replaceWith(getReplaceValue(rule, path.node.value))
+              hasTransformed = true
+            }
           }
           path.skip()
         },
@@ -224,18 +237,26 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
                 }
               }
             })
-            hasTransformed = true
+
             Collector.add(value)
-            const slotParams = isEmpty(params) ? undefined : params
-            path.replaceWith(getReplaceValue(value, slotParams))
+
+            if (replace) {
+              const slotParams = isEmpty(params) ? undefined : params
+              path.replaceWith(getReplaceValue(rule, value, slotParams))
+              hasTransformed = true
+            }
           }
         },
 
         JSXText(path: NodePath<JSXText>) {
           if (includeChinese(path.node.value)) {
-            hasTransformed = true
-            Collector.add(path.node.value.trim())
-            path.replaceWith(t.jSXExpressionContainer(getReplaceValue(path.node.value.trim())))
+            Collector.add(path.node.value)
+            if (replace) {
+              // TODO trim
+
+              path.replaceWith(t.jSXExpressionContainer(getReplaceValue(rule, path.node.value)))
+              hasTransformed = true
+            }
           }
           path.skip()
         },
@@ -244,12 +265,13 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
           const node = path.node as NodePath<JSXAttribute>['node']
           const valueType = node.value?.type
           if (valueType === 'StringLiteral' && node.value && includeChinese(node.value.value)) {
-            // TODO
-            const jsxIdentifier = t.jsxIdentifier(node.name.name as string)
-            const jsxContainer = t.jSXExpressionContainer(getReplaceValue(node.value.value))
-            hasTransformed = true
             Collector.add(node.value.value)
-            path.replaceWith(t.jsxAttribute(jsxIdentifier, jsxContainer))
+            if (replace) {
+              const jsxIdentifier = t.jsxIdentifier(node.name.name as string)
+              const jsxContainer = t.jSXExpressionContainer(getReplaceValue(rule, node.value.value))
+              path.replaceWith(t.jsxAttribute(jsxIdentifier, jsxContainer))
+              hasTransformed = true
+            }
             path.skip()
           }
         },
@@ -259,7 +281,7 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
           const { transCaller, transIdentifier } = rule
           const callee = node.callee
 
-          // 无调用对象的情况，例如$t('xx')
+          // 无调用对象的情况，例如 t('xx')
           if (callee.type === 'Identifier' && callee.name === transIdentifier) {
             path.skip()
             return
@@ -269,7 +291,7 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
           if (callee.type === 'MemberExpression') {
             if (callee.property && callee.property.type === 'Identifier') {
               if (callee.property.name === transIdentifier) {
-                // 处理形如i18n.$t('xx)的情况
+                // 处理形如i18n.$t('xx')的情况
                 if (callee.object.type === 'Identifier' && callee.object.name === transCaller) {
                   path.skip()
                   return
@@ -283,7 +305,7 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
         },
 
         ImportDeclaration(path: NodePath<ImportDeclaration>) {
-          const { importDeclaration } = rule
+          const { importDeclaration, variableDeclaration } = rule
           const res = importDeclaration.match(/from ["'](.*)["']/)
           const packageName = res ? res[1] : ''
 
@@ -291,11 +313,21 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
             hasImportI18n = true
 
           if (!hasImportI18n && hasTransformed) {
-            const importAst = template.statements(importDeclaration)()
             const program = path.parent as Program
-            importAst.forEach((statement) => {
-              program.body.unshift(statement)
+            const lastImportIndex = program.body.findIndex(x => x.type !== 'ImportDeclaration')
+
+            const variableAst = template.statements(variableDeclaration)().reverse()
+
+            variableAst.forEach((statement) => {
+              program.body.splice(lastImportIndex, 0, statement)
             })
+
+            const importAst = template.statements(importDeclaration)().reverse()
+
+            importAst.forEach((statement) => {
+              program.body.splice(lastImportIndex, 0, statement)
+            })
+
             hasImportI18n = true
           }
         },
@@ -309,12 +341,27 @@ function transformJs(code: string, options: transformOptions): GeneratorResult {
 
   const ast = transformAST(code, options)
 
+  if (!hasImportI18n && hasTransformed && ast) {
+    const { importDeclaration, variableDeclaration } = rule
+    const program = ast.program
+    const lastImportIndex = program.body.findIndex(x => x.type !== 'ImportDeclaration')
+
+    const variableAst = template.statements(variableDeclaration)().reverse()
+
+    variableAst.forEach((statement) => {
+      program.body.splice(lastImportIndex, 0, statement)
+    })
+
+    const importAst = template.statements(importDeclaration)().reverse()
+
+    importAst.forEach((statement) => {
+      program.body.splice(lastImportIndex, 0, statement)
+    })
+    hasImportI18n = true
+  }
+
   const result = (!ast ? code : babelGenerator(ast)) as GeneratorResult
 
-  if (!hasImportI18n && hasTransformed) {
-    const { importDeclaration } = rule
-    result.code = `${importDeclaration}\n${result.code}`
-  }
   return result
 }
 

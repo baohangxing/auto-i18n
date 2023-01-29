@@ -1,5 +1,5 @@
 import fsExtra from 'fs-extra'
-import { getAutoConfig, getJsonPath, isUnTransed } from '../config/config'
+import { getAutoConfig, getJsonPath, getOutputFileDir, isUnTransed } from '../config/config'
 import { KEY_SYMBOL_IN_XLSX } from '../config/constants'
 import { writeXlsxFile } from '../utils/excel'
 import { createFileName, getKeys, getValueByKey } from '../utils/help'
@@ -41,7 +41,8 @@ const generateXlsx = async () => {
   }
 
   writeXlsxFile([firstRows], ['all'], [sheetsDatas],
-    `${createFileName(autoConfig.outputXlsxNameBy.genXlsx)}.xlsx`)
+    getOutputFileDir(`${createFileName(autoConfig.outputXlsxNameBy.genXlsx)}.xlsx`),
+  )
 }
 
 export { generateXlsx }

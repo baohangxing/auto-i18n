@@ -96,4 +96,9 @@ const unTransLocale = (str: string, locale: string) => {
   return autoConfig.untransSymbol(locale) + str
 }
 
-export { getAutoConfig, getJsonPath, isUnTransed, unTransLocale }
+const getOutputFileDir = (fileName: string) => {
+  const autoConfig = getAutoConfig()
+  return path.join(process.cwd(), autoConfig.outputFileDir, fileName)
+}
+
+export { getAutoConfig, getJsonPath, isUnTransed, unTransLocale, getOutputFileDir }
