@@ -10,28 +10,30 @@ import mustache from 'mustache'
 import ejs from 'ejs'
 import presetTypescript from '@babel/preset-typescript'
 import type { I18nCallRule } from '../types'
-import { escapeQuotes, includeChinese } from '../utils/help'
+import { includeChinese } from '../utils/help'
 import log from '../utils/log'
 import { IGNORE_REMARK } from '../config/constants'
 import transformJs from './transformJs'
 import { initParse } from './parse'
 import Collector from './collector'
+import { escapeQuotes, getCallExpression, getCallExpressionPrefix, trimValue } from './tools'
 
 type Handler = (source: string, rule: I18nCallRule, replace: boolean) => string
+
 const COMMENT_TYPE = '!'
 
-function parseJsSyntax(source: string, rule: I18nCallRule): string {
-  // html属性有可能是{xx:xx}这种对象形式，直接解析会报错，需要特殊处理。
+const parseJsSyntax = (source: string, rule: I18nCallRule): string => {
+  // vue属性有可能是{xx:xx}这种对象形式，直接解析会报错，需要特殊处理。
   // 先处理成temp = {xx:xx} 让babel解析，解析完再还原成{xx:xx}
   let isObjectStruct = false
   if (source.startsWith('{') && source.endsWith('}')) {
     isObjectStruct = true
-    source = `temp=${source}`
+    source = `___temp = ${source}`
   }
   const { code } = transformJs(source, {
     rule: {
       ...rule,
-      transCaller: '',
+      variableDeclaration: '',
       importDeclaration: '',
     },
     parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
@@ -40,30 +42,25 @@ function parseJsSyntax(source: string, rule: I18nCallRule): string {
   let stylizedCode = code
 
   if (isObjectStruct)
-    stylizedCode = stylizedCode.replace('temp = ', '')
+    stylizedCode = stylizedCode.replace('___temp = ', '')
 
+  stylizedCode = stylizedCode.replace(/;$/gm, '')
   return stylizedCode.endsWith('\n') ? stylizedCode.slice(0, stylizedCode.length - 1) : stylizedCode
 }
 
-function handleTemplate(code: string, rule: I18nCallRule, replace = true): string {
+const removeQuotes = (value: string): string => {
+  if (['"', '\''].includes(value.charAt(0)) && ['"', '\''].includes(value.charAt(value.length - 1)))
+    value = value.substring(1, value.length - 1)
+
+  return value
+}
+
+const handleTemplate = (code: string, rule: I18nCallRule, replace = true): string => {
   let htmlString = ''
 
-  function getReplaceValue(value: string): string {
+  const getReplaceValue = (value: string): string => {
     value = escapeQuotes(value)
-    const { transIdentifier } = rule
-    const expression = `${transIdentifier}('${Collector.getKey(value)}')`
-    return expression
-  }
-
-  function formatValue(value: string): string {
-    value = value.trim()
-    if (value.startsWith('\n'))
-      value = value.slice(1, value.length - 1).trimStart()
-
-    if (value.endsWith('\n'))
-      value = value.slice(0, value.length - 1)
-
-    return value
+    return getCallExpression(rule, Collector.getKey(value))
   }
 
   let shouldIgnore = false
@@ -85,27 +82,28 @@ function handleTemplate(code: string, rule: I18nCallRule, replace = true): strin
           const isVueDirective = key.startsWith(':') || key.startsWith('@') || key.startsWith('v-')
           if (includeChinese(attrValue) && isVueDirective) {
             const source = parseJsSyntax(attrValue, rule)
-            // 处理属性类似于:xx="'xx'"，这种属性值不是js表达式的情况。attrValue === source即属性值不是js表达式
-            // attrValue.startsWith是为了排除:xx="$t('xx')"的情况
-            if (attrValue === source && !attrValue.startsWith(rule.transIdentifier)) {
+            // 处理属性类似于:xx="'xx'"，这种属性值不是js表达式的情况
+            // attrValue === source即属性值不是js表达式
+            // attrValue.startsWith是为了排除:xx="t('中文')"的情况
+            if (attrValue === source && !attrValue.startsWith(getCallExpressionPrefix(rule))) {
               Collector.add(removeQuotes(attrValue))
               if (replace)
-                attrs += ` ${key}="${getReplaceValue(removeQuotes(attrValue))}" `
+                attrs += ` ${key}="${getReplaceValue(removeQuotes(attrValue))}"`
             }
             else {
-              attrs += ` ${key}="${source}" `
+              attrs += ` ${key}="${source}"`
             }
           }
           else if (includeChinese(attrValue) && !isVueDirective) {
             Collector.add(attrValue)
             if (replace)
-              attrs += ` :${key}="${getReplaceValue(attrValue)}" `
+              attrs += ` :${key}="${getReplaceValue(attrValue)}"`
           }
           else if (attrValue === '') {
-            attrs += key
+            attrs += ` ${key}`
           }
           else {
-            attrs += ` ${key}="${attrValue}" `
+            attrs += ` ${key}="${attrValue}"`
           }
         }
         htmlString += `<${tagName} ${attrs}>`
@@ -123,7 +121,7 @@ function handleTemplate(code: string, rule: I18nCallRule, replace = true): strin
           let value = token[1]
 
           if (includeChinese(value)) {
-            value = formatValue(value)
+            value = trimValue(value)
             if (type === 'text') {
               Collector.add(value)
               if (replace)
@@ -181,7 +179,7 @@ function handleTemplate(code: string, rule: I18nCallRule, replace = true): strin
   return htmlString
 }
 
-function handleScript(source: string, rule: I18nCallRule, replace: boolean): string {
+const handleScript = (source: string, rule: I18nCallRule, replace: boolean): string => {
   const { code } = transformJs(source, {
     rule,
     isJsInVue: true,
@@ -191,18 +189,11 @@ function handleScript(source: string, rule: I18nCallRule, replace: boolean): str
   return `\n${code}\n`
 }
 
-function mergeCode(templateCode: string, scriptCode: string, stylesCode: string): string {
+const mergeCode = (templateCode: string, scriptCode: string, stylesCode: string): string => {
   return `${templateCode}\n${scriptCode}\n${stylesCode}`
 }
 
-function removeQuotes(value: string): string {
-  if (['"', '\''].includes(value.charAt(0)) && ['"', '\''].includes(value.charAt(value.length - 1)))
-    value = value.substring(1, value.length - 1)
-
-  return value
-}
-
-function getWrapperTemplate(sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCStyleBlock): string {
+const getWrapperTemplate = (sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCStyleBlock): string => {
   const { type, lang, attrs } = sfcBlock
   let template = `<${type}`
 
@@ -223,12 +214,12 @@ function getWrapperTemplate(sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCSty
   return template
 }
 
-function generateSource(
+const generateSource = (
   sfcBlock: SFCTemplateBlock | SFCScriptBlock,
   handler: Handler,
   rule: I18nCallRule,
   replace: boolean,
-): string {
+): string => {
   const wrapperTemplate = getWrapperTemplate(sfcBlock)
   const source = handler(sfcBlock.content, rule, replace)
   return ejs.render(wrapperTemplate, {
@@ -236,16 +227,19 @@ function generateSource(
   })
 }
 
-function removeSnippet(
+const removeSnippet = (
   source: string,
   sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCStyleBlock | null,
-): string {
+): string => {
   return sfcBlock ? source.replace(sfcBlock.content, '') : source
 }
 
-// 提取文件头注释
-// * 这里投机取巧了一下，把标签内容清空再匹配注释。避免匹配错了。后期有好的方案再替换
-function getFileComment(descriptor: SFCDescriptor): string {
+/**
+ * 提取文件头注释 //TODO fix in 1.0.0
+ * @param descriptor
+ * @returns
+ */
+const getFileComment = (descriptor: SFCDescriptor): string => {
   const { template, script, scriptSetup, styles } = descriptor
   let source = descriptor.source
   source = removeSnippet(source, template)
@@ -255,17 +249,17 @@ function getFileComment(descriptor: SFCDescriptor): string {
     for (const style of styles)
       source = removeSnippet(source, style)
   }
-  const result = source.match(/<!--[\s\S]*?-->/)
+  const result = source.match(/<!--[\s\S]*?-->/m)
   return result ? result[0] : ''
 }
 
-function transformVue(
+const transformVue = (
   code: string,
   rule: I18nCallRule,
   replace = true,
 ): {
-    code: string
-  } {
+  code: string
+} => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
     log.error('parse vue error', errors[0].toString())
@@ -303,7 +297,7 @@ function transformVue(
 
   code = mergeCode(templateCode, scriptCode, stylesCode)
   if (fileComment)
-    code = fileComment + code
+    code = `${fileComment}\n${code}`
 
   return {
     code,

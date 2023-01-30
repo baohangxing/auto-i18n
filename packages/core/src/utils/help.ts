@@ -135,10 +135,6 @@ const getKeys = (obj: any) => {
   return _getKeys(obj, '')
 }
 
-const escapeQuotes = (value: string): string => {
-  return value.replaceAll('\'', '\\\'').replaceAll('"', '\\"')
-}
-
 export {
   writeToJsonFile,
   lexicalComparator,
@@ -148,5 +144,4 @@ export {
   getKeys,
   createFileName,
   includeChinese,
-  escapeQuotes,
 }
