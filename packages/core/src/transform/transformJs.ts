@@ -22,11 +22,12 @@ import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'
 import type { I18nCallRule, transformOptions } from '../types'
-import { escapeQuotes, includeChinese } from '../utils/help'
+import { includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
 import { getAutoConfig } from '../config/config'
 import log from '../utils/log'
 import Collector from './collector'
+import { escapeQuotes, getCallExpression } from './tools'
 
 const require = createRequire(import.meta.url)
 // see https://github.com/babel/babel/issues/13855
@@ -130,13 +131,6 @@ const getStringLiteral = (value: string): StringLiteral => {
   })
 }
 
-const getCallExpression = (rule: I18nCallRule, identifier: string, quote = '\''): string => {
-  const { transCaller, transIdentifier } = rule
-  const transCallerName = transCaller ? `${transCaller}.` : ''
-  const expression = `${transCallerName}${transIdentifier}(${quote}${identifier}${quote})`
-  return expression
-}
-
 /**
  *
  * @param rule
@@ -186,7 +180,7 @@ const transformJs = (code: string, options: transformOptions, replace = true): G
   // 文件里是否存在中文转换，有的话才有必要导入i18n
   let hasTransformed = false
 
-  function transformAST(code: string, options: transformOptions) {
+  const transformAST = (code: string, options: transformOptions) => {
     function getTraverseOptions() {
       return {
         enter(path: NodePath) {
