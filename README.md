@@ -105,6 +105,7 @@ yo-auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且�
 | includes       | string[] | [] //默认为所有文件 | 使用通配符定义进行替换的范围, 语法请参考[通配符语法](#通配符语法)  |
 | transLacaleWord  | (word: string, locale: string, toLocale: string) => Promise\<string\> |  | 使用 `update` 命令进行更新的时候，可以使用该配置进行机器翻译，出现未翻译的前缀标志的语句会调用该配置函数得到对应语言的 value 值 |
 | outputFileDir | string | './' | 所有导出文件的导出路径，请使用你项目的相对路径进行配置 |
+| transInterpolationsMode | 'NamedInterpolationMode' \| 'ListInterpolationMode' | 'NamedInterpolationMode' | i18n格式语法的插值模式，可参考 [TransInterpolationsMode](#TransInterpolationsMode), 占位符中插值可以配置为具名插值模式或者列表插值模式两种模式 |
 | i18nCallRules | Record<FileExtension, I18nCallRule> | [见I18nCallRule](#I18nCallRule) | 各个格式的文件配置i18n的应用和使用规则 [见I18nCallRule](#I18nCallRule) |
 | autoFormat | boolean | false | 命令修改或者创建的文件是否进行格式化，当设置 `true` 时，需要项目中已经添加配置 eslint |
 | autoFormatRules | string[]| [] //默认为所有文件 | 使用通配符定义进行格式化的范围, 不想或者不能进行格式化的文件可以通过该项配置,语法请参考[通配符语法](#通配符语法) |
@@ -121,6 +122,52 @@ yo-auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且�
 - 'jsx'
 - 'tsx'
 - 'vue'
+
+### TransInterpolationsMode
+
+占位符中插值的两种模式 ` 'NamedInterpolationMode' ` |  `'ListInterpolationMode'`
+
+- `NamedInterpolationMode` 具名插值模式
+
+命名插值允许您指定 JavaScript 中定义的变量。在下面的例子中，您可以通过将 JavaScript 定义的 `msg` 作为转换功能的参数进行本地化。
+
+```js
+const messages = {
+  en: {
+    message: {
+      hello: '{msg} world'
+    }
+  }
+}
+```
+
+```vue
+<p>
+{{ $t('message.hello', { msg: 'hello' }) }}
+</p>
+```
+
+- `ListInterpolationMode` 列表插值模式
+
+列表插值允许您指定 JavaScript 中定义的数组。您可以通过将 JavaScript 定义的数组的 0 索引项作为转换函数的参数进行本地化。
+
+```js
+const messages = {
+  en: {
+    message: {
+      hello: '{0} world'
+    }
+  }
+}
+```
+
+```vue
+<p>
+{{ $t('message.hello', ['hello']) }}
+</p>
+```
+
+可参考 [vue i18n Interpolations](https://vue-i18n.intlify.dev/guide/essentials/syntax.html#interpolations)
 
 ### I18nCallRule
 

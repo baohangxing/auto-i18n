@@ -18,6 +18,7 @@ const defaultAutoConfig: AutoConfig = {
   },
   includes: [],
   outputFileDir: './',
+  transInterpolationsMode: 'NamedInterpolationMode',
   i18nCallRules: {
     js: getCommonI18nCallRule(),
     ts: getCommonI18nCallRule(),
