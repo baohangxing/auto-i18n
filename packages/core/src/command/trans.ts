@@ -46,6 +46,8 @@ const trans = async (option: TransCommandOption) => {
       obj[x] = x
 
     fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 2), 'utf8')
+    if (autoConfig.autoFormat && checkInPatterns(jsonPath, autoConfig.autoFormatRules))
+      await format(jsonPath)
   }
 }
 

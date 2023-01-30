@@ -1,6 +1,7 @@
 import { createRequire } from 'module'
 import type { NodePath } from '@babel/traverse'
 import type {
+  ArrayExpression,
   CallExpression,
   Comment,
   Expression,
@@ -23,6 +24,8 @@ import type * as generatorType from '@babel/generator/index'
 import type { I18nCallRule, transformOptions } from '../types'
 import { escapeQuotes, includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
+import { getAutoConfig } from '../config/config'
+import log from '../utils/log'
 import Collector from './collector'
 
 const require = createRequire(import.meta.url)
@@ -30,7 +33,7 @@ const require = createRequire(import.meta.url)
 const traverse: typeof traverseType.default = require('@babel/traverse').default
 const babelGenerator: typeof generatorType.default = require('@babel/generator').default
 
-interface TemplateParams {
+interface NamedInterpolationParams {
   [k: string]:
   | string
   | {
@@ -39,7 +42,13 @@ interface TemplateParams {
   }
 }
 
-const getObjectExpression = (obj: TemplateParams): ObjectExpression => {
+type ListInterpolationParams = Array< string
+| {
+  isAstNode: true
+  value: Expression
+}>
+
+const getObjectExpression = (obj: NamedInterpolationParams): ObjectExpression => {
   const ObjectPropertyArr: ObjectProperty[] = []
   Object.keys(obj).forEach((k) => {
     const tempValue = obj[k]
@@ -52,6 +61,21 @@ const getObjectExpression = (obj: TemplateParams): ObjectExpression => {
     ObjectPropertyArr.push(t.objectProperty(t.identifier(k), newValue))
   })
   const ast = t.objectExpression(ObjectPropertyArr)
+  return ast
+}
+
+const getArrayExpression = (params: ListInterpolationParams): ArrayExpression => {
+  const ObjectPropertyArr: Expression [] = []
+  params.forEach((tempValue) => {
+    let newValue: Expression
+    if (isObject(tempValue))
+      newValue = tempValue.value
+    else
+      newValue = t.identifier(tempValue)
+
+    ObjectPropertyArr.push(newValue)
+  })
+  const ast = t.arrayExpression(ObjectPropertyArr)
   return ast
 }
 
@@ -120,24 +144,29 @@ const getCallExpression = (rule: I18nCallRule, identifier: string, quote = '\'')
  * @param params params of i18n
  * @returns
  */
-const getReplaceValue = (rule: I18nCallRule, value: string, params?: TemplateParams): Expression => {
+const getReplaceValue = (rule: I18nCallRule, value: string,
+  params?: NamedInterpolationParams | ListInterpolationParams,
+): Expression => {
   value = escapeQuotes(value)
   const { transCaller, transIdentifier } = rule
-  // 表达式结构 obj.fn('xx',{xx:xx})
   let expression: string
   if (params) {
     const keyLiteral = getStringLiteral(Collector.getKey(value))
     if (transCaller) {
-      // TODO replace with array params
       return t.callExpression(
         t.memberExpression(t.identifier(transCaller), t.identifier(transIdentifier)),
-        [keyLiteral, getObjectExpression(params)],
+        [keyLiteral, !Array.isArray(params)
+          ? getObjectExpression(params)
+          : getArrayExpression(params),
+        ],
       )
     }
     else {
       return t.callExpression(t.identifier(transIdentifier), [
         keyLiteral,
-        getObjectExpression(params),
+        !Array.isArray(params)
+          ? getObjectExpression(params)
+          : getArrayExpression(params),
       ])
     }
   }
@@ -148,6 +177,8 @@ const getReplaceValue = (rule: I18nCallRule, value: string, params?: TemplatePar
 }
 
 const transformJs = (code: string, options: transformOptions, replace = true): GeneratorResult => {
+  const autoConfig = getAutoConfig()
+
   const rule = options.rule
   // 文件是否导入过i18n
   let hasImportI18n = false
@@ -206,42 +237,85 @@ const transformJs = (code: string, options: transformOptions, replace = true): G
 
           if (shouldReplace) {
             let value = ''
-            let slotIndex = 1
-            const params: TemplateParams = {}
-            templateMembers.forEach((node) => {
-              if (node.type === 'Identifier') {
-                value += `{${node.name}}`
-                params[node.name] = node.name
-              }
-              else if (node.type === 'TemplateElement') {
-                value += node.value.raw.replace(/[\r\n]/g, '') // 用raw防止字符串中出现 /n
-              }
-              else if (node.type === 'MemberExpression') {
-                const key = `slot${slotIndex++}`
-                value += `{${key}}`
-                params[key] = {
-                  isAstNode: true,
-                  value: node as MemberExpression,
+            let slotParams: NamedInterpolationParams | ListInterpolationParams | undefined
+
+            if (autoConfig.transInterpolationsMode === 'NamedInterpolationMode') {
+              let slotIndex = 1
+              const params: NamedInterpolationParams = {}
+              templateMembers.forEach((node) => {
+                if (node.type === 'Identifier') {
+                  value += `{${node.name}}`
+                  params[node.name] = node.name
                 }
-              }
-              else {
-                // 处理${}内容为表达式的情况。例如`测试${a + b}`，把 a+b 这个语法树作为params的值, 并自定义params的键为slot加数字的形式
-                const key = `slot${slotIndex++}`
-                value += `{${key}}`
-                const expression = babelGenerator(node).code
-                const tempAst = transformAST(expression, options) as any
-                const expressionAst = tempAst.program.body[0].expression
-                params[key] = {
-                  isAstNode: true,
-                  value: expressionAst,
+                else if (node.type === 'TemplateElement') {
+                  value += node.value.raw.replace(/[\r\n]/g, '') // 用raw防止字符串中出现 /n
                 }
-              }
-            })
+                else if (node.type === 'MemberExpression') {
+                  const key = `slot${slotIndex++}`
+                  value += `{${key}}`
+                  params[key] = {
+                    isAstNode: true,
+                    value: node as MemberExpression,
+                  }
+                }
+                else {
+                // 处理${}内容为表达式的情况。例如`测试${a + b}`，
+                // 把 a + b 这个语法树作为params的值, 并自定义params的键为slot加数字的形式
+                  const key = `slot${slotIndex++}`
+                  value += `{${key}}`
+                  const expression = babelGenerator(node).code
+                  const tempAst = transformAST(expression, options) as any
+                  const expressionAst = tempAst.program.body[0].expression
+                  params[key] = {
+                    isAstNode: true,
+                    value: expressionAst,
+                  }
+                }
+              })
+
+              slotParams = isEmpty(params) ? undefined : params
+            }
+            else if (autoConfig.transInterpolationsMode === 'ListInterpolationMode') {
+              let index = 0
+              const params: ListInterpolationParams = []
+              templateMembers.forEach((node) => {
+                if (node.type === 'Identifier') {
+                  value += `{${index++}}`
+                  params.push(node.name)
+                }
+                else if (node.type === 'TemplateElement') {
+                  value += node.value.raw.replace(/[\r\n]/g, '')
+                  // TODO 用raw防止字符串中出现 /n??
+                }
+                else if (node.type === 'MemberExpression') {
+                  value += `{${index++}}`
+                  params.push({
+                    isAstNode: true,
+                    value: node as MemberExpression,
+                  })
+                }
+                else {
+                  value += `{${index++}}`
+                  const expression = babelGenerator(node).code
+                  const tempAst = transformAST(expression, options) as any
+                  const expressionAst = tempAst.program.body[0].expression
+                  params.push({
+                    isAstNode: true,
+                    value: expressionAst,
+                  })
+                }
+              })
+
+              slotParams = isEmpty(params) ? undefined : params
+            }
+            else {
+              log.error('autoConfig.transInterpolationsMode must is '
+                + '\'NamedInterpolationMode\' or \'ListInterpolationMode\'')
+            }
 
             Collector.add(value)
 
             if (replace) {
-              const slotParams = isEmpty(params) ? undefined : params
               path.replaceWith(getReplaceValue(rule, value, slotParams))
               hasTransformed = true
             }
@@ -253,7 +327,6 @@ const transformJs = (code: string, options: transformOptions, replace = true): G
             Collector.add(path.node.value)
             if (replace) {
               // TODO trim
-
               path.replaceWith(t.jSXExpressionContainer(getReplaceValue(rule, path.node.value)))
               hasTransformed = true
             }

@@ -4,6 +4,8 @@ export type FileExtension = 'js' | 'ts' | 'cjs' | 'mjs' | 'jsx' | 'tsx' | 'vue'
 
 export type I18nCallRules = Record<FileExtension, I18nCallRule>
 
+export type TransInterpolationsMode = 'NamedInterpolationMode' | 'ListInterpolationMode'
+
 export interface AutoConfig {
   /**
    * To match local Json paths, all Json file will be used.
@@ -61,6 +63,14 @@ export interface AutoConfig {
     * @default `./ `
     */
   outputFileDir: string
+
+  /**
+   * Interpolations mode of i18n message format syntax
+   *
+   * for example: Vue I18n supports interpolation using placeholders {} like "Mustache".
+   * see -> https://vue-i18n.intlify.dev/guide/essentials/syntax.html#interpolations
+   */
+  transInterpolationsMode: TransInterpolationsMode
 
   i18nCallRules: Record<FileExtension, I18nCallRule>
 
