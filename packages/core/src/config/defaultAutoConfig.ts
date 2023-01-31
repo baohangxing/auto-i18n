@@ -16,7 +16,7 @@ const defaultAutoConfig: AutoConfig = {
   untransSymbol: (locale: string) => {
     return `[${locale.toUpperCase()}]`
   },
-  includes: [],
+  includes: ['**/*.{js,cjs,ts,mjs,jsx,tsx,vue}'],
   outputFileDir: './',
   transInterpolationsMode: 'NamedInterpolationMode',
   i18nCallRules: {
@@ -28,6 +28,7 @@ const defaultAutoConfig: AutoConfig = {
     tsx: getCommonI18nCallRule(),
     vue: getCommonI18nCallRule(),
   },
+  checkUsageMatchAppend: [],
   autoFormat: false,
   autoFormatRules: [],
   outputXlsxNameBy: {

@@ -349,7 +349,7 @@ const transformJs = (code: string, options: transformOptions, replace = true): G
           const callee = node.callee
 
           // 无调用对象的情况，例如 t('xx')
-          if (callee.type === 'Identifier' && callee.name === transIdentifier) {
+          if (!transCaller && callee.type === 'Identifier' && callee.name === transIdentifier) {
             path.skip()
             return
           }

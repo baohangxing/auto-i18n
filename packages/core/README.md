@@ -10,7 +10,7 @@
 
 - [x] 支持.mjs, .cjs, .js, .ts, .jsx, .tsx, .vue 后缀格式的文件进行中文提取
 - [x] 支持 vue2.0，vue3.0，react 提取中文
-- [x] 支持通过 /\*yo-auto-i18n-ignore\*/ 注释，忽略中文提取
+- [x] 支持通过 /\*yo-auto-i18n-ignore\*/ 和 <!--yo-auto-i18n-ignore--> 注释，忽略中文提取
 - [x] 支持将提取的中文以 key-value 形式存入 \*.json 语言包进行预览并自定义 key
 - [x] 支持为各种格式自定义 i18n 的调用对象, 方法名, 方法定义 以及 添加第三方包的导入
 
@@ -102,10 +102,12 @@ yo-auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且�
 | locales         | string[] | [] //默认为所有文件 | 需要翻译的语言包, 例如['ja', 'zh-cn'], 语言包的json文件需要在 `localesJsonDirs` 中 |
 | baseLocale      | string |   ''   | 基础语言包的名称，即中文语言包 例如 `zh-cn` |
 | untransSymbol  | (locale: string) => string | `[${locale.toUpperCase()}]` | 未翻译的前缀标志, 该前缀标志会出现在其他语言的json语言包中并拼接在中文语句前面, 表示这条语句还未翻译, 例如`[JA]你好` |
-| includes       | string[] | [] //默认为所有文件 | 使用通配符定义进行替换的范围, 语法请参考[通配符语法](#通配符语法)  |
+| includes       | string[] | ['\*\*/\*.{js,cjs,ts,mjs,jsx,tsx,vue}'] //默认为所有文件 | 使用通配符定义进行替换的范围, 语法请参考[通配符语法](#通配符语法)  |
 | transLacaleWord  | (word: string, locale: string, toLocale: string) => Promise\<string\> |  | 使用 `update` 命令进行更新的时候，可以使用该配置进行机器翻译，出现未翻译的前缀标志的语句会调用该配置函数得到对应语言的 value 值 |
 | outputFileDir | string | './' | 所有导出文件的导出路径，请使用你项目的相对路径进行配置 |
+| transInterpolationsMode | 'NamedInterpolationMode' \| 'ListInterpolationMode' | 'NamedInterpolationMode' | i18n格式语法的插值模式，可参考 [TransInterpolationsMode](#TransInterpolationsMode), 占位符中插值可以配置为具名插值模式或者列表插值模式两种模式 |
 | i18nCallRules | Record<FileExtension, I18nCallRule> | [见I18nCallRule](#I18nCallRule) | 各个格式的文件配置i18n的应用和使用规则 [见I18nCallRule](#I18nCallRule) |
+| checkUsageMatchAppend | RegExp[] | [] | check命令中, 定义额外的匹配代码中的i18n key的正则表达式, 它将作为额外的匹配机制而不会覆盖原有的匹配逻辑 |
 | autoFormat | boolean | false | 命令修改或者创建的文件是否进行格式化，当设置 `true` 时，需要项目中已经添加配置 eslint |
 | autoFormatRules | string[]| [] //默认为所有文件 | 使用通配符定义进行格式化的范围, 不想或者不能进行格式化的文件可以通过该项配置,语法请参考[通配符语法](#通配符语法) |
 | outputXlsxNameBy | object | [见outputXlsxNameBy](#outputXlsxNameBy)  | 定义导出文件的名称， [见outputXlsxNameBy](#outputXlsxNameBy) |
@@ -121,6 +123,52 @@ yo-auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且�
 - 'jsx'
 - 'tsx'
 - 'vue'
+
+### TransInterpolationsMode
+
+占位符中插值的两种模式 ` 'NamedInterpolationMode' ` |  `'ListInterpolationMode'`
+
+- `NamedInterpolationMode` 具名插值模式
+
+命名插值允许您指定 JavaScript 中定义的变量。在下面的例子中，您可以通过将 JavaScript 定义的 `msg` 作为转换功能的参数进行本地化。
+
+```js
+const messages = {
+  en: {
+    message: {
+      hello: '{msg} world'
+    }
+  }
+}
+```
+
+```vue
+<p>
+{{ $t('message.hello', { msg: 'hello' }) }}
+</p>
+```
+
+- `ListInterpolationMode` 列表插值模式
+
+列表插值允许您指定 JavaScript 中定义的数组。您可以通过将 JavaScript 定义的数组的 0 索引项作为转换函数的参数进行本地化。
+
+```js
+const messages = {
+  en: {
+    message: {
+      hello: '{0} world'
+    }
+  }
+}
+```
+
+```vue
+<p>
+{{ $t('message.hello', ['hello']) }}
+</p>
+```
+
+可参考 [vue i18n Interpolations](https://vue-i18n.intlify.dev/guide/essentials/syntax.html#interpolations)
 
 ### I18nCallRule
 
@@ -319,7 +367,28 @@ Options:
   -h, --help  display help for command
 ```
 
-检测在项目中使用的语言包是否已经完全翻译, 检测范围可以在 [`AutoConfig.includes`](#配置字段) 配置, 生成的文件的名称可在 [`AutoConfig.outputXlsxNameBy.check`](#配置字段) 配置。
+检测在项目中使用的语言包是否已经完全翻译, 检测范围可以在 [`AutoConfig.includes`](#配置字段) 配置, 生成的文件的名称可在 [`AutoConfig.outputXlsxNameBy.check`](#配置字段) 配置。鉴于不同的 i18n库可能使用一些额外的使用方法，比如 vue-i18n 使用中的下面这个例子：
+
+```js
+createVNode(
+  Translation,
+  {
+    keypath: 'gameConfig.confirmDeleteActivity',
+    tag: 'span',
+    i18n: i18n.global,
+  }
+)
+```
+
+这个时候通过在 [`AutoConfig.i18nCallRules`](#配置字段)  配置的 `i18nCallRules` 来匹配代码中的语言包 key 中就无法匹配到 `"gameConfig.confirmDeleteActivity"`, 这个时候你可以通过定义额外的匹配代码中的语言包 key的正则表达式 [`AutoConfig.checkUsageMatchAppend`](#配置字段) , 从而全面覆盖到其他的情况中的存在语言包  key，上面的例子可以如下配置：
+
+```
+{
+  ...
+  "checkUsageMatchAppend": [/\Wkeypath:(?:\s+)?['"]([\S\\.]+)["']/gm]
+  ...
+}
+```
 
 
 ## 转换效果示例
@@ -467,3 +536,5 @@ export default Home
 避免解析时报错
 
 2. 如果你的 eslint 配置在 package.json 中，目前该命令是无法读取到 eslint 配置的，如果你希望在修改后进行格式化，请将 eslint 配置移植到一个独立配置文件中。
+
+3. vue模版如果存在多个最外层注释，在转换之后只会保留文件头部的最外层注释。解决这个问题，你可以把所有的最外层注释移动到最上面，这个问题会在 1.0.0 后的版本更新。

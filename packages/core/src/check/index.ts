@@ -1,39 +1,35 @@
 import presetTypescript from '@babel/preset-typescript'
+import { initParse } from '../transform/parse'
 import type { FileExtension, I18nCallRules } from '../types'
 import log from '../utils/log'
-import transformJs from './transformJs'
-import transformVue from './transformVue'
-import { initParse } from './parse'
+import { checkJs, checkVue } from './checkHelp'
 
-const transform = (
+const checkTranslated = (
   code: string,
   ext: FileExtension,
   rules: I18nCallRules,
-  replace = true,
-): {
-  code: string
-} => {
+): string[] => {
   switch (ext) {
     case 'cjs':
     case 'mjs':
     case 'js':
     case 'jsx':
-      return transformJs(code, {
+      return checkJs(code, {
         rule: rules[ext],
         parse: initParse(),
-      }, replace)
+      })
     case 'ts':
     case 'tsx':
-      return transformJs(code, {
+      return checkJs(code, {
         rule: rules[ext],
         parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
-      }, replace)
+      })
     case 'vue':
-      return transformVue(code, rules[ext], replace)
+      return checkVue(code, rules[ext])
     default:
-      log.error(`not support transform .${ext} extension`)
-      return { code }
+      log.error(`not support check .${ext} extension`)
+      return []
   }
 }
 
-export { transform }
+export { checkTranslated }

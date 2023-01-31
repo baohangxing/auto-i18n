@@ -102,11 +102,12 @@ yo-auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且�
 | locales         | string[] | [] //默认为所有文件 | 需要翻译的语言包, 例如['ja', 'zh-cn'], 语言包的json文件需要在 `localesJsonDirs` 中 |
 | baseLocale      | string |   ''   | 基础语言包的名称，即中文语言包 例如 `zh-cn` |
 | untransSymbol  | (locale: string) => string | `[${locale.toUpperCase()}]` | 未翻译的前缀标志, 该前缀标志会出现在其他语言的json语言包中并拼接在中文语句前面, 表示这条语句还未翻译, 例如`[JA]你好` |
-| includes       | string[] | [] //默认为所有文件 | 使用通配符定义进行替换的范围, 语法请参考[通配符语法](#通配符语法)  |
+| includes       | string[] | ['\*\*/\*.{js,cjs,ts,mjs,jsx,tsx,vue}'] //默认为所有文件 | 使用通配符定义进行替换的范围, 语法请参考[通配符语法](#通配符语法)  |
 | transLacaleWord  | (word: string, locale: string, toLocale: string) => Promise\<string\> |  | 使用 `update` 命令进行更新的时候，可以使用该配置进行机器翻译，出现未翻译的前缀标志的语句会调用该配置函数得到对应语言的 value 值 |
 | outputFileDir | string | './' | 所有导出文件的导出路径，请使用你项目的相对路径进行配置 |
 | transInterpolationsMode | 'NamedInterpolationMode' \| 'ListInterpolationMode' | 'NamedInterpolationMode' | i18n格式语法的插值模式，可参考 [TransInterpolationsMode](#TransInterpolationsMode), 占位符中插值可以配置为具名插值模式或者列表插值模式两种模式 |
 | i18nCallRules | Record<FileExtension, I18nCallRule> | [见I18nCallRule](#I18nCallRule) | 各个格式的文件配置i18n的应用和使用规则 [见I18nCallRule](#I18nCallRule) |
+| checkUsageMatchAppend | RegExp[] | [] | check命令中, 定义额外的匹配代码中的i18n key的正则表达式, 它将作为额外的匹配机制而不会覆盖原有的匹配逻辑 |
 | autoFormat | boolean | false | 命令修改或者创建的文件是否进行格式化，当设置 `true` 时，需要项目中已经添加配置 eslint |
 | autoFormatRules | string[]| [] //默认为所有文件 | 使用通配符定义进行格式化的范围, 不想或者不能进行格式化的文件可以通过该项配置,语法请参考[通配符语法](#通配符语法) |
 | outputXlsxNameBy | object | [见outputXlsxNameBy](#outputXlsxNameBy)  | 定义导出文件的名称， [见outputXlsxNameBy](#outputXlsxNameBy) |
@@ -366,7 +367,28 @@ Options:
   -h, --help  display help for command
 ```
 
-检测在项目中使用的语言包是否已经完全翻译, 检测范围可以在 [`AutoConfig.includes`](#配置字段) 配置, 生成的文件的名称可在 [`AutoConfig.outputXlsxNameBy.check`](#配置字段) 配置。
+检测在项目中使用的语言包是否已经完全翻译, 检测范围可以在 [`AutoConfig.includes`](#配置字段) 配置, 生成的文件的名称可在 [`AutoConfig.outputXlsxNameBy.check`](#配置字段) 配置。鉴于不同的 i18n库可能使用一些额外的使用方法，比如 vue-i18n 使用中的下面这个例子：
+
+```js
+createVNode(
+  Translation,
+  {
+    keypath: 'gameConfig.confirmDeleteActivity',
+    tag: 'span',
+    i18n: i18n.global,
+  }
+)
+```
+
+这个时候通过在 [`AutoConfig.i18nCallRules`](#配置字段)  配置的 `i18nCallRules` 来匹配代码中的语言包 key 中就无法匹配到 `"gameConfig.confirmDeleteActivity"`, 这个时候你可以通过定义额外的匹配代码中的语言包 key的正则表达式 [`AutoConfig.checkUsageMatchAppend`](#配置字段) , 从而全面覆盖到其他的情况中的存在语言包  key，上面的例子可以如下配置：
+
+```
+{
+  ...
+  "checkUsageMatchAppend": [/\Wkeypath:(?:\s+)?['"]([\S\\.]+)["']/gm]
+  ...
+}
+```
 
 
 ## 转换效果示例
