@@ -6,13 +6,14 @@ import fg from 'fast-glob'
 import type { Options } from 'fast-glob'
 import log from './log'
 
-const fgOptions: Options = { absolute: true }
-
-const defaultPatterns = ['!**/node_modules/**']
+const fgOptions: Options = {
+  absolute: true,
+  ignore: ['**/node_modules/**', '**/*.d.ts'],
+}
 
 /** get absolute paths with the glob patterns */
 const fgSync = (patterns: string[] | string): string[] => {
-  const source = ([] as string[]).concat(defaultPatterns, patterns)
+  const source = ([] as string[]).concat(patterns)
   return fg.sync(source, fgOptions)
 }
 

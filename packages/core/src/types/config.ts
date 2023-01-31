@@ -90,6 +90,13 @@ export interface AutoConfig {
   autoFormatRules: string[]
 
   /**
+   * Regular expression to match i18n key in code.
+   *
+   * @example [/\Wkeypath:(?:\s+)?['"]([\S\\.]+)["']/gm]
+   */
+  checkUsageMatchAppend: RegExp[]
+
+  /**
    *  Name of output Xlsx file
    */
   outputXlsxNameBy: {
