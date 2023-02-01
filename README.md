@@ -10,7 +10,7 @@
 
 - [x] 支持.mjs, .cjs, .js, .ts, .jsx, .tsx, .vue 后缀格式的文件进行中文提取
 - [x] 支持 vue2.0，vue3.0，react 提取中文
-- [x] 支持通过 /\*yo-auto-i18n-ignore\*/ 和 <!--yo-auto-i18n-ignore--> 注释，忽略中文提取
+- [x] 支持通过 /\*yo-auto-i18n-ignore\*/ 和 <\!--yo-auto-i18n-ignore--> 注释，忽略中文提取
 - [x] 支持将提取的中文以 key-value 形式存入 \*.json 语言包进行预览并自定义 key
 - [x] 支持为各种格式自定义 i18n 的调用对象, 方法名, 方法定义 以及 添加第三方包的导入
 
