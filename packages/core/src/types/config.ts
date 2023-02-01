@@ -92,7 +92,7 @@ export interface AutoConfig {
   /**
    * Regular expression to match i18n key in code.
    *
-   * @example [/\Wkeypath:(?:\s+)?['"]([\S\\.]+)["']/gm]
+   * @example [/\Wkeypath:(?:\s+)?['"]([\w\\.]+)["']/gm]
    */
   checkUsageMatchAppend: RegExp[]
 

@@ -46,7 +46,15 @@ const checkAllTranslated = () => {
     const autoConfig = getAutoConfig()
     const ext = path.parse(filePath).ext.slice(1) as FileExtension
     const source = fs.readFileSync(filePath, 'utf8')
-    const keys = checkTranslated(source, ext, autoConfig.i18nCallRules)
+
+    const keys: string[] = []
+    try {
+      keys.push(...checkTranslated(source, ext, autoConfig.i18nCallRules))
+    }
+    catch (e) {
+      log.error(`checkTranslated ${filePath} Error`, e)
+      continue
+    }
 
     for (const x of keys) {
       keysUsedSet.add(x)
