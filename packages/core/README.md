@@ -454,12 +454,15 @@ export default Example
 
 ### vue 转换示例
 
+完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n/-/tree/main/packages/core/demo/vue-demo)
+
+
 转换前
 
 ```vue
 <script setup>
 const handleClick = () => {
-  console.log(this.$t('dian-le'))
+  console.log(this.$t('dianle'))
 }
 </script>
 
@@ -483,17 +486,17 @@ const handleClick = () => {
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const handleClick = () => {
-  console.log(this.$t('dian-le'))
+  console.log(this.$t('dianle'))
 }
 </script>
 
 <template>
-  <div :label="t('biao-qian')" :title="1 + t('biao-ti')">
-    <p :title="t('ce-shi-zhu-shi')">
-      {{ $t('nei-rong') }}
+  <div :label="t('biaoqian')" :title="1 + t('biaoti')">
+    <p :title="t('ceshizhushi')">
+      {{ $t('neirong') }}
     </p>
-    <button @click="handleClick(t('xin-xi'))">
-      {{ $t('dian-le-2') }}
+    <button @click="handleClick(t('xinxi'))">
+      {{ $t('dianle-2') }}
     </button>
   </div>
 </template>
@@ -549,4 +552,14 @@ export default Home
 
 4. vue模版如果存在多个最外层注释，在转换之后只会保留文件头部的最外层注释。解决这个问题，你可以把所有的最外层注释移动到最上面，这个问题会在 1.0.0 后的版本更新。
 
-5. 
+5. vue 模版解析过程中如果属性是 `''`, 例如 `<Comp propName=''/>`, 转换后会变成 `<Comp propName/>`, 这个问题出现的原因是这两种情况的代码在解析之后都是得如下的解析结果：
+
+```
+{
+  propName: ''
+}
+```
+
+从而在还原的时候无法确实是否应该加上 `=''` 的后缀，这个问题会在 1.0.0 后的版本更新。
+
+为了防止这种问题对你的项目影响，你可以使用命令选项 `--verbose`, 添加该命令项之后解析遇到这种情况会打印出转换的情况，以供你判断是否进行了错误的解析。
