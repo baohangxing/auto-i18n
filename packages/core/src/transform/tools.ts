@@ -16,10 +16,10 @@ const getCallExpressionPrefix = (rule: I18nCallRule): string => {
 const trimValue = (value: string): string => {
   value = value.trim()
   if (value.startsWith('\n'))
-    value = value.slice(1, value.length - 1).trimStart()
+    value = value.slice(1).trimStart()
 
   if (value.endsWith('\n'))
-    value = value.slice(0, value.length - 1)
+    value = value.slice(0, value.length - 1).trimEnd()
 
   return value
 }

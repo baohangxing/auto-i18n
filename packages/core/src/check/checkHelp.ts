@@ -125,7 +125,9 @@ const checkTemplate = (code: string, rule: I18nCallRule): string[] => {
 
         for (const key in attributes) {
           const attrValue = attributes[key]
-          const isVueDirective = key.startsWith(':') || key.startsWith('@') || key.startsWith('v-')
+          // v-for 的 vue自定义语法无法用 checkJsSyntax
+          const isVueDirective = key.startsWith(':') || key.startsWith('@')
+            || (key.startsWith('v-') && !key.startsWith('v-for'))
           if (isVueDirective) {
             const keys = checkJsSyntax(attrValue, rule)
             res.push(...keys)

@@ -85,9 +85,10 @@ const getJsonPath = (): {
   }
 }
 const isUnTransed = (str: string | null | undefined, locale: string) => {
-  if (str === undefined || str === null)
+  if (typeof str !== 'string')
     return false
   const autoConfig = getAutoConfig()
+
   return str.indexOf(autoConfig.untransSymbol(locale)) === 0
 }
 

@@ -71,12 +71,23 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
         if (shouldIgnore) {
           for (const key in attributes) {
             const attrValue = attributes[key]
-            attrs += ` ${key}="${attrValue}" `
+            if (attrValue !== '') {
+              attrs += ` ${key}="${attrValue}"`
+            }
+            else {
+              if (key.match(/^[@]/)) {
+                log.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+                attrs += ` ${key}="${attrValue}"`
+              }
+              else {
+                log.verbose(`pleace check the changing of attributes: ${key}`)
+                attrs += ` ${key}`
+              }
+            }
           }
-          htmlString += `<${tagName} ${attrs}>`
+          htmlString += `<${tagName}${attrs}>`
           return
         }
-
         for (const key in attributes) {
           const attrValue = attributes[key]
           const isVueDirective = key.startsWith(':') || key.startsWith('@') || key.startsWith('v-')
@@ -100,13 +111,20 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
               attrs += ` :${key}="${getReplaceValue(attrValue)}"`
           }
           else if (attrValue === '') {
-            attrs += ` ${key}`
+            if (key.match(/^[@]/)) {
+              log.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+              attrs += ` ${key}="${attrValue}"`
+            }
+            else {
+              log.verbose(`pleace check the changing of attributes: ${key}`)
+              attrs += ` ${key}`
+            }
           }
           else {
             attrs += ` ${key}="${attrValue}"`
           }
         }
-        htmlString += `<${tagName} ${attrs}>`
+        htmlString += `<${tagName}${attrs}>`
       },
 
       ontext(text) {
@@ -153,7 +171,7 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
         shouldIgnore = false
         // 如果是自闭合标签
         if (isImplied) {
-          htmlString = `${htmlString.slice(0, htmlString.length - 2)}/>`
+          htmlString = `${htmlString.slice(0, htmlString.length - 1)}/>`
           return
         }
         htmlString += `</${tagName}>`
@@ -189,8 +207,10 @@ const handleScript = (source: string, rule: I18nCallRule, replace: boolean): str
   return `\n${code}\n`
 }
 
-const mergeCode = (templateCode: string, scriptCode: string, stylesCode: string): string => {
-  return `${templateCode}\n${scriptCode}\n${stylesCode}`
+const mergeCode = (templateCode: string, scriptCode: string,
+  scriptSetupCode: string, stylesCode: string): string => {
+  return `${templateCode}${templateCode ? '\n\n' : ''}${scriptCode}${scriptCode ? '\n\n' : ''}`
+    + `${scriptSetupCode}${scriptSetupCode ? '\n\n' : ''}${stylesCode}`
 }
 
 const getWrapperTemplate = (sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCStyleBlock): string => {
@@ -272,7 +292,7 @@ const transformVue = (
   let templateCode = ''
   let scriptCode = ''
   let stylesCode = ''
-
+  let scriptSetupCode = ''
   const fileComment = getFileComment(descriptor)
 
   if (template)
@@ -282,7 +302,7 @@ const transformVue = (
     scriptCode = generateSource(script, handleScript, rule, replace)
 
   if (scriptSetup)
-    scriptCode = generateSource(scriptSetup, handleScript, rule, replace)
+    scriptSetupCode = generateSource(scriptSetup, handleScript, rule, replace)
 
   if (styles) {
     for (const style of styles) {
@@ -295,7 +315,7 @@ const transformVue = (
     }
   }
 
-  code = mergeCode(templateCode, scriptCode, stylesCode)
+  code = mergeCode(templateCode, scriptCode, scriptSetupCode, stylesCode)
   if (fileComment)
     code = `${fileComment}\n${code}`
 

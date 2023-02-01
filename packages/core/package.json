@@ -1,6 +1,6 @@
 {
   "name": "yo-auto-i18n",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A cli tool help you auto trans your vue project to an i18n-project",
   "author": "H1mple<https://gitcn.yostar.net:8888/hangxing.bao>",
   "license": "MIT",
@@ -75,7 +75,8 @@
     "node-xlsx": "^0.21.0",
     "pinyin": "3.0.0-alpha.4",
     "serialize-javascript": "^6.0.0",
-    "source-map": "^0.7.4"
+    "source-map": "^0.7.4",
+    "yo-auto-i18n": "^0.1.1"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.20",
