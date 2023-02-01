@@ -38,12 +38,16 @@ pnpm run auto:init
 
 ### trans
 
+详细可见[trans 文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#trans)
+
 运行
 ```
 pnpm run auto:trans-modify
 ```
 
 ### check
+
+详细可见[check 文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#check)
 
 运行
 ```
@@ -52,6 +56,8 @@ pnpm run auto:check
 
 ### genlsx
 
+详细可见[genlsx 文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#genlsx)
+
 运行
 ```
 pnpm run auto:genlsx
@@ -59,6 +65,8 @@ pnpm run auto:genlsx
 
 
 ### update
+
+详细可见[update 文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#update)
 
 删除或者添加 `src/lang/locales/cN.json` 中的一个语言字段
 
