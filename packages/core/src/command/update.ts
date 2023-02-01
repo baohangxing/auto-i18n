@@ -43,7 +43,7 @@ const updateLocales = async () => {
     const langJsonObj = readJsonSync(langJson.path)
     const baseJsonKeySet = new Set(getKeys(baseLangJsonObj))
     const langJsonKeySet = new Set(getKeys(langJsonObj))
-    const newObj = sortObjectKey(langJsonObj)
+    const newObj = {}
     for (const x of baseJsonKeySet) {
       const baseValue = getValueByKey(baseLangJsonObj, x)
       const langValue = getValueByKey(langJsonObj, x)
