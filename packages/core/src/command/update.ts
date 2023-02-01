@@ -65,6 +65,9 @@ const updateLocales = async () => {
         }
         setValueByKey(newObj, x, transedWord)
       }
+      else if (typeof langValue === 'string') {
+        setValueByKey(newObj, x, langValue)
+      }
       langJsonKeySet.delete(x)
     }
     if (langJsonKeySet.size > 0) {
