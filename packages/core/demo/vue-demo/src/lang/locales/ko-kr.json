@@ -1,15 +1,3 @@
 {
-  "da-zi-gao": "타자기",
-  "guan-yu-ye-mian": "페이지 정보",
-  "he-xin-wen-dang": "핵심 문서",
-  "ji-ben-lian-jie": "기본 링크",
-  "lu-you-qi": "라우터",
-  "lun-tan": "법정",
-  "ni-hao": "여보세요",
-  "she-qu-liao-tian": "커뮤니티 채팅",
-  "sheng-tai-xi-tong": "생태계",
-  "shi-jie": "세계",
-  "tui-te": "트위터",
-  "xin-wen": "소식",
-  "zhe-shi-yi-ge-{about}": "이것은 {about}입니다"
+  "dazigao": "타자기"
 }

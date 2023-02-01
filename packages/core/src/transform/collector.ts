@@ -1,5 +1,5 @@
-import { createRequire } from 'module'
 import path from 'path'
+import { createRequire } from 'module'
 import fsExtra from 'fs-extra'
 import { updateBaseLocale, updateLocales } from '../command/update'
 import { getJsonPath } from '../config/config'
@@ -7,12 +7,12 @@ import { getKeys, getValueByKey } from '../utils/help'
 import log from '../utils/log'
 
 const require = createRequire(import.meta.url)
-const pinyin = require('pinyin').default
+const { pinyin } = require('pinyin-pro')
 
 const getPinyin = (chinese: string): string => {
   return pinyin(chinese, {
-    style: 'normal',
-  }).join('-').replace(/\s/g, '')
+    toneType: 'none',
+  }).replace(/\s/g, '')
 }
 
 class Collector {
