@@ -18,8 +18,9 @@ const fgSync = (patterns: string[] | string): string[] => {
 }
 
 /** wheather the patterns match the absolute path or not */
-const checkInPatterns = (path: string, patterns: string[]): boolean => {
-  const paths = fgSync(patterns)
+const checkInPatterns = (path: string, patterns: string[] | string): boolean => {
+  const source = ([] as string[]).concat(patterns)
+  const paths = fgSync(source)
   return paths.includes(path)
 }
 

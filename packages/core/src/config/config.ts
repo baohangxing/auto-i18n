@@ -10,10 +10,8 @@ const readLocalAutoConfig = (configPath?: string): AutoConfig | null => {
   const explorer = cosmiconfigSync(CLI_CONFIG_NAME)
   const result = configPath ? explorer.load(configPath) : explorer.search()
 
-  if (!result?.config) {
+  if (!result?.config)
     log.error(`Pleace add ${CLI_CONFIG_NAME} config file in your project(${process.cwd()})`)
-    process.exit(1)
-  }
 
   return result?.config
 }
@@ -56,10 +54,9 @@ const getJsonPath = (): {
         break
       }
     }
-    if (!findFlag) {
+    if (!findFlag)
       log.error(`No json file(${x}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
-      process.exit(1)
-    }
+      // process.exit(1)
   }
   let baseLangJson: LangJson = { name: autoConfig.baseLocale, path: '' }
   if (autoConfig.baseLocale.includes(autoConfig.baseLocale)) {
@@ -73,10 +70,9 @@ const getJsonPath = (): {
         break
       }
     }
-    if (!baseLangJson.path) {
+    if (!baseLangJson.path)
       log.error(`No base json file in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
-      process.exit(1)
-    }
+      // process.exit(1)
   }
 
   return {

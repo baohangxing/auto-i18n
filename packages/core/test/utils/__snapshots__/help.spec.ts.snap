@@ -1,0 +1,14 @@
+// Vitest Snapshot v1
+
+exports[`#writeToJsonFile > should write json file 1`] = `
+"{
+  \\"AA\\": \\"value AA\\",
+  \\"AB\\": {
+    \\"AA\\": \\"value AA1\\",
+    \\"ABA\\": 12,
+    \\"AC\\": \\"value AB1\\"
+  },
+  \\"AC\\": \\"value AB\\"
+}
+"
+`;

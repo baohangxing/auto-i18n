@@ -5,11 +5,11 @@ import log from './log'
 import { checkInPatterns } from './glob'
 import { format } from './format'
 
-const includeChinese = (code: string) => {
+const includeChinese = (code: string): boolean => {
   return /[\u4E00-\u9FFF]/g.test(code)
 }
 
-const createFileName = (fileName = '') => {
+const createFileName = (fileName = ''): string => {
   const data = new Date()
   const name = `${fileName}_${
     data.getMonth() + 1
@@ -29,10 +29,8 @@ const lexicalComparator = (a: string, b: string) => {
   for (let i = 0; i < n; i++) {
     if (a[i] === undefined)
       return -1
-
     if (b[i] === undefined)
       return 1
-
     if (a[i] !== b[i])
       return a.charCodeAt(i) - b.charCodeAt(i)
   }
@@ -40,7 +38,8 @@ const lexicalComparator = (a: string, b: string) => {
 }
 
 /**
- * sort Object by lexical, retren a new Object
+ * sort Object by lexical recursively, retren a new Object.
+ * not support array value
  * @param obj
  * @returns
  */
@@ -67,12 +66,15 @@ const writeToJsonFile = async (
 ) => {
   const jsonPath = path.join(writeToPath, `${name}.json`)
   const autoConfig = getAutoConfig()
-  fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 2), 'utf8')
+  fs.writeFileSync(jsonPath, `${JSON.stringify(sortObjectKey(obj), undefined, 2)}\n`, 'utf8')
 
   if (autoConfig.autoFormat && checkInPatterns(jsonPath, autoConfig.autoFormatRules))
     await format(jsonPath)
 }
 
+/**
+ * return undefined if no key in obj
+ */
 const getValueByKey = (obj: any, key: string) => {
   if (key === '')
     return obj
