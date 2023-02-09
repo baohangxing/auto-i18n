@@ -21,11 +21,13 @@ const writeXlsxFile = (
 
   const buffer = xlsx.build(data)
 
-  fs.writeFile(fileWritePath, buffer, (err) => {
-    if (err)
-      log.error(err.name, err)
+  try {
+    fs.writeFileSync(fileWritePath, buffer)
     log.info(`Write to xls has finished: ${fileWritePath}`)
-  })
+  }
+  catch (error) {
+    log.error('writeXlsxFile error', error)
+  }
 }
 
 const readXlsxFile = (filePath: string) => {
