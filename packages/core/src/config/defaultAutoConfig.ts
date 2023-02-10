@@ -10,7 +10,7 @@ const getCommonI18nCallRule = (): I18nCallRule => {
 }
 
 const defaultAutoConfig: AutoConfig = {
-  localesJsonDirs: ['**/locales/**.json'],
+  localesJsonDirs: ['**/locales/**.json', '!test/**'],
   locales: [],
   baseLocale: '',
   untransSymbol: (locale: string) => {

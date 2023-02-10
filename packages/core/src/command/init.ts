@@ -65,4 +65,4 @@ const init = async () => {
   }
 }
 
-export { init }
+export { eslintExist, init }
