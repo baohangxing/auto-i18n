@@ -45,7 +45,7 @@ const init = async () => {
 
     const paths = fgSync(config.localesJsonDirs)
 
-    config.locales = [...new Set(paths.map(x => path.parse(x).name))]
+    config.locales = [...new Set(paths.map(x => path.parse(x).name))].sort()
     config.baseLocale = getBaseLocales(config.locales)
 
     if (eslintExist())

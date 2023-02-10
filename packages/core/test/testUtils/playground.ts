@@ -11,7 +11,6 @@ const getTestPlaygroundRootPath = (name: string) => {
 }
 
 const removeTestPlayground = (name: string) => {
-  console.log('removeTestPlayground', name)
   const pgPath = getTestPlaygroundRootPath(name)
   if (fs.existsSync(pgPath))
     fs.rmSync(pgPath, { force: true, recursive: true })
@@ -21,7 +20,6 @@ const removeTestPlayground = (name: string) => {
 }
 
 const addTestPlayground = (name: string) => {
-  console.log('addTestPlayground', name)
   const pgPath = getTestPlaygroundRootPath(name)
   const fromPath = path.resolve('test', 'testPlayground')
   if (fs.existsSync(pgPath))

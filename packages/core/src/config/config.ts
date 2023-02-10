@@ -1,5 +1,6 @@
 import path from 'path'
 import { cosmiconfigSync } from 'cosmiconfig'
+import type { CosmiconfigResult } from 'cosmiconfig/dist/types'
 import type { AutoConfig, LangJson } from '../types/config'
 import log from '../utils/log'
 import { fgSync } from '../utils/glob'
@@ -8,7 +9,7 @@ import defaultAutoConfig from './defaultAutoConfig'
 
 const readLocalAutoConfig = (configPath?: string): AutoConfig | null => {
   const explorer = cosmiconfigSync(CLI_CONFIG_NAME)
-  const result = configPath ? explorer.load(configPath) : explorer.search()
+  const result: CosmiconfigResult = configPath ? explorer.load(configPath) : explorer.search()
 
   if (!result?.config)
     log.error(`Pleace add ${CLI_CONFIG_NAME} config file in your project(${process.cwd()})`)
@@ -16,19 +17,10 @@ const readLocalAutoConfig = (configPath?: string): AutoConfig | null => {
   return result?.config
 }
 
-const getAutoConfig = (() => {
-  let autoConfig: AutoConfig | null = null
-
-  return (): AutoConfig => {
-    if (autoConfig) {
-      return autoConfig
-    }
-    else {
-      autoConfig = Object.assign({}, defaultAutoConfig, readLocalAutoConfig())
-      return autoConfig
-    }
-  }
-})()
+const getAutoConfig = () => {
+  const autoConfig: AutoConfig = Object.assign({}, defaultAutoConfig, readLocalAutoConfig())
+  return autoConfig
+}
 
 const getJsonPath = (): {
   baseLangJson: LangJson
