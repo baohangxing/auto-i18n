@@ -42,16 +42,12 @@ const getPaths = (dirOrFile: string): string[] => {
       if (!fs.existsSync(dir))
         continue
       if (fs.statSync(dir).isDirectory()) {
-        const children = fs.readdirSync(dir)
-        for (const x of children) {
-          const childPath = path.join(dir, x)
-          if (fs.statSync(childPath).isFile())
-            files.push(childPath)
-          else if (!childPath.includes('node_modules'))
-            dirs.push(childPath)
+        if (!dir.match(/node_modules/)) {
+          const children = fs.readdirSync(dir)
+          dirs.push(...(children.map(x => path.join(dir, x))))
         }
       }
-      else {
+      else if (fs.statSync(dir).isFile()) {
         files.push(dir)
       }
     }

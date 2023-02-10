@@ -11,9 +11,9 @@ describe('#glob', () => {
       expect(fgSync(['src/config/**']).length).toBeGreaterThan(2)
     })
   })
-  describe('checkInPatterns', () => {
+  describe('checkInPatterns', async () => {
     it('should check wheather the patterns match the absolute path or not', () => {
-      const patterns = 'test/utils/**'
+      const patterns = 'src/utils/**'
       const files = fgSync([patterns])
       for (const x of files)
         expect(checkInPatterns(x, patterns)).toBe(true)
@@ -21,9 +21,19 @@ describe('#glob', () => {
   })
 
   describe('getPaths', () => {
-    const filePath = path.join('test', 'utils')
     it('should get absolute paths by a dir or file path', () => {
-      expect(getPaths(filePath).length).toBeGreaterThan(4)
+      const filePath = path.join('')
+      expect(getPaths(filePath).length).toBeGreaterThan(70)
+    })
+
+    it('should get absolute paths by a dir or file path', () => {
+      const filePath = path.join('test', 'utils', 'glob.spec.ts')
+      expect(getPaths(filePath).length).toBe(1)
+    })
+
+    it('should get absolute paths by a dir or file path', () => {
+      const filePath = path.join('test1', 'utils')
+      expect(getPaths(filePath).length).toBe(0)
     })
   })
 })

@@ -1,0 +1,25 @@
+// Vitest Snapshot v1
+
+exports[`#genXlsx > should gen Xlsx file 1`] = `
+[
+  {
+    "data": [
+      [
+        "key",
+        "cn",
+        "en",
+      ],
+      [
+        "dazigao",
+        "打字稿",
+        "typescript",
+      ],
+      [
+        "title",
+        "标题",
+      ],
+    ],
+    "name": "all",
+  },
+]
+`;

@@ -1,4 +1,5 @@
 import { Command, Option } from 'commander'
+import { CLI_CONFIG_NAME } from '../config/constants'
 import type { TransCommandOption } from '../types/config'
 import { version } from './../../package.json'
 import { checkAllTranslated } from './check'
@@ -10,7 +11,7 @@ import { updateLocales, updateLocalesFromXlsx } from './update'
 const program = new Command()
 
 program
-  .name('auto')
+  .name(CLI_CONFIG_NAME)
   .description('A CLI to help you transform your project '
     + 'to an internationalization project automatically.')
   .version(version)
