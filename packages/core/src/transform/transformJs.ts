@@ -21,13 +21,13 @@ import { isEmpty, isObject } from 'lodash-es'
 import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'
-import type { I18nCallRule, transformOptions } from '../types'
+import type { I18nCallRule, TransformOptions } from '../types'
 import { includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
 import { getAutoConfig } from '../config/config'
 import log from '../utils/log'
 import Collector from './collector'
-import { escapeQuotes, getCallExpression } from './tools'
+import { escapeQuotes, getCallExpression, getStringLiteral } from './tools'
 
 const require = createRequire(import.meta.url)
 // see https://github.com/babel/babel/issues/13855
@@ -122,15 +122,6 @@ const isPropDefaultStringLiteralNode = (path: NodePath<StringLiteral>): boolean 
   return isMeetProp && isMeetKey && isMeetContainer
 }
 
-const getStringLiteral = (value: string): StringLiteral => {
-  return Object.assign(t.stringLiteral(value), {
-    extra: {
-      raw: `'${value}'`,
-      rawValue: value,
-    },
-  })
-}
-
 /**
  *
  * @param rule
@@ -170,7 +161,7 @@ const getReplaceValue = (rule: I18nCallRule, value: string,
   }
 }
 
-const transformJs = (code: string, options: transformOptions, replace = true): GeneratorResult => {
+const transformJs = (code: string, options: TransformOptions, replace = true): GeneratorResult => {
   const autoConfig = getAutoConfig()
 
   const rule = options.rule
@@ -180,7 +171,7 @@ const transformJs = (code: string, options: transformOptions, replace = true): G
   // 文件里是否存在中文转换，有的话才有必要导入i18n
   let hasTransformed = false
 
-  const transformAST = (code: string, options: transformOptions) => {
+  const transformAST = (code: string, options: TransformOptions) => {
     function getTraverseOptions() {
       return {
         enter(path: NodePath) {

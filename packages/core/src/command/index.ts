@@ -1,8 +1,9 @@
 import { Command, Option } from 'commander'
 import { CLI_CONFIG_NAME } from '../config/constants'
-import type { TransCommandOption } from '../types/config'
+import type { RevertCommandOption, TransCommandOption } from '../types/config'
+import { checkAllTranslated } from '../check'
+import { revert } from '../revert'
 import { version } from './../../package.json'
-import { checkAllTranslated } from './check'
 import { generateXlsx } from './genXlsx'
 import { init } from './init'
 import { trans } from './trans'
@@ -66,6 +67,18 @@ program.command('check')
   .description('Check weather all word has been transformed or not')
   .action(() => {
     checkAllTranslated()
+  })
+
+program.command('revert')
+  .description('revert a transformed file or files in a directory')
+  .argument('<revertPath>', 'file or directory path')
+  .option('-t, --target <string>', 'the target language when revert')
+  .action(async (revertPath, options) => {
+    const revertCommandOption: RevertCommandOption = {
+      revertPath: revertPath ?? '',
+      target: options.target ?? '',
+    }
+    await revert(revertCommandOption)
   })
 
 program.parse()

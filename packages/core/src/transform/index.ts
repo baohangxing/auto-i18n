@@ -1,9 +1,8 @@
-import presetTypescript from '@babel/preset-typescript'
 import type { FileExtension, I18nCallRules } from '../types'
 import log from '../utils/log'
 import transformJs from './transformJs'
 import transformVue from './transformVue'
-import { initParse } from './parse'
+import { initJsParse, initTsxParse } from './parse'
 
 const transform = (
   code: string,
@@ -20,13 +19,13 @@ const transform = (
     case 'jsx':
       return transformJs(code, {
         rule: rules[ext],
-        parse: initParse(),
+        parse: initJsParse(),
       }, replace)
     case 'ts':
     case 'tsx':
       return transformJs(code, {
         rule: rules[ext],
-        parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
+        parse: initTsxParse(),
       }, replace)
     case 'vue':
       return transformVue(code, rules[ext], replace)

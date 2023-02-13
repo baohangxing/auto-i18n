@@ -19,10 +19,14 @@ export interface I18nCallRule {
   importDeclaration: string
 }
 
-export interface transformOptions {
+export interface TransformOptions {
   rule: I18nCallRule
   parse: (code: string) => ParseResult | null
 
   /** handle js in vue */
   isJsInVue?: boolean
+}
+
+export type RevertOptions = TransformOptions & {
+  locale: string
 }
