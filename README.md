@@ -16,6 +16,7 @@
 - [x] 支持各个语言包根据主语言包的更新
 - [x] 支持语言包导出 xlsx 文件, 并通过 xlsx 文件进行更新
 - [x] 支持检测项目中的语言包是否翻译完全
+- [x] 支持将 i18n 国际化标记的文件进行还原
 
 - [x] 支持 eslint 格式化代码以及配置是否格式化文件的规则
 - [x] 支持使用通配符配置各个命令的操作范围
@@ -386,6 +387,26 @@ createVNode(
   // ...
 }
 ```
+
+### revert
+
+```sh
+> auto help revert
+
+Usage: auto revert [options] <revertPath>
+
+revert a transformed file or files in a directory
+
+Arguments:
+  revertPath             file or directory path
+
+Options:
+  -t, --target <string>  the target language when revert
+  -h, --help             display help for command
+```
+
+通过参数 `revertPath` 将一个 i18n 国际化标记的文件或者一个目录下的所有文件进行还原，还原时候使用 `target` 在的 JSON 文件中的文案替换 i18n 中的 `key`, 当目标语言 `target` 不存在或为空时，使用项目的 [`AutoConfig.baseLocale`](#配置字段)。还原的文件会导出到
+[`AutoConfig.outputFileDir`](#配置字段) 下的文件夹 `revert-{name}` 下。
 
 ## 转换效果示例
 

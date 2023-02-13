@@ -15,6 +15,7 @@ module.exports = {
     'max-len': ['error', { code: 110 }],
     '@typescript-eslint/explicit-module-boundary-types': 0,
     'no-bitwise': 0,
+    'no-only-tests/no-only-tests': 'off',
   },
   overrides: [
   ],
