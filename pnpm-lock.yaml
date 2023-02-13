@@ -81,7 +81,6 @@ importers:
       serialize-javascript: ^6.0.0
       source-map: ^0.7.4
       vitest: ^0.28.4
-      yo-auto-i18n: ^0.1.1
     dependencies:
       '@babel/core': 7.20.12
       '@babel/generator': 7.20.7
@@ -115,7 +114,6 @@ importers:
       pinyin-pro: 3.13.0
       serialize-javascript: 6.0.1
       source-map: 0.7.4
-      yo-auto-i18n: 'link:'
     devDependencies:
       '@types/babel__core': 7.1.20
       '@types/babel__generator': 7.6.4

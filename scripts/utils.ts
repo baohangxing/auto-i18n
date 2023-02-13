@@ -15,7 +15,7 @@ const updataReadme = (readmePath: string) => {
     = '> 请阅读[gitlab上的文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#%E4%BB%8B%E7%BB%8D)'
     + `以获取更好的阅读体验\n\r\n\r${readFileSync(path.resolve('./README.md')).toString()}`
 
-  writeFileSync(path.resolve(readmePath, './README.md'), readme)
+  writeFileSync(path.resolve(readmePath, './README.md'), readme, 'utf8')
 }
 
 export { changePackageVersion, updataReadme }
