@@ -78,8 +78,8 @@ const revert = async (option: RevertCommandOption) => {
         autoConfig.outputFileDir, `revert-${revertRootName}`, filePath.replace(revertRoot, '.'))
 
       writeFileSyncForce(outputPath, code, 'utf8')
-      if (autoConfig.autoFormat && checkInPatterns(filePath, autoConfig.autoFormatRules))
-        await format(filePath)
+      if (autoConfig.autoFormat && checkInPatterns(outputPath, autoConfig.autoFormatRules))
+        await format(outputPath)
     }
   }
 }
