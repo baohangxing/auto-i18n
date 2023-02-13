@@ -1,26 +1,29 @@
 import type {
-  SFCDescriptor,
   SFCScriptBlock,
-  SFCStyleBlock,
   SFCTemplateBlock,
 } from '@vue/compiler-sfc'
 import { parse } from '@vue/compiler-sfc'
 import * as htmlparser2 from 'htmlparser2'
 import mustache from 'mustache'
 import ejs from 'ejs'
-import presetTypescript from '@babel/preset-typescript'
 import type { I18nCallRule } from '../types'
 import { includeChinese } from '../utils/help'
 import log from '../utils/log'
-import { IGNORE_REMARK } from '../config/constants'
+import { IGNORE_REMARK, VUE_COMMENT_TYPE } from '../config/constants'
 import transformJs from './transformJs'
-import { initParse } from './parse'
+import { initTsxParse } from './parse'
 import Collector from './collector'
-import { escapeQuotes, getCallExpression, getCallExpressionPrefix, trimValue } from './tools'
+import {
+  escapeQuotes,
+  getCallExpression,
+  getCallExpressionPrefix,
+  getFileComment,
+  getWrapperTemplate,
+  mergeCode,
+  trimValue,
+} from './tools'
 
 type Handler = (source: string, rule: I18nCallRule, replace: boolean) => string
-
-const COMMENT_TYPE = '!'
 
 const parseJsSyntax = (source: string, rule: I18nCallRule): string => {
   // vue属性有可能是{xx:xx}这种对象形式，直接解析会报错，需要特殊处理。
@@ -36,7 +39,7 @@ const parseJsSyntax = (source: string, rule: I18nCallRule): string => {
       variableDeclaration: '',
       importDeclaration: '',
     },
-    parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
+    parse: initTsxParse(),
   })
 
   let stylizedCode = code
@@ -157,7 +160,7 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
             else if (type === 'name') {
               str += `{{${value}}}`
             }
-            else if (type === COMMENT_TYPE) {
+            else if (type === VUE_COMMENT_TYPE) {
               // 形如{{!xxxx}}这种形式，在mustache里属于注释语法
               str += `{{!${value}}}`
             }
@@ -201,37 +204,10 @@ const handleScript = (source: string, rule: I18nCallRule, replace: boolean): str
   const { code } = transformJs(source, {
     rule,
     isJsInVue: true,
-    parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
+    parse: initTsxParse(),
   },
   replace)
   return `\n${code}\n`
-}
-
-const mergeCode = (templateCode: string, scriptCode: string,
-  scriptSetupCode: string, stylesCode: string): string => {
-  return `${templateCode}${templateCode ? '\n\n' : ''}${scriptCode}${scriptCode ? '\n\n' : ''}`
-    + `${scriptSetupCode}${scriptSetupCode ? '\n\n' : ''}${stylesCode}`
-}
-
-const getWrapperTemplate = (sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCStyleBlock): string => {
-  const { type, lang, attrs } = sfcBlock
-  let template = `<${type}`
-
-  if (lang)
-    template += ` lang="${lang}"`
-
-  if ((sfcBlock as SFCScriptBlock).setup)
-    template += ' setup'
-
-  if ((sfcBlock as SFCStyleBlock).scoped)
-    template += ' scoped'
-
-  for (const attr in attrs) {
-    if (!['lang', 'scoped', 'setup'].includes(attr))
-      template += ` ${attr}="${attrs[attr]}"`
-  }
-  template += `><%- code %></${type}>`
-  return template
 }
 
 const generateSource = (
@@ -247,32 +223,6 @@ const generateSource = (
   })
 }
 
-const removeSnippet = (
-  source: string,
-  sfcBlock: SFCTemplateBlock | SFCScriptBlock | SFCStyleBlock | null,
-): string => {
-  return sfcBlock ? source.replace(sfcBlock.content, '') : source
-}
-
-/**
- * 提取文件头注释 //TODO fix in 1.0.0
- * @param descriptor
- * @returns
- */
-const getFileComment = (descriptor: SFCDescriptor): string => {
-  const { template, script, scriptSetup, styles } = descriptor
-  let source = descriptor.source
-  source = removeSnippet(source, template)
-  source = removeSnippet(source, script)
-  source = removeSnippet(source, scriptSetup)
-  if (styles) {
-    for (const style of styles)
-      source = removeSnippet(source, style)
-  }
-  const result = source.match(/<!--[\s\S]*?-->/m)
-  return result ? result[0] : ''
-}
-
 const transformVue = (
   code: string,
   rule: I18nCallRule,
@@ -282,7 +232,7 @@ const transformVue = (
 } => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    log.error('parse vue error', errors[0].toString())
+    log.error('parse vue error', errors)
     return {
       code,
     }

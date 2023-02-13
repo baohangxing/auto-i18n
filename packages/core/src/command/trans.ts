@@ -8,7 +8,7 @@ import { checkInPatterns, fgSync, getPaths } from '../utils/glob'
 import { format } from '../utils/format'
 import { createFileName, sortObjectKey } from '../utils/help'
 
-const transformSingle = (filePath: string, replace: boolean) => {
+const transformSingleFile = (filePath: string, replace: boolean) => {
   const autoConfig = getAutoConfig()
   const ext = path.parse(filePath).ext.slice(1) as FileExtension
   const source = fs.readFileSync(filePath, 'utf8')
@@ -28,7 +28,7 @@ const trans = async (option: TransCommandOption) => {
 
   Collector.init(option.templateFile)
   for (const filePath of paths) {
-    const code = transformSingle(filePath, option.modifyMode)
+    const code = transformSingleFile(filePath, option.modifyMode)
     if (option.modifyMode) {
       fs.writeFileSync(filePath, code, 'utf8')
       if (autoConfig.autoFormat && checkInPatterns(filePath, autoConfig.autoFormatRules))

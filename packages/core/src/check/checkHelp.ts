@@ -4,17 +4,15 @@ import type {
   CallExpression,
 } from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
-
 import { parse } from '@vue/compiler-sfc'
 import * as htmlparser2 from 'htmlparser2'
 import mustache from 'mustache'
-import presetTypescript from '@babel/preset-typescript'
 import { getAutoConfig } from '../config/config'
-import type { I18nCallRule, transformOptions } from '../types'
+import type { I18nCallRule, TransformOptions } from '../types'
 import log from '../utils/log'
 import { IGNORE_REMARK } from '../config/constants'
 import { trimValue } from '../transform/tools'
-import { initParse } from '../transform/parse'
+import { initTsxParse } from '../transform/parse'
 
 const require = createRequire(import.meta.url)
 // see https://github.com/babel/babel/issues/13855
@@ -42,12 +40,12 @@ const getAppendI18nKeysUsed = (code: string): string[] => {
   return [...keys]
 }
 
-const checkJs = (code: string, options: transformOptions): string[] => {
+const getJsI18nKeys = (code: string, options: TransformOptions): string[] => {
   const rule = options.rule
 
   const res = new Set<string>()
 
-  const checkAST = (code: string, options: transformOptions) => {
+  const checkAST = (code: string, options: TransformOptions) => {
     function getTraverseOptions() {
       return {
 
@@ -99,21 +97,21 @@ const checkJs = (code: string, options: transformOptions): string[] => {
   return [...res]
 }
 
-const checkJsSyntax = (source: string, rule: I18nCallRule): string[] => {
+const getJsSyntaxI18nKeys = (source: string, rule: I18nCallRule): string[] => {
   if (source.startsWith('{') && source.endsWith('}'))
     source = `___temp = ${source}`
 
-  return checkJs(source, {
+  return getJsI18nKeys(source, {
     rule: {
       ...rule,
       variableDeclaration: '',
       importDeclaration: '',
     },
-    parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
+    parse: initTsxParse(),
   })
 }
 
-const checkTemplate = (code: string, rule: I18nCallRule): string[] => {
+const getTemplateKeys = (code: string, rule: I18nCallRule): string[] => {
   const res: string [] = []
 
   let shouldIgnore = false
@@ -125,11 +123,11 @@ const checkTemplate = (code: string, rule: I18nCallRule): string[] => {
 
         for (const key in attributes) {
           const attrValue = attributes[key]
-          // v-for 的 vue自定义语法无法用 checkJsSyntax
+          // v-for 的 vue自定义语法无法用 getJsSyntaxI18nKeys
           const isVueDirective = key.startsWith(':') || key.startsWith('@')
             || (key.startsWith('v-') && !key.startsWith('v-for'))
           if (isVueDirective) {
-            const keys = checkJsSyntax(attrValue, rule)
+            const keys = getJsSyntaxI18nKeys(attrValue, rule)
             res.push(...keys)
           }
         }
@@ -146,7 +144,7 @@ const checkTemplate = (code: string, rule: I18nCallRule): string[] => {
 
           value = trimValue(value)
           if (type === 'name') {
-            const keys = checkJsSyntax(value, rule)
+            const keys = getJsSyntaxI18nKeys(value, rule)
             res.push(...keys)
           }
         }
@@ -171,21 +169,21 @@ const checkTemplate = (code: string, rule: I18nCallRule): string[] => {
   return res
 }
 
-const checkScript = (source: string, rule: I18nCallRule): string[] => {
-  return checkJs(source, {
+const getScriptKeys = (source: string, rule: I18nCallRule): string[] => {
+  return getJsI18nKeys(source, {
     rule,
     isJsInVue: true,
-    parse: initParse([[presetTypescript, { isTSX: true, allExtensions: true }]]),
+    parse: initTsxParse(),
   })
 }
 
-const checkVue = (
+const getVueI18nKeys = (
   code: string,
   rule: I18nCallRule,
 ): string[] => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    log.error('parse vue error', errors[0].toString())
+    log.error('parse vue error', errors)
     return []
   }
 
@@ -194,19 +192,19 @@ const checkVue = (
   const { template, script, scriptSetup } = descriptor
 
   if (template) {
-    const keys = checkTemplate(template.content, rule)
+    const keys = getTemplateKeys(template.content, rule)
     for (const x of keys)
       res.add(x)
   }
 
   if (script) {
-    const keys = checkScript(script.content, rule)
+    const keys = getScriptKeys(script.content, rule)
     for (const x of keys)
       res.add(x)
   }
 
   if (scriptSetup) {
-    const keys = checkScript(scriptSetup.content, rule)
+    const keys = getScriptKeys(scriptSetup.content, rule)
     for (const x of keys)
       res.add(x)
   }
@@ -219,4 +217,4 @@ const checkVue = (
   return [...res]
 }
 
-export { checkJs, checkVue }
+export { getJsI18nKeys, getVueI18nKeys }

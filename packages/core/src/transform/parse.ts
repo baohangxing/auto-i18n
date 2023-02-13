@@ -12,10 +12,12 @@ import pluginSyntaxDynamicImport from '@babel/plugin-syntax-dynamic-import'
 import pluginSyntaxExportExtensions from '@babel/plugin-syntax-export-extensions'
 import pluginSyntaxFunctionBind from '@babel/plugin-syntax-function-bind'
 
+import presetTypescript from '@babel/preset-typescript'
+
 type presetsType = PluginItem[] | undefined
 type pluginsType = PluginItem[] | undefined
 
-const initParse = (babelPresets: presetsType = [], babelPlugins: pluginsType = []) => {
+const initJsParse = (babelPresets: presetsType = [], babelPlugins: pluginsType = []) => {
   return function (code: string): ParseResult | null {
     return babel.parseSync(code, {
       ast: true,
@@ -38,4 +40,6 @@ const initParse = (babelPresets: presetsType = [], babelPlugins: pluginsType = [
   }
 }
 
-export { initParse }
+const initTsxParse = () => initJsParse([[presetTypescript, { isTSX: true, allExtensions: true }]])
+
+export { initJsParse, initTsxParse }

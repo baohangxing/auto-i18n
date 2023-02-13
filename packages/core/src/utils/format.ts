@@ -17,7 +17,7 @@ const format = async (paths: string | string[]) => {
     if (result && result.output)
       fs.writeFileSync(filePaths[i], result.output, 'utf8')
     else
-      log.error(`eslint format ${paths} Error!`, results[0])
+      log.error(`eslint format ${paths} Error!`, results[i])
   }
 }
 

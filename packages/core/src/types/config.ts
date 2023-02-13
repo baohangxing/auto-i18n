@@ -129,6 +129,17 @@ export interface TransCommandOption {
   templateFile: string
 }
 
+export interface RevertCommandOption {
+  revertPath: string
+
+  /**
+   * locale name
+   *
+   * @example `zh-cn`
+   */
+  target: string
+}
+
 export interface LangJson {
   name: string
   path: string
