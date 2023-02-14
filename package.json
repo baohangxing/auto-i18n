@@ -10,7 +10,8 @@
     "lint:fix": "nr lint --fix",
     "release": "esno ./scripts/release",
     "build": "nr --dir ./packages/core build",
-    "test": "nr --dir ./packages/core test"
+    "test": "nr --dir ./packages/core test",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
@@ -18,6 +19,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.15",
     "bumpp": "^8.2.1",
+    "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.27.0",
     "esno": "^0.16.3",
     "fast-glob": "^3.2.12",
