@@ -8,66 +8,61 @@ export type TransInterpolationsMode = 'NamedInterpolationMode' | 'ListInterpolat
 
 export interface AutoConfig {
   /**
-   * To match local Json paths, all Json file will be used.
-   * Please using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
+   * Glob patterns to match local language JSON files.
+   * Using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
    *
    * @example ['lang/locales/**']
    */
   localesJsonDirs: string[] | string
 
   /**
-   * Locale names used, the locale will be skipped if not in `locales`,
-   * the locale names is Json file's name
+   * Language JSON files names used, the language will be skipped if it is not in `locales`.
    *
    * @example [`ja-jp`, `zh-cn`]
    */
   locales: string[]
 
   /**
-   * The base locale in your project, make sure it in the `localesJsonDirs`
+   * The base language JSON files name in your project,
+   * and make sure it is in the `localesJsonDirs`.
    *
    * @example `zh-cn`
    */
   baseLocale: string
 
   /**
-   * Symbol of not translated word
+   * Symbol of the not translated words
    *
-   * @param locale one locale of `locales`
+   * @param locale one name of the `locales`
    * @returns
    */
   untransSymbol: (locale: string) => string
 
   /**
-   * Translate word rule when not translated
-   *
-   * @param word
-   * @param locale the word current locale, your baseLocale
-   * @param toLocale to translate locale like `ja-jp`
-   * @returns
+   * Translate word function when not translated.
    */
   transLacaleWord?: (word: string, locale: string, toLocale: string) => Promise<string>
 
   /**
-    * Files to auto translated includes,
-    * Please using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
+    * Glob patterns to match files that CLI plans to transform,
+    * Using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
     *
     * @example ["src/*.{vue}", "view/**"]
     */
   includes: string[]
 
   /**
-    * Directory of output files,
-    * the default output filed directory path is your project path
+    * Directory path of output files,
+    * the default directory path is your project root path
     *
     * @default `./ `
     */
   outputFileDir: string
 
   /**
-   * Interpolations mode of i18n message format syntax
+   * Interpolations mode of i18n message format syntax.
    *
-   * for example: Vue I18n supports interpolation using placeholders {} like "Mustache".
+   * For example: Vue I18n supports interpolation using placeholders {} like "Mustache".
    * see -> https://vue-i18n.intlify.dev/guide/essentials/syntax.html#interpolations
    */
   transInterpolationsMode: TransInterpolationsMode
@@ -75,15 +70,16 @@ export interface AutoConfig {
   i18nCallRules: Record<FileExtension, I18nCallRule>
 
   /**
-   * Weather to format files or not.
+   * Whether to format files or not when editing or new.
    * Please add Eslint and configure it, if u set true.
    * @default false
    */
   autoFormat: boolean
 
   /**
-    * files to format, using fast-glob glob patterns
-    * Please using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
+    * Glob patterns to match files that need formating.
+    *
+    * Using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
     *
     * @example ["*.{vue}"]
     */
@@ -97,25 +93,25 @@ export interface AutoConfig {
   checkUsageMatchAppend: RegExp[]
 
   /**
-   *  Name of output Xlsx file
+   *  Append names of the output Xlsx files.
    */
   outputXlsxNameBy: {
     /**
-     * name of file which created by command `auto genXlsx`
+     * Name of files which created by command `auto genXlsx`
      *
      * @default `genXlsx`
      */
     genXlsx: string
 
     /**
-     * name of file which created by command `auto trans`
+     * Name of files which created by command `auto trans`.
      *
      * @default `trans`
      */
     trans: string
 
     /**
-     * name of file which created by command `auto check`
+     * Name of files which created by command `auto check`.
      *
      * @default `check`
      */
@@ -133,14 +129,19 @@ export interface RevertCommandOption {
   revertPath: string
 
   /**
-   * locale name
-   *
+   * Language JSON files name
    * @example `zh-cn`
    */
   target: string
 }
 
 export interface LangJson {
+
+  /**
+   * Language JSON files name
+   * @example `zh-cn`
+   */
   name: string
+
   path: string
 }

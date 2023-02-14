@@ -260,7 +260,7 @@ const revertVue = (
 ): string => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    log.error('parse vue error', errors)
+    log.error('Parse vue error', errors)
     return ''
   }
 

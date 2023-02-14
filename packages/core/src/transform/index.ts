@@ -30,7 +30,7 @@ const transform = (
     case 'vue':
       return transformVue(code, rules[ext], replace)
     default:
-      log.error(`not support transform .${ext} extension`)
+      log.error(`Not support transform .${ext} extension`)
       return { code }
   }
 }

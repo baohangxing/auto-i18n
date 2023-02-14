@@ -74,7 +74,7 @@ const updateLocales = async () => {
       for (const x of langJsonKeySet) {
         log.info(
           `${x}: ${getValueByKey(langJsonObj, x)} in ${langJson.name
-          }.json is deleted, Pleace check it is used in project!`,
+          }.json is deleted, pleace check it is used in the project!`,
         )
       }
     }
@@ -82,7 +82,7 @@ const updateLocales = async () => {
     await writeToJsonFile(path.parse(langJson.path).dir, langJson.name, newObj)
   }
 
-  log.success('updateLocales success')
+  log.success('Update JSON files success')
 }
 
 const updateLocalesFromXlsx = async (filePath: string) => {
@@ -116,7 +116,7 @@ const updateLocalesFromXlsx = async (filePath: string) => {
         }
       }
       await writeToJsonFile(path.parse(langJson.path).dir, langJson.name, newJsonObj)
-      log.success(`Write to Json file success in ${langJson.path}`)
+      log.success(`Write to JSON file success in ${langJson.path}`)
     }
   }
 }

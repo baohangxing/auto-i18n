@@ -65,7 +65,7 @@ class Collector {
         for (const k of keys) {
           const v = getValueByKey(jsonObj, k)
           if (Collector.keyZhMap[k] && Collector.keyZhMap[k] !== v) {
-            log.error(`json key ${k} have 2 kinds of val: ${Collector.keyZhMap[k]} and ${v}`)
+            log.error(`JSON key ${k} have 2 kinds of val: ${Collector.keyZhMap[k]} and ${v}`)
           }
           else {
             Collector.keyZhMap[k] = v

@@ -3,7 +3,7 @@ import { ESLint } from 'eslint'
 import log from './log'
 
 const format = async (paths: string | string[]) => {
-  log.verbose(`format ${paths} start`)
+  log.verbose(`Format ${paths} starting`)
   const eslint = new ESLint({
     fix: true,
   })
@@ -17,7 +17,7 @@ const format = async (paths: string | string[]) => {
     if (result && result.output)
       fs.writeFileSync(filePaths[i], result.output, 'utf8')
     else
-      log.error(`eslint format ${paths} Error!`, results[i])
+      log.error(`Eslint format ${paths} error`, results[i])
   }
 }
 
