@@ -1,7 +1,6 @@
 > 请阅读[gitlab上的文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#%E4%BB%8B%E7%BB%8D)以获取更好的阅读体验
 
-
-# 介绍
+# 介绍
 
 这是一个可以快速将中文项目替换成 i18n 国际化标记的命令工具, 除此之外, 它还具备智能初始化, json 语言包 xlsx 导出, json 语言包更新以及检测是否翻译完全等功能。
 
@@ -246,8 +245,8 @@ Options:
 Commands:
   init                         Init yo-auto-i18n, generate an new default config file automatically.
   trans [options] [transPath]  Transform a single file or all files.
-  update [options]             Update other language JSON files bJSON filecales JSON file
-  genlsx                       Generate an Xlsx file by locales json files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the
+  update [options]             Update other language JSON files by base language JSON file
+  genlsx                       Generate an Xlsx file by language JSON files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the
                                `key`
   check                        Check weather all word has been transformed or not
   help [command]               display help for command
@@ -285,8 +284,8 @@ Arguments:
   transPath                file or directory path
 
 Options:
-  --modify                 whether tJSON fileon the source file
-  -t, --template <string>  template json file which inclues all language key
+  --modify                 whether to modify on the source file
+  -t, --template <string>  template JSON file which inclues all language key
   -h, --help               display help for command
 ```
 
@@ -318,8 +317,8 @@ Usage: auto update [options]
 
 Update other language JSON files by base language JSON file
 
-Options:JSON file
-  -t, --templateXlsx <string>  update locales json files by the Xlsx template file, the frirt line of the first sheet should have all locales names and the `key`
+Options:
+  -t, --templateXlsx <string>  update language JSON files by the Xlsx template file, the frirt line of the first sheet should have all locales names and the `key`
                                (default: "")
   -h, --help                   display help for command
 ```
@@ -346,8 +345,8 @@ auto update -t ./src/keyTemplatePath.xlsx
 > auto help genlsx
 
 Usage: auto genlsx [options]
-JSON file
-Generate an Xlsx file by locales json files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the `key`
+
+Generate an Xlsx file by language JSON files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the `key`
 
 Options:
   -h, --help  display help for command
