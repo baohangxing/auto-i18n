@@ -12,7 +12,6 @@ import mustache from 'mustache'
 import presetTypescript from '@babel/preset-typescript'
 import fsExtra from 'fs-extra'
 import type * as generatorType from '@babel/generator/index'
-import type { GeneratorResult } from '@babel/generator/index'
 import ejs from 'ejs'
 import { getJsonPath } from '../config/config'
 import type { I18nCallRule, RevertOptions } from '../types'
@@ -92,7 +91,7 @@ const revertJs = (code: string, options: RevertOptions): string => {
 
   const ast = revertAST(code, options)
 
-  const result = (!ast ? code : babelGenerator(ast)) as GeneratorResult
+  const result = (!ast ? code : babelGenerator(ast)) as generatorType.GeneratorResult
 
   return result.code
 }
