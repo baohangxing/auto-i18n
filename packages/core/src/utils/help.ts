@@ -38,8 +38,8 @@ const lexicalComparator = (a: string, b: string) => {
 }
 
 /**
- * sort Object by lexical recursively, retren a new Object.
- * not support array value
+ * Sort an object by lexical recursively, and return a new object.
+ * Not support array value.
  * @param obj
  * @returns
  */
@@ -73,7 +73,7 @@ const writeToJsonFile = async (
 }
 
 /**
- * return undefined if no key in obj
+ * Return `undefined` if no key in `obj`
  */
 const getValueByKey = (obj: any, key: string) => {
   if (key === '')
@@ -112,7 +112,7 @@ const setValueByKey = (obj: any, key: string, val: string) => {
 
       temp = temp[path]
       if (typeof temp !== 'object') {
-        log.error(`can not set ${val} to the ${key}`)
+        log.error(`Cann't set ${val} to the ${key}`)
         return
       }
     }
@@ -130,7 +130,7 @@ const getKeys = (obj: any) => {
       else if (typeof obj[k] === 'object' && !(Array.isArray(obj[k])))
         res.push(..._getKeys(obj[k], _before === '' ? k : `${_before}.${k}`))
       else
-        log.error(`the i18n JSON value only support string (${k}: ${obj[k]})`)
+        log.error(`The i18n JSON value only support string (${k}: ${obj[k]})`)
     }
     return res
   }

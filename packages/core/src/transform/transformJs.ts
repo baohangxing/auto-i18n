@@ -294,7 +294,7 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
               slotParams = isEmpty(params) ? undefined : params
             }
             else {
-              log.error('autoConfig.transInterpolationsMode must is '
+              log.error('AutoConfig.transInterpolationsMode must is '
                 + '\'NamedInterpolationMode\' or \'ListInterpolationMode\'')
             }
 

@@ -23,10 +23,10 @@ const writeXlsxFile = (
 
   try {
     fs.writeFileSync(fileWritePath, buffer)
-    log.info(`Write to xls has finished: ${fileWritePath}`)
+    log.info(`Writing to xls file has finished: ${fileWritePath}`)
   }
   catch (error) {
-    log.error('writeXlsxFile error', error)
+    log.error('Writing to xls file error', error)
   }
 }
 
@@ -39,7 +39,7 @@ const readXlsxFile = (filePath: string) => {
     }[]
   }
   else {
-    log.error(`not exists ${filePath}`)
+    log.error(`Don't exist ${filePath}`)
   }
 }
 

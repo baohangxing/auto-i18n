@@ -33,7 +33,6 @@ const getI18nKeys = (
     case 'vue':
       return getVueI18nKeys(code, rules[ext])
     default:
-      log.error(`not support check .${ext} extension`)
       return []
   }
 }
@@ -81,7 +80,7 @@ const checkAllTranslated = () => {
       keys.push(...getI18nKeys(source, ext, autoConfig.i18nCallRules))
     }
     catch (e) {
-      log.error(`check is translated Error in ${filePath}`, e)
+      log.error(`Error when check ${filePath}`, e)
       continue
     }
 
@@ -94,7 +93,7 @@ const checkAllTranslated = () => {
 
   for (const key of keysUsedSet) {
     if (!allKeysSet.has(key))
-      log.error(`json do not have key ${key}, pleace check ${baseLangJson.path}`)
+      log.error(`JSON do not have key ${key}, pleace check ${baseLangJson.path}`)
     let unTransed = false
     for (const lang of otherLangJsons) {
       const langVal = getValueByKey(langJsonObjMap[lang.name], key)
@@ -121,7 +120,7 @@ const checkAllTranslated = () => {
   writeXlsxFile(firstRows, ['unTrans key', 'all key detail', 'all key used'], sheetsDatas,
     getOutputFileDir(`${createFileName(autoConfig.outputXlsxNameBy.check)}.xlsx`))
 
-  log.success('check successed')
+  log.success('Check successed')
 }
 
 export { checkAllTranslated }

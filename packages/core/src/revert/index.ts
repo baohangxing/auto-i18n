@@ -36,7 +36,7 @@ const revertCode = (
     case 'vue':
       return revertVue(code, rules[ext], locale)
     default:
-      log.error(`not support revert .${ext} extension`)
+      log.error(`Not support revert .${ext} extension`)
       return ''
   }
 }
@@ -66,7 +66,7 @@ const revert = async (option: RevertCommandOption) => {
     locale = locale = autoConfig.baseLocale
 
   if (!autoConfig.locales.includes(locale)) {
-    log.error(`no locale file ${locale}.json, use the autoConfig.baseLocale ${autoConfig.baseLocale}`)
+    log.error(`No locale file ${locale}.json, use the autoConfig.baseLocale ${autoConfig.baseLocale}`)
     locale = autoConfig.baseLocale
   }
 

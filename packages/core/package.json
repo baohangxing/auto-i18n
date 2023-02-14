@@ -1,7 +1,7 @@
 {
   "name": "yo-auto-i18n",
   "version": "0.2.1",
-  "description": "A cli tool help you auto trans your vue project to an i18n-project",
+  "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
   "author": "H1mple<https://gitcn.yostar.net:8888/hangxing.bao>",
   "license": "MIT",
   "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#readme",

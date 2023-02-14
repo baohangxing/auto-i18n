@@ -29,7 +29,7 @@ const getPaths = (dirOrFile: string): string[] => {
   const dirOrFilePath = path.join(process.cwd(), dirOrFile)
 
   if (!fs.existsSync(dirOrFilePath)) {
-    log.error(`${dirOrFilePath} not exists`)
+    log.error(`Don't exists ${dirOrFilePath}`)
     return []
   }
 

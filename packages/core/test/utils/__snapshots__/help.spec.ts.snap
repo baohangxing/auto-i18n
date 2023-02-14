@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`#writeToJsonFile > should write json file 1`] = `
+exports[`#writeToJsonFile > should write JSON file 1`] = `
 "{
   \\"AA\\": \\"value AA\\",
   \\"AB\\": {

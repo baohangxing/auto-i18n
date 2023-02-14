@@ -36,7 +36,7 @@ const init = async () => {
   const result = explorer.search()
 
   if (result?.config) {
-    log.info('the project had inited, so skipped')
+    log.info('The project had inited, so skipped')
   }
   else {
     const configPath = path.resolve(`${CLI_CONFIG_NAME}.config.cjs`)
@@ -61,7 +61,7 @@ const init = async () => {
     if (config.autoFormat)
       await format(configPath)
 
-    log.success('inited')
+    log.success('Inited')
   }
 }
 

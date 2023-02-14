@@ -243,8 +243,8 @@ Options:
 Commands:
   init                         Init yo-auto-i18n, generate an new default config file automatically.
   trans [options] [transPath]  Transform a single file or all files.
-  update [options]             Update other locales Json files by base locales Json file
-  genlsx                       Generate an Xlsx file by locales json files, the frirt line of in the first sheet of the xlsx will have all locales-name and the
+  update [options]             Update other language JSON files by base language JSON file
+  genlsx                       Generate an Xlsx file by language JSON files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the
                                `key`
   check                        Check weather all word has been transformed or not
   help [command]               display help for command
@@ -283,7 +283,7 @@ Arguments:
 
 Options:
   --modify                 whether to modify on the source file
-  -t, --template <string>  template json file which inclues all language key
+  -t, --template <string>  template JSON file which inclues all language key
   -h, --help               display help for command
 ```
 
@@ -313,10 +313,10 @@ auto transAll -t ./src/keyTemplatePath.json --modify
 
 Usage: auto update [options]
 
-Update other locales Json files by base locales Json file
+Update other language JSON files by base language JSON file
 
 Options:
-  -t, --templateXlsx <string>  update locales json files by the Xlsx template file, the frirt line of the first sheet should have all locales names and the `key`
+  -t, --templateXlsx <string>  update language JSON files by the Xlsx template file, the frirt line of the first sheet should have all locales names and the `key`
                                (default: "")
   -h, --help                   display help for command
 ```
@@ -344,7 +344,7 @@ auto update -t ./src/keyTemplatePath.xlsx
 
 Usage: auto genlsx [options]
 
-Generate an Xlsx file by locales json files, the frirt line of in the first sheet of the xlsx will have all locales-name and the `key`
+Generate an Xlsx file by language JSON files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the `key`
 
 Options:
   -h, --help  display help for command

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`#update > should update json file 1`] = `
+exports[`#update > should update JSON file 1`] = `
 "{
   \\"dazigao\\": \\"typescript\\",
   \\"title\\": \\"[EN]标题\\"

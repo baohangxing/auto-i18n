@@ -106,7 +106,7 @@ describe('#writeToJsonFile', () => {
   const jsonPath = path.join(filePath, `${name}.json`)
   const obj = { AA: 'value AA', AC: 'value AB', AB: { AC: 'value AB1', ABA: 12, AA: 'value AA1' } }
 
-  it('should write json file', async () => {
+  it('should write JSON file', async () => {
     await writeToJsonFile(filePath, name, obj)
     expect(fs.existsSync(jsonPath)).toBe(true)
     expect(fs.readFileSync(jsonPath).toString()).toMatchSnapshot()

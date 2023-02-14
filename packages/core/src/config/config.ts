@@ -47,7 +47,7 @@ const getJsonPath = (): {
       }
     }
     if (!findFlag)
-      log.error(`No json file(${x}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
+      log.error(`No JSON file(${x}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
       // process.exit(1)
   }
   let baseLangJson: LangJson = { name: autoConfig.baseLocale, path: '' }
@@ -63,7 +63,7 @@ const getJsonPath = (): {
       }
     }
     if (!baseLangJson.path)
-      log.error(`No base json file in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
+      log.error(`No base JSON file in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
       // process.exit(1)
   }
 

@@ -13,7 +13,7 @@ const program = new Command()
 
 program
   .name(CLI_CONFIG_NAME)
-  .description('A CLI to help you transform your project '
+  .description('A CLI tool helps you transform your project '
     + 'to an internationalization project automatically.')
   .version(version)
 
@@ -37,7 +37,7 @@ program.command('trans')
   .description('Transform a single file or all files.')
   .argument('[transPath]', 'file or directory path')
   .option('--modify', 'whether to modify on the source file')
-  .option('-t, --template <string>', 'template json file which inclues all language key')
+  .option('-t, --template <string>', 'template JSON file which inclues all language key')
   .action((transPath, options) => {
     const transCommandOption: TransCommandOption = {
       transPath: transPath ?? '',
@@ -48,17 +48,17 @@ program.command('trans')
   })
 
 program.command('update')
-  .description('Update other locales Json files by base locales Json file')
-  .option('-t, --templateXlsx <string>', 'update locales json files by the Xlsx template file,'
-    + ' the frirt line of the first sheet should have all locales names and the `key`', '')
+  .description('Update other language JSON files by base language JSON file')
+  .option('-t, --templateXlsx <string>', 'update language JSON files by the Xlsx template file,'
+    + ' the frirt line of the first sheet should have all JSON files names and the `key`', '')
   .action(async (options) => {
     await updateLocales()
     options.templateXlsx && (await updateLocalesFromXlsx(options.templateXlsx))
   })
 
 program.command('genlsx')
-  .description('Generate an Xlsx file by locales json files,'
-    + ' the frirt line of in the first sheet of the xlsx will have all locales-name and the `key`')
+  .description('Generate an Xlsx file by language JSON files,'
+    + ' the frirt line of in the first sheet of the xlsx will have all JSON files names and the `key`')
   .action(() => {
     generateXlsx()
   })
@@ -70,7 +70,7 @@ program.command('check')
   })
 
 program.command('revert')
-  .description('revert a transformed file or files in a directory')
+  .description('Revert a transformed file or files in a directory')
   .argument('<revertPath>', 'file or directory path')
   .option('-t, --target <string>', 'the target language when revert')
   .action(async (revertPath, options) => {
