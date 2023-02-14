@@ -6,7 +6,7 @@ import { changePackageVersion, updataReadme } from './utils'
 
 const { version: oldVersion } = readJSONSync('package.json')
 
-execSync('bumpp --no-commit --no-tag --no-push', { stdio: 'inherit' })
+execSync('bumpp --no-push', { stdio: 'inherit' })
 
 const { version } = readJSONSync('package.json')
 
