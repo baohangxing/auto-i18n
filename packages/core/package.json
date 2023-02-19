@@ -1,16 +1,16 @@
 {
-  "name": "yo-auto-i18n",
+  "name": "auto-i18n",
   "version": "0.2.3",
   "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
-  "author": "H1mple<https://gitcn.yostar.net:8888/hangxing.bao>",
+  "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
-  "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#readme",
+  "homepage": "https://github.com/baohangxing/auto-i18n#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n.git"
+    "url": "git+https://github.com/baohangxing/auto-i18n.git"
   },
   "bugs": {
-    "url": "https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n/issues"
+    "url": "https://github.com/baohangxing/auto-i18n/issues"
   },
   "keywords": [
     "vue",

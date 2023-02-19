@@ -5,7 +5,7 @@ interface Packages {
 
 const packages: Packages[] = [{
   path: './packages/core',
-  name: 'yo-auto-i18n',
+  name: 'auto-i18n',
 }]
 
 export { packages }
