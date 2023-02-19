@@ -28,7 +28,7 @@ program.on('option:debug', () => {
 })
 
 program.command('init')
-  .description('Init yo-auto-i18n, generate an new default config file automatically.')
+  .description('Init auto-i18n, generate an new default config file automatically.')
   .action(() => {
     init()
   })

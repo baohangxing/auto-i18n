@@ -2,8 +2,8 @@
   "version": "0.2.3",
   "private": true,
   "packageManager": "pnpm@7.6.0",
-  "description": "yo-auto-i18n monorepo",
-  "author": "H1mple<https://gitcn.yostar.net:8888/hangxing.bao>",
+  "description": "auto-i18n monorepo",
+  "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
   "scripts": {
     "lint": "eslint --cache .",

@@ -1,17 +1,17 @@
-> 请阅读[gitlab上的文档](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n#%E4%BB%8B%E7%BB%8D)以获取更好的阅读体验
+> 请阅读[gitlab上的文档](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n#%E4%BB%8B%E7%BB%8D)以获取更好的阅读体验
 
-# 介绍
+# 介绍
 
 这是一个可以快速将中文项目替换成 i18n 国际化标记的命令工具, 除此之外, 它还具备智能初始化, json 语言包 xlsx 导出, json 语言包更新以及检测是否翻译完全等功能。
 
 ## 功能
 
-- [x] 支持根据你的项目情况初始化 yo-auto-i18n 配置
-- [x] 支持多种 yo-auto-i18n 配置格式，包括.json, .yaml, .yml, .js, .cjs, .config, .config.js, .config, .cjs 等以及在 package.json 中配置
+- [x] 支持根据你的项目情况初始化 auto-i18n 配置
+- [x] 支持多种 auto-i18n 配置格式，包括.json, .yaml, .yml, .js, .cjs, .config, .config.js, .config, .cjs 等以及在 package.json 中配置
 
 - [x] 支持.mjs, .cjs, .js, .ts, .jsx, .tsx, .vue 后缀格式的文件进行中文提取
 - [x] 支持 vue2.0，vue3.0，react 提取中文
-- [x] 支持通过 /\*yo-auto-i18n-ignore\*/ 和 <\!--yo-auto-i18n-ignore--> 注释，忽略中文提取
+- [x] 支持通过 /\*auto-i18n-ignore\*/ 和 <\!--auto-i18n-ignore--> 注释，忽略中文提取
 - [x] 支持将提取的中文以 key-value 形式存入 \*.json 语言包进行预览并自定义 key
 - [x] 支持为各种格式自定义 i18n 的调用对象, 方法名, 方法定义 以及 添加第三方包的导入
 
@@ -29,19 +29,19 @@
 - 第一步: 安装
 
 ```sh
-npm i yo-auto-i18n -D
+npm i auto-i18n -D
 ```
 
 or
 
 ```sh
-yarn add yo-auto-i18n -D
+yarn add auto-i18n -D
 ```
 
 or
 
 ```sh
-pnpm i yo-auto-i18n -D
+pnpm i auto-i18n -D
 ```
 
 - 第二步: 给你项目添加 I18n 库，创建 locales 文件夹以及多语言 json 文件
@@ -56,7 +56,7 @@ src
     └── zh-cn.json
 ```
 
-- 第三步: 初始化 yo-auto-i18n 配置
+- 第三步: 初始化 auto-i18n 配置
 
 ```sh
 auto init
@@ -86,7 +86,7 @@ auto trans --modify --template ./lang-key-value.json
 
 ## 配置详细说明
 
-yo-auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且所有的配置项都是**可选的**。
+auto-i18n 的配置文件可以通过下列任意一种进行配置, 并且所有的配置项都是**可选的**。
 
 - 在 `package.json` 的 `auto` 属性
 - 一个 JSON 或者 YAML格式的 `.autorc` 文件
@@ -243,7 +243,7 @@ Options:
   -h, --help                   display help for command
 
 Commands:
-  init                         Init yo-auto-i18n, generate an new default config file automatically.
+  init                         Init auto-i18n, generate an new default config file automatically.
   trans [options] [transPath]  Transform a single file or all files.
   update [options]             Update other language JSON files by base language JSON file
   genlsx                       Generate an Xlsx file by language JSON files, the frirt line of in the first sheet of the xlsx will have all JSON files names and the
@@ -259,7 +259,7 @@ Commands:
 
 Usage: auto init [options]
 
-Init yo-auto-i18n, generate an new default config file automatically.
+Init auto-i18n, generate an new default config file automatically.
 
 Options:
   -h, --help  display help for command
@@ -269,7 +269,7 @@ Options:
 
 生成的配置文件名为 `auto.config.cjs`, 可以在 [配置字段](#配置字段) 看到对于各项配置更加详细的说明。
 
-当你的项目中已经存在了 yo-auto-i18n 的配置后，再次运行该命令的时候将跳过初始化。
+当你的项目中已经存在了 auto-i18n 的配置后，再次运行该命令的时候将跳过初始化。
 
 ### trans
 
@@ -419,7 +419,7 @@ Options:
 ```jsx
 import { useState } from 'react'
 
-/*yo-auto-i18n-ignore*/
+/*auto-i18n-ignore*/
 const b = '被忽略提取的文案'
 
 function Example() {
@@ -454,7 +454,7 @@ export default Example
 import { t } from 'i18n'
 import { useState } from 'react'
 
-/*yo-auto-i18n-ignore*/
+/*auto-i18n-ignore*/
 const b = '被忽略提取的文案'
 
 function Example() {
@@ -471,7 +471,7 @@ export default Example
 
 ### vue 转换示例
 
-完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/yo-auto-i18n/-/tree/main/packages/core/demo/vue-demo)
+完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/core/demo/vue-demo)
 
 转换前
 

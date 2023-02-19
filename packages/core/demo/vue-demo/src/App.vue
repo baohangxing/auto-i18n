@@ -1,10 +1,10 @@
 <template>
   <nav>
-    <!--yo-auto-i18n-ignore-->
+    <!--auto-i18n-ignore-->
     <button class="change-button" @click="changeLanguage('zh')">{{ '改变为中文' }}</button>
-     <!--yo-auto-i18n-ignore-->
+     <!--auto-i18n-ignore-->
     <button class="change-button" @click="changeLanguage('ja')">{{ '改变为日语' }}</button>
-     <!--yo-auto-i18n-ignore-->
+     <!--auto-i18n-ignore-->
     <button class="change-button" @click="changeLanguage('ko')">{{ '改变为韩语' }}</button>
     <hr/>
     <router-link to="/">Home</router-link> |

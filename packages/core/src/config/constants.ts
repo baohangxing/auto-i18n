@@ -1,4 +1,4 @@
-export const LOG_PREFIX = 'yo-auto-i18n'
+export const LOG_PREFIX = 'auto-i18n'
 
 export const CLI_CONFIG_NAME = 'auto'
 
