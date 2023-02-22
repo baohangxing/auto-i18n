@@ -2,11 +2,9 @@
 
 exports[`#glob > fgSync > should get absolute paths 1`] = `
 [
-  "/test/utils/__snapshots__/format.spec.ts.snap",
-  "/test/utils/__snapshots__/glob.spec.ts.snap",
-  "/test/utils/format.spec.ts",
-  "/test/utils/glob.spec.ts",
-  "/test/utils/help.spec.ts",
+  "/src/check/index.ts",
+  "/test/check/getJsI18nKeys.spec.ts",
+  "/test/check/getVueI18nKeys.spec.ts",
 ]
 `;
 

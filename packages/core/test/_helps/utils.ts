@@ -14,9 +14,13 @@ const sleep = async <T>(ms: number, reslut: T): Promise<T> => {
   })
 }
 
+const uniPath = (p: string): string => {
+  return p.replaceAll('\\', '/')
+}
+
 const trimRootPath = (paths: string[], rootPath?: string): string[] => {
-  const rp: string = rootPath ?? path.resolve('')
-  return paths.map(x => x.replace(rp, '')).sort()
+  const rp: string = uniPath(rootPath ?? path.resolve(''))
+  return paths.map(x => uniPath(x).replace(rp, '')).sort()
 }
 
 export { sleep, trimRootPath }

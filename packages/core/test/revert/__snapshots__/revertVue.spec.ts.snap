@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`#revertVue > should revert all i18n keys attributes of component 1`] = `""`;
+
+exports[`#revertVue > should revert all i18n keys in script 1`] = `""`;
+
+exports[`#revertVue > should revert all i18n keys in template and setupScript 1`] = `""`;
+
+exports[`#revertVue > should revert no i18n keys 1`] = `""`;

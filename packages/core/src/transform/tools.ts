@@ -75,7 +75,7 @@ const removeSnippet = (
 }
 
 /**
- * 提取文件头注释 //TODO fix in 1.0.0
+ * 提取文件头注释 //TODO
  * @param descriptor
  * @returns
  */

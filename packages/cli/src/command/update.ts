@@ -17,6 +17,13 @@ const { readJsonSync } = fsExtra
 
 const updateBaseLocale = async (replaceObj?: any) => {
   const { baseLangJson } = getJsonPath()
+  const autoConfig = getAutoConfig()
+
+  if (!baseLangJson) {
+    log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
+    return
+  }
+
   let baseLangJsonObj
 
   if (replaceObj) {
@@ -37,6 +44,12 @@ const updateBaseLocale = async (replaceObj?: any) => {
 const updateLocales = async () => {
   const autoConfig = getAutoConfig()
   const { baseLangJson, otherLangJsons } = getJsonPath()
+
+  if (!baseLangJson) {
+    log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
+    return
+  }
+
   const baseLangJsonObj = readJsonSync(baseLangJson.path)
 
   await updateBaseLocale()
@@ -92,8 +105,12 @@ const updateLocalesFromXlsx = async (filePath: string) => {
 
   const { baseLangJson, otherLangJsons } = getJsonPath()
   if (res) {
+    if (!baseLangJson) {
+      const autoConfig = getAutoConfig()
+      log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
+      return
+    }
     const baseLangJsonObj = readJsonSync(baseLangJson.path)
-
     for (const langJson of otherLangJsons) {
       const langJsonObj = readJsonSync(langJson.path)
       const typeJsonKeySet = new Set(getKeys(baseLangJsonObj))

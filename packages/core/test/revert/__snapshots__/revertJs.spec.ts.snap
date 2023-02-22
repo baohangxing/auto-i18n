@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`#revertJs > should get all i18n keys 1`] = `"const a = t('标题');"`;
+
+exports[`#revertJs > should get all i18n keys 2`] = `""`;
+
+exports[`#revertJs > should get all i18n keys 3`] = `""`;
+
+exports[`#revertJs > should get all i18n keys 4`] = `""`;

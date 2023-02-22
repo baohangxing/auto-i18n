@@ -6,6 +6,8 @@ dist/
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 coverage/
+.eslintcache
+**/playground_*
 
 # local env files
 .env.local
@@ -26,7 +28,3 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-
-.eslintcache
-
- 

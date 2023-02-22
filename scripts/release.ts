@@ -6,7 +6,7 @@ import { changePackageVersion } from './utils'
 
 const { version: oldVersion } = readJSONSync('package.json')
 
-execSync('bumpp --no-push', { stdio: 'inherit' })
+execSync('bumpp --no-push --no-tag --no-push', { stdio: 'inherit' })
 
 const { version } = readJSONSync('package.json')
 
@@ -19,6 +19,7 @@ for (const { path } of packages)
   changePackageVersion(path, version)
 
 execSync('pnpm run build', { stdio: 'inherit' })
+
 execSync('git add .', { stdio: 'inherit' })
 
 execSync(`git commit -m "chore: release v${version}"`, { stdio: 'inherit' })

@@ -39,9 +39,14 @@ const require = createRequire(import.meta.url)
 const traverse: typeof traverseType.default = require('@babel/traverse').default
 const babelGenerator: typeof generatorType.default = require('@babel/generator').default
 
-const revertWordByKey = (locale: string) => {
+const revertWordByKey = (locale: string) :((key: string) => string) => {
   const { baseLangJson, otherLangJsons } = getJsonPath()
 
+  if (!baseLangJson) {
+    return (key: string) => {
+      return key
+    }
+  }
   let langObj: any = fsExtra.readJsonSync(baseLangJson.path)
 
   for (const x of otherLangJsons) {

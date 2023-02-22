@@ -1,9 +1,25 @@
 import path from 'path'
 import fs from 'fs'
 import { afterAll, describe, expect, it } from 'vitest'
-import { lintFiles, lintText } from '../../src/utils/format'
+import { checkEslintConfigExist, lintFiles, lintText } from '../../src/utils/format'
+import { trimRootPath } from '../_helps/utils'
 
 const filePath = path.join(__dirname, 'format-spec-test.ts')
+
+describe('#checkEslintConfigExist', () => {
+  it('should return false', async () => {
+    const [reslut, configPath] = checkEslintConfigExist(process.cwd(), false)
+    expect(reslut).toEqual(false)
+    expect(configPath).toEqual('')
+  })
+
+  it('should return true', async () => {
+    const root = path.join(process.cwd(), '..', '..')
+    const [reslut, configPath] = checkEslintConfigExist(process.cwd(), true)
+    expect(reslut).toEqual(true)
+    expect(trimRootPath([configPath], root)).toMatchSnapshot()
+  })
+})
 
 describe('#format', () => {
   it('should format file content', async () => {
