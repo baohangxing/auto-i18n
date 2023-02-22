@@ -1,10 +1,10 @@
 {
-  "name": "auto-i18n",
+  "name": "@h1mple/auto-i18n-core",
   "version": "0.2.3",
-  "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
+  "description": "The core library of auto-i18n.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
-  "homepage": "https://github.com/baohangxing/auto-i18n#readme",
+  "homepage": "https://github.com/baohangxing/auto-i18n/packages/core#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/baohangxing/auto-i18n.git"
@@ -17,7 +17,9 @@
     "i18n",
     "ts",
     "auto",
-    "cli"
+    "cli",
+    "core",
+    "h1mple"
   ],
   "exports": {
     ".": {
@@ -29,9 +31,6 @@
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "bin": {
-    "auto": "bin/index.mjs"
-  },
   "files": [
     "dist",
     "bin",

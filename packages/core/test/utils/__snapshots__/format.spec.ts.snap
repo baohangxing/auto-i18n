@@ -21,3 +21,56 @@ const sortObjectKey = (obj: any): any => {
 }
 "
 `;
+
+exports[`#format > should lint text 1`] = `
+"/**
+    * sort Object by lexical recursively, retren a new Object.
+    * not support array value
+    * @param obj
+    * @returns
+    */
+const sortObjectKey = (obj: any): any => {
+  if (!obj)
+    return {}
+  const a: any = {}; const keys = Object.keys(obj).sort(lexicalComparator)
+  for (const key of keys) {
+    if (typeof obj[key] === 'object')
+      a[key] = sortObjectKey(obj[key])
+    else
+      a[key] = obj[key]
+  }
+  return a
+}
+"
+`;
+
+exports[`#format > should lint text 2`] = `
+"<script lang=\\"ts\\" setup>
+import { changeLanguage } from './lang/i18n'
+</script>
+
+<template>
+  <nav>
+    <!-- yo-auto-i18n-ignore -->
+    <button class=\\"change-button\\" @click=\\"changeLanguage('zh')\\">
+      {{ '改变为中文' }}
+    </button>
+    <!-- yo-auto-i18n-ignore -->
+    <button class=\\"change-button\\" @click=\\"changeLanguage('ja')\\">
+      {{ '改变为日语' }}
+    </button>
+    <!-- yo-auto-i18n-ignore -->
+    <button class=\\"change-button\\" @click=\\"changeLanguage('ko')\\">
+      {{ '改变为韩语' }}
+    </button>
+    <hr>
+    <router-link to=\\"/\\">
+      Home
+    </router-link> |    <router-link to=\\"/about\\">
+      About
+    </router-link>
+  </nav>
+  <router-view />
+</template>
+"
+`;

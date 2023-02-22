@@ -9,4 +9,4 @@ declare module '@babel/plugin-syntax-do-expressions';
 declare module '@babel/plugin-syntax-dynamic-import';
 declare module '@babel/plugin-syntax-export-extensions';
 declare module '@babel/plugin-syntax-function-bind';
-declare module '@babel/preset-typescript';
+declare module '@babel/preset-typescript'; 

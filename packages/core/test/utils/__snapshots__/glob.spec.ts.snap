@@ -1,0 +1,45 @@
+// Vitest Snapshot v1
+
+exports[`#glob > fgSync > should get absolute paths 1`] = `
+[
+  "/test/utils/__snapshots__/format.spec.ts.snap",
+  "/test/utils/__snapshots__/glob.spec.ts.snap",
+  "/test/utils/format.spec.ts",
+  "/test/utils/glob.spec.ts",
+  "/test/utils/help.spec.ts",
+]
+`;
+
+exports[`#glob > fgSync > should get absolute paths 2`] = `
+[
+  "/src/config/config.ts",
+  "/src/config/constants.ts",
+  "/src/config/defaultAutoBaseConfig.ts",
+]
+`;
+
+exports[`#glob > getRecursivePaths > should get absolute paths by a dir or file path 1`] = `
+[
+  "/src/check/index.ts",
+  "/src/config/config.ts",
+  "/src/config/constants.ts",
+  "/src/config/defaultAutoBaseConfig.ts",
+  "/src/global.d.ts",
+  "/src/index.ts",
+  "/src/revert/index.ts",
+  "/src/transform/collector.ts",
+  "/src/transform/index.ts",
+  "/src/transform/parse.ts",
+  "/src/transform/tools.ts",
+  "/src/transform/transformJs.ts",
+  "/src/transform/transformVue.ts",
+  "/src/types/config.ts",
+  "/src/types/index.ts",
+  "/src/types/log.ts",
+  "/src/types/transform.ts",
+  "/src/utils/files.ts",
+  "/src/utils/format.ts",
+  "/src/utils/glob.ts",
+  "/src/utils/help.ts",
+]
+`;

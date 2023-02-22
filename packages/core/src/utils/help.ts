@@ -1,25 +1,5 @@
-import path from 'path'
-import fs from 'fs'
-import { getAutoConfig } from '../config/config'
-import log from './log'
-import { checkInPatterns } from './glob'
-import { format } from './format'
-
 const includeChinese = (code: string): boolean => {
   return /[\u4E00-\u9FFF]/g.test(code)
-}
-
-const createFileName = (fileName = ''): string => {
-  const data = new Date()
-  const name = `${fileName}_${
-    data.getMonth() + 1
-  }_${data.getDate()} ${data.getHours()}_${
-    data.getMinutes() <= 9 ? `0${data.getMinutes()}` : data.getMinutes()
-  }_${
-    data.getSeconds() <= 9 ? `0${data.getSeconds()}` : data.getSeconds()
-  }`
-
-  return name
 }
 
 const lexicalComparator = (a: string, b: string) => {
@@ -57,19 +37,6 @@ const sortObjectKey = (obj: any): any => {
       a[key] = obj[key]
   }
   return a
-}
-
-const writeToJsonFile = async (
-  writeToPath: string,
-  name: string,
-  obj: object,
-) => {
-  const jsonPath = path.join(writeToPath, `${name}.json`)
-  const autoConfig = getAutoConfig()
-  fs.writeFileSync(jsonPath, `${JSON.stringify(sortObjectKey(obj), undefined, 2)}\n`, 'utf8')
-
-  if (autoConfig.autoFormat && checkInPatterns(jsonPath, autoConfig.autoFormatRules))
-    await format(jsonPath)
 }
 
 /**
@@ -111,10 +78,8 @@ const setValueByKey = (obj: any, key: string, val: string) => {
         temp[path] = {}
 
       temp = temp[path]
-      if (typeof temp !== 'object') {
-        log.error(`Cann't set ${val} to the ${key}`)
-        return
-      }
+      if (typeof temp !== 'object')
+        throw new Error(`Cann't set ${val} to the ${key}`)
     }
   }
   temp[paths[0]] = val
@@ -130,7 +95,7 @@ const getKeys = (obj: any) => {
       else if (typeof obj[k] === 'object' && !(Array.isArray(obj[k])))
         res.push(..._getKeys(obj[k], _before === '' ? k : `${_before}.${k}`))
       else
-        log.error(`The i18n JSON value only support string (${k}: ${obj[k]})`)
+        throw new Error(`getKeys only support string (${k}: ${obj[k]})`)
     }
     return res
   }
@@ -138,12 +103,10 @@ const getKeys = (obj: any) => {
 }
 
 export {
-  writeToJsonFile,
   lexicalComparator,
   sortObjectKey,
   getValueByKey,
   setValueByKey,
   getKeys,
-  createFileName,
   includeChinese,
 }

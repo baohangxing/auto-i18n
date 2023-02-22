@@ -1,0 +1,15 @@
+// Vitest Snapshot v1
+
+exports[`#transform > transform 1`] = `
+"<template>
+      <div>{{t('Key of 这是')}}{{title}}</div>
+    </template>
+
+<script setup>
+import { useI18n } from 'vue-i18n';
+const t = useI18n();
+let title = t('Key of 标题');
+</script>
+
+"
+`;

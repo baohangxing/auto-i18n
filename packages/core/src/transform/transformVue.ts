@@ -6,13 +6,11 @@ import { parse } from '@vue/compiler-sfc'
 import * as htmlparser2 from 'htmlparser2'
 import mustache from 'mustache'
 import ejs from 'ejs'
-import type { I18nCallRule } from '../types'
+import type { Collector, I18nCallRule, Log } from '../types'
 import { includeChinese } from '../utils/help'
-import log from '../utils/log'
 import { IGNORE_REMARK, VUE_COMMENT_TYPE } from '../config/constants'
 import transformJs from './transformJs'
 import { initTsxParse } from './parse'
-import Collector from './collector'
 import {
   escapeQuotes,
   getCallExpression,
@@ -23,47 +21,58 @@ import {
   trimValue,
 } from './tools'
 
-type Handler = (source: string, rule: I18nCallRule, replace: boolean) => string
+interface TransformVueOptions {
+  rule: I18nCallRule
 
-const parseJsSyntax = (source: string, rule: I18nCallRule): string => {
-  // vue属性有可能是{xx:xx}这种对象形式，直接解析会报错，需要特殊处理。
-  // 先处理成temp = {xx:xx} 让babel解析，解析完再还原成{xx:xx}
-  let isObjectStruct = false
-  if (source.startsWith('{') && source.endsWith('}')) {
-    isObjectStruct = true
-    source = `___temp = ${source}`
-  }
-  const { code } = transformJs(source, {
-    rule: {
-      ...rule,
-      variableDeclaration: '',
-      importDeclaration: '',
-    },
-    parse: initTsxParse(),
-  })
+  replace: boolean
 
-  let stylizedCode = code
+  loger?: Log<any>
 
-  if (isObjectStruct)
-    stylizedCode = stylizedCode.replace('___temp = ', '')
-
-  stylizedCode = stylizedCode.replace(/;$/gm, '')
-  return stylizedCode.endsWith('\n') ? stylizedCode.slice(0, stylizedCode.length - 1) : stylizedCode
+  collector: Collector
 }
 
-const removeQuotes = (value: string): string => {
-  if (['"', '\''].includes(value.charAt(0)) && ['"', '\''].includes(value.charAt(value.length - 1)))
-    value = value.substring(1, value.length - 1)
+type Handler = (source: string, options: TransformVueOptions,) => string
 
-  return value
-}
-
-const handleTemplate = (code: string, rule: I18nCallRule, replace = true): string => {
+const handleTemplate = (code: string, options: TransformVueOptions): string => {
   let htmlString = ''
+
+  const collector = options.collector
 
   const getReplaceValue = (value: string): string => {
     value = escapeQuotes(value)
-    return getCallExpression(rule, Collector.getKey(value))
+    return getCallExpression(options.rule, collector.getKey(value))
+  }
+
+  const parseJsSyntax = (source: string): string => {
+    // vue属性有可能是{xx:xx}这种对象形式，直接解析会报错，需要特殊处理。
+    // 先处理成temp = {xx:xx} 让babel解析，解析完再还原成{xx:xx}
+    let isObjectStruct = false
+    if (source.startsWith('{') && source.endsWith('}')) {
+      isObjectStruct = true
+      source = `___temp = ${source}`
+    }
+    const { code } = transformJs(source,
+      {
+        rule: options.rule,
+        parse: initTsxParse(),
+        replace: options.replace,
+        collector: options.collector,
+      })
+
+    let stylizedCode = code
+
+    if (isObjectStruct)
+      stylizedCode = stylizedCode.replace('___temp = ', '')
+
+    stylizedCode = stylizedCode.replace(/;$/gm, '')
+    return stylizedCode.endsWith('\n') ? stylizedCode.slice(0, stylizedCode.length - 1) : stylizedCode
+  }
+
+  const removeQuotes = (value: string): string => {
+    if (['"', '\''].includes(value.charAt(0)) && ['"', '\''].includes(value.charAt(value.length - 1)))
+      value = value.substring(1, value.length - 1)
+
+    return value
   }
 
   let shouldIgnore = false
@@ -79,11 +88,11 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
             }
             else {
               if (key.match(/^[@]/)) {
-                log.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+                options.loger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
                 attrs += ` ${key}="${attrValue}"`
               }
               else {
-                log.verbose(`pleace check the changing of attributes: ${key}`)
+                options.loger?.verbose(`pleace check the changing of attributes: ${key}`)
                 attrs += ` ${key}`
               }
             }
@@ -95,13 +104,13 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
           const attrValue = attributes[key]
           const isVueDirective = key.startsWith(':') || key.startsWith('@') || key.startsWith('v-')
           if (includeChinese(attrValue) && isVueDirective) {
-            const source = parseJsSyntax(attrValue, rule)
+            const source = parseJsSyntax(attrValue)
             // 处理属性类似于:xx="'xx'"，这种属性值不是js表达式的情况
             // attrValue === source即属性值不是js表达式
             // attrValue.startsWith是为了排除:xx="t('中文')"的情况
-            if (attrValue === source && !attrValue.startsWith(getCallExpressionPrefix(rule))) {
-              Collector.add(removeQuotes(attrValue))
-              if (replace)
+            if (attrValue === source && !attrValue.startsWith(getCallExpressionPrefix(options.rule))) {
+              collector.add(removeQuotes(attrValue))
+              if (options.replace)
                 attrs += ` ${key}="${getReplaceValue(removeQuotes(attrValue))}"`
             }
             else {
@@ -109,17 +118,17 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
             }
           }
           else if (includeChinese(attrValue) && !isVueDirective) {
-            Collector.add(attrValue)
-            if (replace)
+            collector.add(attrValue)
+            if (options.replace)
               attrs += ` :${key}="${getReplaceValue(attrValue)}"`
           }
           else if (attrValue === '') {
             if (key.match(/^[@]/)) {
-              log.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+              options.loger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
               attrs += ` ${key}="${attrValue}"`
             }
             else {
-              log.verbose(`pleace check the changing of attributes: ${key}`)
+              options.loger?.verbose(`pleace check the changing of attributes: ${key}`)
               attrs += ` ${key}`
             }
           }
@@ -144,12 +153,12 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
           if (includeChinese(value)) {
             value = trimValue(value)
             if (type === 'text') {
-              Collector.add(value)
-              if (replace)
+              collector.add(value)
+              if (options.replace)
                 str += `{{${getReplaceValue(value)}}}`
             }
             else if (type === 'name') {
-              const source = parseJsSyntax(value, rule)
+              const source = parseJsSyntax(value)
               str += `{{${source}}}`
             }
           }
@@ -200,24 +209,24 @@ const handleTemplate = (code: string, rule: I18nCallRule, replace = true): strin
   return htmlString
 }
 
-const handleScript = (source: string, rule: I18nCallRule, replace: boolean): string => {
+const handleScript = (source: string, options: TransformVueOptions): string => {
   const { code } = transformJs(source, {
-    rule,
+    rule: options.rule,
+    replace: options.replace,
     isJsInVue: true,
     parse: initTsxParse(),
-  },
-  replace)
+    collector: options.collector,
+  })
   return `\n${code}\n`
 }
 
 const generateSource = (
   sfcBlock: SFCTemplateBlock | SFCScriptBlock,
   handler: Handler,
-  rule: I18nCallRule,
-  replace: boolean,
+  options: TransformVueOptions,
 ): string => {
   const wrapperTemplate = getWrapperTemplate(sfcBlock)
-  const source = handler(sfcBlock.content, rule, replace)
+  const source = handler(sfcBlock.content, options)
   return ejs.render(wrapperTemplate, {
     code: source,
   })
@@ -225,14 +234,13 @@ const generateSource = (
 
 const transformVue = (
   code: string,
-  rule: I18nCallRule,
-  replace = true,
+  options: TransformVueOptions,
 ): {
   code: string
 } => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    log.error('Parse vue error', errors)
+    options.loger?.error('Parse vue error', errors)
     return {
       code,
     }
@@ -246,13 +254,13 @@ const transformVue = (
   const fileComment = getFileComment(descriptor)
 
   if (template)
-    templateCode = generateSource(template, handleTemplate, rule, replace)
+    templateCode = generateSource(template, handleTemplate, options)
 
   if (script)
-    scriptCode = generateSource(script, handleScript, rule, replace)
+    scriptCode = generateSource(script, handleScript, options)
 
   if (scriptSetup)
-    scriptSetupCode = generateSource(scriptSetup, handleScript, rule, replace)
+    scriptSetupCode = generateSource(scriptSetup, handleScript, options)
 
   if (styles) {
     for (const style of styles) {
@@ -275,3 +283,5 @@ const transformVue = (
 }
 
 export default transformVue
+
+export type { TransformVueOptions }

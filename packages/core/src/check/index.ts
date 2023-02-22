@@ -1,126 +1,194 @@
-import path from 'path'
-import fs from 'fs'
-import fsExtra from 'fs-extra'
-import log from '../utils/log'
-import type { FileExtension, I18nCallRules } from '../types'
-import { initJsParse, initTsxParse } from '../transform/parse'
-import { getAutoConfig, getJsonPath, getOutputFileDir, isUnTransed } from '../config/config'
-import { fgSync } from '../utils/glob'
-import { writeXlsxFile } from '../utils/excel'
-import { createFileName, getKeys, getValueByKey } from '../utils/help'
-import { getJsI18nKeys, getVueI18nKeys } from './checkHelp'
+import { createRequire } from 'module'
+import type { NodePath } from '@babel/traverse'
+import type {
+  CallExpression,
+} from '@babel/types'
+import type * as traverseType from '@babel/traverse/index'
+import { parse } from '@vue/compiler-sfc'
+import * as htmlparser2 from 'htmlparser2'
+import mustache from 'mustache'
+import type { ParseResult } from '@babel/core'
+import type { I18nCallRule, Log } from '../types'
+import { IGNORE_REMARK } from '../config/constants'
+import { trimValue } from '../transform/tools'
+import { initTsxParse } from '../transform/parse'
 
-const getI18nKeys = (
-  code: string,
-  ext: FileExtension,
-  rules: I18nCallRules,
-): string[] => {
-  switch (ext) {
-    case 'cjs':
-    case 'mjs':
-    case 'js':
-    case 'jsx':
-      return getJsI18nKeys(code, {
-        rule: rules[ext],
-        parse: initJsParse(),
-      })
-    case 'ts':
-    case 'tsx':
-      return getJsI18nKeys(code, {
-        rule: rules[ext],
-        parse: initTsxParse(),
-      })
-    case 'vue':
-      return getVueI18nKeys(code, rules[ext])
-    default:
-      return []
-  }
+interface GetI18nKeysOptions {
+  rule: I18nCallRule
+  parse: (code: string) => ParseResult | null
+
+  loger?: Log<any>
 }
 
-const checkAllTranslated = () => {
-  const autoConfig = getAutoConfig()
+const require = createRequire(import.meta.url)
+// see https://github.com/babel/babel/issues/13855
+const traverse: typeof traverseType.default = require('@babel/traverse').default
 
-  const { baseLangJson, otherLangJsons } = getJsonPath()
+const getJsI18nKeys = (code: string, options: GetI18nKeysOptions): string[] => {
+  const rule = options.rule
 
-  let paths: string[] = []
+  const res = new Set<string>()
 
-  paths = fgSync(autoConfig.includes)
+  const checkAST = (code: string, options: GetI18nKeysOptions) => {
+    function getTraverseOptions() {
+      return {
 
-  const firstRows: string[][] = [
-    ['paths', 'untrans key'],
-    ['used path', 'keys num', 'keys'],
-    ['used key', 'used paths'],
-  ]
-  const sheetsDatas: string[][][] = [[], [], []]
+        CallExpression(path: NodePath<CallExpression>) {
+          const { node } = path
+          const { transCaller, transIdentifier } = rule
+          const callee = node.callee
 
-  const baseLangJsonObj = fsExtra.readJsonSync(baseLangJson.path)
+          // 无调用对象的情况，例如 t('xx')
+          if (!transCaller && callee.type === 'Identifier' && callee.name === transIdentifier) {
+            if (node.arguments[0] && node.arguments[0].type === 'StringLiteral')
+              res.add(node.arguments[0].value)
+          }
 
-  const allKeysSet = new Set(getKeys(baseLangJsonObj))
+          // 有调用对象的情况，例如this.$t('xx')、i18n.$t('xx')
+          if (callee.type === 'MemberExpression') {
+            if (callee.property && callee.property.type === 'Identifier') {
+              if (callee.property.name === transIdentifier) {
+                // 处理形如i18n.$t('xx')的情况
+                if (callee.object.type === 'Identifier' && callee.object.name === transCaller) {
+                  if (node.arguments[0] && node.arguments[0].type === 'StringLiteral')
+                    res.add(node.arguments[0].value)
+                }
+                // 处理形如this.$t('xx')的情况
+                if (callee.object.type === 'ThisExpression' && transCaller === 'this') {
+                  if (node.arguments[0] && node.arguments[0].type === 'StringLiteral')
+                    res.add(node.arguments[0].value)
+                }
+              }
+            }
+          }
+        },
 
-  const keysUsedSet = new Set<string>()
-
-  const keysUsedMap = new Map<string, string[]>()
-
-  const langJsonObjMap = {} as any
-
-  firstRows[0].push(baseLangJson.name)
-
-  for (const lang of otherLangJsons) {
-    firstRows[0].push(lang.name)
-    langJsonObjMap[lang.name] = fsExtra.readJsonSync(lang.path)
-  }
-
-  for (const filePath of paths) {
-    const autoConfig = getAutoConfig()
-    const ext = path.parse(filePath).ext.slice(1) as FileExtension
-    const source = fs.readFileSync(filePath, 'utf8')
-
-    const keys: string[] = []
-    try {
-      keys.push(...getI18nKeys(source, ext, autoConfig.i18nCallRules))
-    }
-    catch (e) {
-      log.error(`Error when check ${filePath}`, e)
-      continue
-    }
-
-    for (const x of keys) {
-      keysUsedSet.add(x)
-      keysUsedMap.set(x, [...(keysUsedMap.get(x) ?? []), filePath])
-    }
-    sheetsDatas[1].push([filePath, keys.length.toString(), keys.join('\n\r')])
-  }
-
-  for (const key of keysUsedSet) {
-    if (!allKeysSet.has(key))
-      log.error(`JSON do not have key ${key}, pleace check ${baseLangJson.path}`)
-    let unTransed = false
-    for (const lang of otherLangJsons) {
-      const langVal = getValueByKey(langJsonObjMap[lang.name], key)
-      if (isUnTransed(langVal, lang.name))
-        unTransed = true
-    }
-
-    if (unTransed) {
-      const item: string[] = [keysUsedMap.get(key)?.join('\n\r') ?? '', key]
-
-      item.push(getValueByKey(baseLangJsonObj, key))
-
-      for (const lang of otherLangJsons) {
-        const langVal = getValueByKey(langJsonObjMap[lang.name], key)
-        item.push(langVal)
       }
-
-      sheetsDatas[0].push(item)
     }
 
-    sheetsDatas[2].push([key, keysUsedMap.get(key)?.join('\n\r') ?? ''])
+    const ast = options.parse(code)
+    traverse(ast, getTraverseOptions())
+    return ast
   }
 
-  writeXlsxFile(firstRows, ['unTrans key', 'all key detail', 'all key used'], sheetsDatas,
-    getOutputFileDir(`${createFileName(autoConfig.outputXlsxNameBy.check)}.xlsx`))
+  checkAST(code, options)
 
-  log.success('Check successed')
+  return [...res]
 }
 
-export { checkAllTranslated }
+const getJsSyntaxI18nKeys = (source: string, options: GetI18nKeysOptions): string[] => {
+  if (source.startsWith('{') && source.endsWith('}'))
+    source = `___temp = ${source}`
+
+  return getJsI18nKeys(source,
+    {
+      rule: {
+        ...options.rule,
+        variableDeclaration: '',
+        importDeclaration: '',
+      },
+      parse: initTsxParse(),
+      loger: options.loger,
+    },
+  )
+}
+
+const getTemplateKeys = (code: string, options: GetI18nKeysOptions): string[] => {
+  const res: string [] = []
+
+  let shouldIgnore = false
+  const parser = new htmlparser2.Parser(
+    {
+      onopentag(tagName, attributes) {
+        if (shouldIgnore)
+          return
+
+        for (const key in attributes) {
+          const attrValue = attributes[key]
+          // v-for 的 vue自定义语法无法用 getJsSyntaxI18nKeys
+          const isVueDirective = key.startsWith(':') || key.startsWith('@')
+            || (key.startsWith('v-') && !key.startsWith('v-for'))
+          if (isVueDirective) {
+            const keys = getJsSyntaxI18nKeys(attrValue, options)
+            res.push(...keys)
+          }
+        }
+      },
+
+      ontext(text) {
+        if (shouldIgnore)
+          return
+
+        const tokens = mustache.parse(text)
+        for (const token of tokens) {
+          const type = token[0]
+          let value = token[1]
+
+          value = trimValue(value)
+          if (type === 'name') {
+            const keys = getJsSyntaxI18nKeys(value, options)
+            res.push(...keys)
+          }
+        }
+      },
+      onclosetag() {
+        shouldIgnore = false
+      },
+      oncomment(comment) {
+        if (comment.includes(IGNORE_REMARK))
+          shouldIgnore = true
+      },
+    },
+    {
+      lowerCaseTags: false,
+      recognizeSelfClosing: true,
+      lowerCaseAttributeNames: false,
+    },
+  )
+
+  parser.write(code)
+  parser.end()
+  return res
+}
+
+const getScriptKeys = (source: string, options: GetI18nKeysOptions): string[] => {
+  return getJsI18nKeys(source, options)
+}
+
+const getVueI18nKeys = (
+  code: string,
+  options: GetI18nKeysOptions,
+): string[] => {
+  const { descriptor, errors } = parse(code)
+  if (errors.length > 0) {
+    options.loger?.error('Parse vue error', errors)
+    return []
+  }
+
+  const res = new Set<string>()
+
+  const { template, script, scriptSetup } = descriptor
+
+  if (template) {
+    const keys = getTemplateKeys(template.content, options)
+    for (const x of keys)
+      res.add(x)
+  }
+
+  if (script) {
+    const keys = getScriptKeys(script.content, options)
+    for (const x of keys)
+      res.add(x)
+  }
+
+  if (scriptSetup) {
+    const keys = getScriptKeys(scriptSetup.content, options)
+    for (const x of keys)
+      res.add(x)
+  }
+
+  return [...res]
+}
+
+export { getJsI18nKeys, getVueI18nKeys }
+export type { GetI18nKeysOptions }
