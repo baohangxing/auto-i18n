@@ -2,7 +2,7 @@ import { execSync } from 'child_process'
 import { readJSONSync } from 'fs-extra'
 
 import { packages } from '../meta/packages'
-import { changePackageVersion, updataReadme } from './utils'
+import { changePackageVersion } from './utils'
 
 const { version: oldVersion } = readJSONSync('package.json')
 
@@ -15,10 +15,8 @@ if (oldVersion === version) {
   process.exit()
 }
 
-for (const { path } of packages) {
+for (const { path } of packages)
   changePackageVersion(path, version)
-  updataReadme(path)
-}
 
 execSync('pnpm run build', { stdio: 'inherit' })
 execSync('git add .', { stdio: 'inherit' })

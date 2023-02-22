@@ -4,8 +4,14 @@ interface Packages {
 }
 
 const packages: Packages[] = [{
+  path: './packages/cli',
+  name: '@h1mple/auto-i18n-cli',
+}, {
   path: './packages/core',
-  name: 'auto-i18n',
+  name: '@h1mple/auto-i18n-core',
+}, {
+  path: './packages/vsce',
+  name: '@h1mple/auto-i18n',
 }]
 
 export { packages }
