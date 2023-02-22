@@ -5,8 +5,8 @@ import {
   fgSync, getKeys,
   getValueByKey,
 } from '@h1mple/auto-i18n-core'
+import type { FileExtension } from '@h1mple/auto-i18n-core'
 import log from '../utils/log'
-import type { FileExtension } from '../types'
 import { getAutoConfig, getJsonPath, getOutputFileDir, isUnTransed } from '../config/config'
 import { writeXlsxFile } from '../utils/excel'
 import { createFileName } from '../utils/help'
@@ -16,6 +16,11 @@ const checkAllTranslated = () => {
   const autoConfig = getAutoConfig()
 
   const { baseLangJson, otherLangJsons } = getJsonPath()
+
+  if (!baseLangJson) {
+    log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
+    return
+  }
 
   let paths: string[] = []
 

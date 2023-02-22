@@ -6,7 +6,7 @@ import { trimRootPath } from '../_helps/utils'
 describe('#glob', () => {
   describe('fgSync', () => {
     it('should get absolute paths', () => {
-      const list = trimRootPath(fgSync('test/utils/**'))
+      const list = trimRootPath(fgSync(['**/check/**', '!coverage/**']))
       expect(list).toMatchSnapshot()
     })
     it('should get absolute paths', () => {

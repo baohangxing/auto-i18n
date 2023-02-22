@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import { CONFIG_FILE_NAME } from '@h1mple/auto-i18n-core'
+import { CONFIG_FILE_NAME } from '../../src/config/constants'
 
 type PlaygroundFn = (content: { name: string; playgroundRoot: string;outputFileDir: string }) => Promise<void>
 
@@ -15,10 +15,15 @@ const removeTestPlayground = (name: string) => {
   const configPath = path.resolve(CONFIG_FILE_NAME)
   if (fs.existsSync(configPath))
     fs.rmSync(configPath)
+
+  process.env._autoTestPlaygroundRuning = undefined
 }
 
 const createTestPlayground = (name: string) => {
+  process.env._autoTestPlaygroundRuning = name
+
   const pgPath = getTestPlaygroundRootPath(name)
+
   const fromPath = path.resolve('test', '_helps', 'playground')
   if (fs.existsSync(pgPath))
     removeTestPlayground(name)
@@ -32,28 +37,40 @@ const createTestPlayground = (name: string) => {
   fs.cpSync(configPath, path.resolve(CONFIG_FILE_NAME), { force: true })
 }
 
-/**
- * Create a playground for testing, can't use `expect` in `play`
- * @param play
- */
-const playground = async (play: PlaygroundFn) => {
-  const name = `playground_${+new Date()}`
-  const pgPath = getTestPlaygroundRootPath(name)
+const playground = (() => {
+  const tasks: (() => Promise<void>)[] = []
 
-  createTestPlayground(name)
-  try {
-    await play({
-      name,
-      playgroundRoot: pgPath,
-      outputFileDir: path.join(pgPath, 'output'),
-    })
+  const runTask = async () => {
+    if (tasks.length && !process.env._autoTestPlaygroundRuning) {
+      const task = tasks.shift()
+      task && await task()
+      runTask()
+    }
   }
-  catch (error) {
-    removeTestPlayground(name)
-    throw error
+
+  return async (play: PlaygroundFn) => {
+    const task = async () => {
+      const name = `playground_${+new Date()}`
+      const pgPath = getTestPlaygroundRootPath(name)
+
+      createTestPlayground(name)
+      try {
+        await play({
+          name,
+          playgroundRoot: pgPath,
+          outputFileDir: path.join(pgPath, 'output'),
+        })
+      }
+      catch (error) {
+        removeTestPlayground(name)
+        throw error
+      }
+      removeTestPlayground(name)
+    }
+    tasks.push(task)
+    runTask()
   }
-  removeTestPlayground(name)
-}
+})()
 
 export { playground }
 

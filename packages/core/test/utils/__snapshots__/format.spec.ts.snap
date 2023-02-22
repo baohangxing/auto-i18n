@@ -1,5 +1,11 @@
 // Vitest Snapshot v1
 
+exports[`#checkEslintConfigExist > should return true 1`] = `
+[
+  "",
+]
+`;
+
 exports[`#format > should format file content 1`] = `
 "/**
     * sort Object by lexical recursively, retren a new Object.

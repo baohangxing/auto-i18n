@@ -20,7 +20,7 @@ const getAutoBaseConfig = (defaultConfig = defaultAutoBaseConfig, configPath?: s
 }
 
 const getJsonPath = (): {
-  baseLangJson: LangJson
+  baseLangJson: LangJson | undefined
   otherLangJsons: LangJson[]
 } => {
   const autoConfig = getAutoBaseConfig()

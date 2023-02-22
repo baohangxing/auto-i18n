@@ -4,6 +4,7 @@ import { getAutoConfig, getJsonPath, getOutputFileDir, isUnTransed } from '../co
 import { KEY_SYMBOL_IN_XLSX } from '../config/constants'
 import { writeXlsxFile } from '../utils/excel'
 import { createFileName } from '../utils/help'
+import log from '../utils/log'
 
 const { readJsonSync } = fsExtra
 
@@ -12,6 +13,10 @@ const generateXlsx = async () => {
 
   const { baseLangJson, otherLangJsons } = getJsonPath()
 
+  if (!baseLangJson) {
+    log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
+    return
+  }
   const baseLangJsonObj = readJsonSync(baseLangJson.path)
 
   const baseJsonKeySet = new Set(getKeys(baseLangJsonObj))
