@@ -1,10 +1,7 @@
-// https://github.com/mrmlnc/fast-glob
-
 import path from 'path'
 import fs from 'fs'
-import fg from 'fast-glob'
+import fg from 'fast-glob' // https://github.com/mrmlnc/fast-glob
 import type { Options } from 'fast-glob'
-import log from './log'
 
 const fgOptions: Options = {
   absolute: true,
@@ -24,14 +21,12 @@ const checkInPatterns = (path: string, patterns: string[] | string): boolean => 
   return paths.includes(path)
 }
 
-/** get absolute paths by a dir or file path */
-const getPaths = (dirOrFile: string): string[] => {
+/** get absolute paths by a dir or file path recursively */
+const getRecursivePaths = (dirOrFile: string): string[] => {
   const dirOrFilePath = path.join(process.cwd(), dirOrFile)
 
-  if (!fs.existsSync(dirOrFilePath)) {
-    log.error(`Don't exists ${dirOrFilePath}`)
+  if (!fs.existsSync(dirOrFilePath))
     return []
-  }
 
   if (fs.statSync(dirOrFilePath).isDirectory()) {
     const files: string[] = []
@@ -58,4 +53,4 @@ const getPaths = (dirOrFile: string): string[] => {
   }
 }
 
-export { fgSync, getPaths, checkInPatterns }
+export { fgSync, getRecursivePaths, checkInPatterns }

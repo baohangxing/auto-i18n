@@ -1,24 +1,21 @@
 import path from 'path'
 import { cosmiconfigSync } from 'cosmiconfig'
 import type { CosmiconfigResult } from 'cosmiconfig/dist/types'
-import type { AutoConfig, LangJson } from '../types/config'
-import log from '../utils/log'
 import { fgSync } from '../utils/glob'
+import type { AutoBaseConfig, LangJson } from '../types'
 import { CLI_CONFIG_NAME } from './constants'
-import defaultAutoConfig from './defaultAutoConfig'
+import defaultAutoBaseConfig from './defaultAutoBaseConfig'
 
-const readLocalAutoConfig = (configPath?: string): AutoConfig | null => {
+const readLocalAutoBaseConfig = (configPath?: string): AutoBaseConfig | null => {
   const explorer = cosmiconfigSync(CLI_CONFIG_NAME)
   const result: CosmiconfigResult = configPath ? explorer.load(configPath) : explorer.search()
-
-  if (!result?.config)
-    log.error(`Pleace add ${CLI_CONFIG_NAME} config file in your project(${process.cwd()})`)
 
   return result?.config
 }
 
-const getAutoConfig = () => {
-  const autoConfig: AutoConfig = Object.assign({}, defaultAutoConfig, readLocalAutoConfig())
+const getAutoBaseConfig = (defaultConfig = defaultAutoBaseConfig, configPath?: string) => {
+  const autoConfig: AutoBaseConfig = Object.assign({},
+    defaultConfig, readLocalAutoBaseConfig(configPath))
   return autoConfig
 }
 
@@ -26,7 +23,7 @@ const getJsonPath = (): {
   baseLangJson: LangJson
   otherLangJsons: LangJson[]
 } => {
-  const autoConfig = getAutoConfig()
+  const autoConfig = getAutoBaseConfig()
 
   let otherLangJsons: LangJson[] = []
 
@@ -46,9 +43,10 @@ const getJsonPath = (): {
         break
       }
     }
-    if (!findFlag)
-      log.error(`No JSON file(${x}.json) in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
-      // process.exit(1)
+    if (!findFlag) {
+      throw new Error(`No JSON file(${x}.json) in AutoBaseConfig.localesJsonDirs:`
+        + ` ${autoConfig.localesJsonDirs}`)
+    }
   }
   let baseLangJson: LangJson = { name: autoConfig.baseLocale, path: '' }
   if (autoConfig.baseLocale.includes(autoConfig.baseLocale)) {
@@ -63,8 +61,7 @@ const getJsonPath = (): {
       }
     }
     if (!baseLangJson.path)
-      log.error(`No base JSON file in AutoConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
-      // process.exit(1)
+      throw new Error(`No base JSON file in AutoBaseConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
   }
 
   return {
@@ -72,22 +69,5 @@ const getJsonPath = (): {
     otherLangJsons,
   }
 }
-const isUnTransed = (str: string | null | undefined, locale: string) => {
-  if (typeof str !== 'string')
-    return false
-  const autoConfig = getAutoConfig()
 
-  return str.indexOf(autoConfig.untransSymbol(locale)) === 0
-}
-
-const unTransLocale = (str: string, locale: string) => {
-  const autoConfig = getAutoConfig()
-  return autoConfig.untransSymbol(locale) + str
-}
-
-const getOutputFileDir = (fileName: string) => {
-  const autoConfig = getAutoConfig()
-  return path.join(process.cwd(), autoConfig.outputFileDir, fileName)
-}
-
-export { getAutoConfig, getJsonPath, isUnTransed, unTransLocale, getOutputFileDir }
+export { getAutoBaseConfig, getJsonPath }

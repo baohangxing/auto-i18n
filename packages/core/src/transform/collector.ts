@@ -1,10 +1,8 @@
 import path from 'path'
 import { createRequire } from 'module'
 import fsExtra from 'fs-extra'
-import { updateBaseLocale, updateLocales } from '../command/update'
-import { getJsonPath } from '../config/config'
 import { getKeys, getValueByKey } from '../utils/help'
-import log from '../utils/log'
+import type { Collector, Log } from '../types'
 
 const require = createRequire(import.meta.url)
 const { pinyin } = require('pinyin-pro')
@@ -15,74 +13,72 @@ const getPinyin = (chinese: string): string => {
   }).replace(/\s/g, '')
 }
 
-class Collector {
-  static keyZhMap: Record<string, string> = {}
-  static zhKeyMap: Record<string, string> = {}
+class KeyCollector implements Collector {
+  keyZhMap: Record<string, string> = {}
+  zhKeyMap: Record<string, string> = {}
 
-  static unExistZhSet = new Set<string>()
+  unExistZhSet = new Set<string>()
 
-  static inited = false
+  inited = false
 
-  private constructor() {}
+  loger?: Log<any>
+  baseLangJsonPath: string
 
-  static add(chinese: string) {
-    if (!Collector.zhKeyMap[chinese])
-      Collector.unExistZhSet.add(chinese)
-    log.verbose('Extract Chinese: ', `${chinese}: ${Collector.getKey(chinese)}`)
+  constructor(baseLangJsonPath: string, loger?: Log<any>) {
+    this.baseLangJsonPath = baseLangJsonPath
+    this.loger = loger
   }
 
-  static getKey(chinese: string): string {
-    if (Collector.zhKeyMap[chinese])
-      return Collector.zhKeyMap[chinese]
+  add(chinese: string) {
+    if (!this.zhKeyMap[chinese])
+      this.unExistZhSet.add(chinese)
+    this.loger?.verbose('Extract Chinese: ', `${chinese}: ${this.getKey(chinese)}`)
+  }
+
+  getKey(chinese: string): string {
+    if (this.zhKeyMap[chinese])
+      return this.zhKeyMap[chinese]
 
     let newKey = getPinyin(chinese)
     let index = 0
 
-    while (Collector.keyZhMap[newKey])
+    while (this.keyZhMap[newKey])
       newKey = `${getPinyin(chinese)}-{${++index}}`
 
-    Collector.keyZhMap[newKey] = chinese
-    Collector.zhKeyMap[chinese] = newKey
+    this.keyZhMap[newKey] = chinese
+    this.zhKeyMap[chinese] = newKey
 
     return newKey
   }
 
-  static init(keyJsonPath?: string) {
-    if (!Collector.inited) {
-      const { baseLangJson } = getJsonPath()
-      const baseLangJsonObj = fsExtra.readJsonSync(baseLangJson.path)
+  init(keyJsonPath?: string) {
+    if (!this.inited) {
+      const baseLangJsonPath = this.baseLangJsonPath
+      const baseLangJsonObj = fsExtra.readJsonSync(baseLangJsonPath)
 
       const keys = new Set(getKeys(baseLangJsonObj))
       for (const k of keys) {
         const v = getValueByKey(baseLangJsonObj, k)
 
-        Collector.keyZhMap[k] = v
-        Collector.zhKeyMap[v] = k
+        this.keyZhMap[k] = v
+        this.zhKeyMap[v] = k
       }
       if (keyJsonPath) {
         const jsonObj = fsExtra.readJsonSync(path.join(process.cwd(), keyJsonPath))
         const keys = new Set(getKeys(jsonObj))
         for (const k of keys) {
           const v = getValueByKey(jsonObj, k)
-          if (Collector.keyZhMap[k] && Collector.keyZhMap[k] !== v) {
-            log.error(`JSON key ${k} have 2 kinds of val: ${Collector.keyZhMap[k]} and ${v}`)
+          if (this.keyZhMap[k] && this.keyZhMap[k] !== v) {
+            this.loger?.error(`JSON key ${k} have 2 kinds of val: ${this.keyZhMap[k]} and ${v}`)
           }
           else {
-            Collector.keyZhMap[k] = v
-            Collector.zhKeyMap[v] = k
+            this.keyZhMap[k] = v
+            this.zhKeyMap[v] = k
           }
         }
       }
     }
-    else {
-      log.error('Collector has inited')
-    }
-  }
-
-  static async updataJson() {
-    await updateBaseLocale(Collector.keyZhMap)
-    await updateLocales()
   }
 }
 
-export default Collector
+export default KeyCollector

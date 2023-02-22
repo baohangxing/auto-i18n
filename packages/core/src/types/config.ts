@@ -1,12 +1,6 @@
-import type { I18nCallRule } from './transform'
+import type { FileExtension, I18nCallRule, TransInterpolationsMode } from './transform'
 
-export type FileExtension = 'js' | 'ts' | 'cjs' | 'mjs' | 'jsx' | 'tsx' | 'vue'
-
-export type I18nCallRules = Record<FileExtension, I18nCallRule>
-
-export type TransInterpolationsMode = 'NamedInterpolationMode' | 'ListInterpolationMode'
-
-export interface AutoConfig {
+export interface AutoBaseConfig {
   /**
    * Glob patterns to match local language JSON files.
    * Using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
@@ -31,35 +25,6 @@ export interface AutoConfig {
   baseLocale: string
 
   /**
-   * Symbol of the not translated words
-   *
-   * @param locale one name of the `locales`
-   * @returns
-   */
-  untransSymbol: (locale: string) => string
-
-  /**
-   * Translate word function when not translated.
-   */
-  transLacaleWord?: (word: string, locale: string, toLocale: string) => Promise<string>
-
-  /**
-    * Glob patterns to match files that CLI plans to transform,
-    * Using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
-    *
-    * @example ["src/*.{vue}", "view/**"]
-    */
-  includes: string[]
-
-  /**
-    * Directory path of output files,
-    * the default directory path is your project root path
-    *
-    * @default `./ `
-    */
-  outputFileDir: string
-
-  /**
    * Interpolations mode of i18n message format syntax.
    *
    * For example: Vue I18n supports interpolation using placeholders {} like "Mustache".
@@ -69,79 +34,4 @@ export interface AutoConfig {
 
   i18nCallRules: Record<FileExtension, I18nCallRule>
 
-  /**
-   * Whether to format files or not when editing or new.
-   * Please add Eslint and configure it, if u set true.
-   * @default false
-   */
-  autoFormat: boolean
-
-  /**
-    * Glob patterns to match files that need formating.
-    *
-    * Using `fast-glob`'s glob patterns, see deteils: https://github.com/mrmlnc/fast-glob.
-    *
-    * @example ["*.{vue}"]
-    */
-  autoFormatRules: string[]
-
-  /**
-   * Regular expression to match i18n key in code.
-   *
-   * @example [/\Wkeypath:(?:\s+)?['"]([\w\\.]+)["']/gm]
-   */
-  checkUsageMatchAppend: RegExp[]
-
-  /**
-   *  Append names of the output Xlsx files.
-   */
-  outputXlsxNameBy: {
-    /**
-     * Name of files which created by command `auto genXlsx`
-     *
-     * @default `genXlsx`
-     */
-    genXlsx: string
-
-    /**
-     * Name of files which created by command `auto trans`.
-     *
-     * @default `trans`
-     */
-    trans: string
-
-    /**
-     * Name of files which created by command `auto check`.
-     *
-     * @default `check`
-     */
-    check: string
-  }
-}
-
-export interface TransCommandOption {
-  transPath: string
-  modifyMode: boolean
-  templateFile: string
-}
-
-export interface RevertCommandOption {
-  revertPath: string
-
-  /**
-   * Language JSON files name
-   * @example `zh-cn`
-   */
-  target: string
-}
-
-export interface LangJson {
-
-  /**
-   * Language JSON files name
-   * @example `zh-cn`
-   */
-  name: string
-
-  path: string
 }

@@ -3,10 +3,10 @@ import t from '@babel/types'
 import type { SFCDescriptor, SFCScriptBlock, SFCStyleBlock, SFCTemplateBlock } from '@vue/compiler-sfc'
 import type { I18nCallRule } from '../types'
 
-const getCallExpression = (rule: I18nCallRule, identifier: string, quote = '\''): string => {
+const getCallExpression = (rule: I18nCallRule, identifier: string): string => {
   const { transCaller, transIdentifier } = rule
   const transCallerName = transCaller ? `${transCaller}.` : ''
-  const expression = `${transCallerName}${transIdentifier}(${quote}${identifier}${quote})`
+  const expression = `${transCallerName}${transIdentifier}('${identifier}')`
   return expression
 }
 

@@ -21,12 +21,11 @@ import { isEmpty, isObject } from 'lodash-es'
 import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'
-import type { I18nCallRule, TransformOptions } from '../types'
+import type { ParseResult } from '@babel/core'
+import type { Collector, I18nCallRule, Log } from '../types'
 import { includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
-import { getAutoConfig } from '../config/config'
-import log from '../utils/log'
-import Collector from './collector'
+import { getAutoBaseConfig as getAutoConfig } from '../config/config'
 import { escapeQuotes, getCallExpression, getStringLiteral } from './tools'
 
 const require = createRequire(import.meta.url)
@@ -48,6 +47,22 @@ type ListInterpolationParams = Array< string
   isAstNode: true
   value: Expression
 }>
+
+interface TransformJsOptions {
+  rule: I18nCallRule
+  parse: (code: string) => ParseResult | null
+
+  replace: boolean
+
+  /**
+   * Whether handle js in vue
+   */
+  isJsInVue?: boolean
+
+  loger?: Log<any>
+
+  collector: Collector
+}
 
 const getObjectExpression = (obj: NamedInterpolationParams): ObjectExpression => {
   const ObjectPropertyArr: ObjectProperty[] = []
@@ -122,21 +137,14 @@ const isPropDefaultStringLiteralNode = (path: NodePath<StringLiteral>): boolean 
   return isMeetProp && isMeetKey && isMeetContainer
 }
 
-/**
- *
- * @param rule
- * @param value
- * @param params params of i18n
- * @returns
- */
-const getReplaceValue = (rule: I18nCallRule, value: string,
+const getReplaceValue = (rule: I18nCallRule, value: string, replaceValue: string,
   params?: NamedInterpolationParams | ListInterpolationParams,
 ): Expression => {
   value = escapeQuotes(value)
   const { transCaller, transIdentifier } = rule
   let expression: string
   if (params) {
-    const keyLiteral = getStringLiteral(Collector.getKey(value))
+    const keyLiteral = getStringLiteral(replaceValue)
     if (transCaller) {
       return t.callExpression(
         t.memberExpression(t.identifier(transCaller), t.identifier(transIdentifier)),
@@ -156,12 +164,12 @@ const getReplaceValue = (rule: I18nCallRule, value: string,
     }
   }
   else {
-    expression = getCallExpression(rule, Collector.getKey(value))
+    expression = getCallExpression(rule, replaceValue)
     return template.expression(expression)()
   }
 }
 
-const transformJs = (code: string, options: TransformOptions, replace = true): GeneratorResult => {
+const transformJs = (code: string, options: TransformJsOptions): GeneratorResult => {
   const autoConfig = getAutoConfig()
 
   const rule = options.rule
@@ -171,7 +179,9 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
   // 文件里是否存在中文转换，有的话才有必要导入i18n
   let hasTransformed = false
 
-  const transformAST = (code: string, options: TransformOptions) => {
+  const transformAST = (code: string, options: TransformJsOptions) => {
+    const collector = options.collector
+
     function getTraverseOptions() {
       return {
         enter(path: NodePath) {
@@ -193,9 +203,9 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
 
         StringLiteral(path: NodePath<StringLiteral>) {
           if (includeChinese(path.node.value) && options.isJsInVue && isPropDefaultStringLiteralNode(path)) {
-            Collector.add(path.node.value)
-            if (replace) {
-              const expression = `() => ${getCallExpression(rule, Collector.getKey(path.node.value))}`
+            collector.add(path.node.value)
+            if (options.replace) {
+              const expression = `() => ${getCallExpression(rule, collector.getKey(path.node.value))}`
               path.replaceWith(template.expression(expression)())
               hasTransformed = true
             }
@@ -204,9 +214,11 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
           }
 
           if (includeChinese(path.node.value)) {
-            Collector.add(path.node.value)
-            if (replace) {
-              path.replaceWith(getReplaceValue(rule, path.node.value))
+            collector.add(path.node.value)
+            if (options.replace) {
+              path.replaceWith(
+                getReplaceValue(rule, path.node.value, collector.getKey(path.node.value)),
+              )
               hasTransformed = true
             }
           }
@@ -294,14 +306,14 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
               slotParams = isEmpty(params) ? undefined : params
             }
             else {
-              log.error('AutoConfig.transInterpolationsMode must is '
+              options.loger?.error('AutoConfig.transInterpolationsMode must is '
                 + '\'NamedInterpolationMode\' or \'ListInterpolationMode\'')
             }
 
-            Collector.add(value)
+            collector.add(value)
 
-            if (replace) {
-              path.replaceWith(getReplaceValue(rule, value, slotParams))
+            if (options.replace) {
+              path.replaceWith(getReplaceValue(rule, value, collector.getKey(value), slotParams))
               hasTransformed = true
             }
           }
@@ -309,10 +321,11 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
 
         JSXText(path: NodePath<JSXText>) {
           if (includeChinese(path.node.value)) {
-            Collector.add(path.node.value)
-            if (replace) {
+            collector.add(path.node.value)
+            if (options.replace) {
               // TODO trim
-              path.replaceWith(t.jSXExpressionContainer(getReplaceValue(rule, path.node.value)))
+              path.replaceWith(t.jSXExpressionContainer(
+                getReplaceValue(rule, path.node.value, collector.getKey(path.node.value))))
               hasTransformed = true
             }
           }
@@ -323,10 +336,12 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
           const node = path.node as NodePath<JSXAttribute>['node']
           const valueType = node.value?.type
           if (valueType === 'StringLiteral' && node.value && includeChinese(node.value.value)) {
-            Collector.add(node.value.value)
-            if (replace) {
+            collector.add(node.value.value)
+            if (options.replace) {
               const jsxIdentifier = t.jsxIdentifier(node.name.name as string)
-              const jsxContainer = t.jSXExpressionContainer(getReplaceValue(rule, node.value.value))
+              const jsxContainer = t.jSXExpressionContainer(
+                getReplaceValue(rule, node.value.value, collector.getKey(node.value.value)),
+              )
               path.replaceWith(t.jsxAttribute(jsxIdentifier, jsxContainer))
               hasTransformed = true
             }
@@ -424,3 +439,5 @@ const transformJs = (code: string, options: TransformOptions, replace = true): G
 }
 
 export default transformJs
+
+export type { TransformJsOptions }

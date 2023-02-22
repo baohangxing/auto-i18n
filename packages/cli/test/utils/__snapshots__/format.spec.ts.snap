@@ -1,0 +1,23 @@
+// Vitest Snapshot v1
+
+exports[`#format > should format file content 1`] = `
+"/**
+    * sort Object by lexical recursively, retren a new Object.
+    * not support array value
+    * @param obj
+    * @returns
+    */
+const sortObjectKey = (obj: any): any => {
+  if (!obj)
+    return {}
+  const a: any = {}; const keys = Object.keys(obj).sort(lexicalComparator)
+  for (const key of keys) {
+    if (typeof obj[key] === 'object')
+      a[key] = sortObjectKey(obj[key])
+    else
+      a[key] = obj[key]
+  }
+  return a
+}
+"
+`;
