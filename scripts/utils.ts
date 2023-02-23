@@ -14,7 +14,7 @@ const updataReadme = (readmePath: string) => {
   const readme
     = readFileSync(path.resolve('./README.md')).toString()
 
-  writeFileSync(path.resolve(readmePath, './README.md'), readme, 'utf8')
+  writeFileSync(path.resolve(readmePath, './README.md'), readme, 'utf-8')
 }
 
 export { changePackageVersion, updataReadme }

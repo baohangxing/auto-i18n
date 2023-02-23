@@ -23,7 +23,7 @@ const writeToJsonFile = async (
 ) => {
   const jsonPath = path.join(writeToPath, `${name}.json`)
   const autoConfig = getAutoConfig()
-  fs.writeFileSync(jsonPath, `${JSON.stringify(sortObjectKey(obj), undefined, 2)}\n`, 'utf8')
+  fs.writeFileSync(jsonPath, `${JSON.stringify(sortObjectKey(obj), undefined, 2)}\n`, 'utf-8')
 
   if (autoConfig.autoFormat && checkInPatterns(jsonPath, autoConfig.autoFormatRules))
     await lintFiles(jsonPath)

@@ -10,17 +10,17 @@ describe('#writeFileSyncForce', () => {
   it('should write file forcely', async () => {
     const content = 'test'
 
-    writeFileSyncForce(filePath, content, 'utf8')
+    writeFileSyncForce(filePath, content, 'utf-8')
 
-    expect(fs.readFileSync(filePath).toString()).toEqual(content)
+    expect(fs.readFileSync(filePath, 'utf-8')).toEqual(content)
   })
 
   it('should write file forcely', async () => {
     const content = 'test'
 
-    writeFileSyncForce(filePath, content, 'utf8')
+    writeFileSyncForce(filePath, content, 'utf-8')
 
-    expect(fs.readFileSync(filePath).toString()).toEqual(content)
+    expect(fs.readFileSync(filePath, 'utf-8')).toEqual(content)
   })
 })
 

@@ -6,7 +6,7 @@ import { parse } from '@vue/compiler-sfc'
 import * as htmlparser2 from 'htmlparser2'
 import mustache from 'mustache'
 import ejs from 'ejs'
-import type { Collector, I18nCallRule, Log } from '../types'
+import type { AutoBaseConfig, Collector, I18nCallRule, Log } from '../types'
 import { includeChinese } from '../utils/help'
 import { IGNORE_REMARK, VUE_COMMENT_TYPE } from '../config/constants'
 import transformJs from './transformJs'
@@ -29,6 +29,8 @@ interface TransformVueOptions {
   loger?: Log<any>
 
   collector: Collector
+
+  autoConfig: AutoBaseConfig
 }
 
 type Handler = (source: string, options: TransformVueOptions,) => string
@@ -57,6 +59,7 @@ const handleTemplate = (code: string, options: TransformVueOptions): string => {
         parse: initTsxParse(),
         replace: options.replace,
         collector: options.collector,
+        autoConfig: options.autoConfig,
       })
 
     let stylizedCode = code
@@ -216,6 +219,7 @@ const handleScript = (source: string, options: TransformVueOptions): string => {
     isJsInVue: true,
     parse: initTsxParse(),
     collector: options.collector,
+    autoConfig: options.autoConfig,
   })
   return `\n${code}\n`
 }

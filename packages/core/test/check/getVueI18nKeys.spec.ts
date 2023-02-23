@@ -15,13 +15,13 @@ const genGetI18nKeysOptions = (): GetI18nKeysOptions => {
 }
 
 describe('#getVueI18nKeys', () => {
-  it('should get all i18n keys', async () => {
+  it('should get all i18n keys in vue', async () => {
     const code = `
     <template>
       <div>这是{{t('test')}}</div>
     </template>
     <script setup>
-    let title = t('title')
+      let title = t('title')
     </script>
     `
     const list = getVueI18nKeys(code, genGetI18nKeysOptions())
@@ -30,17 +30,17 @@ describe('#getVueI18nKeys', () => {
     expect(list).toContain('test')
   })
 
-  it('should get all i18n keys', async () => {
+  it('should get all i18n keys in script', async () => {
     const code = `
     <script>
-    let title = t('title')
+      let title = t('title')
     </script>
     `
     const list = getVueI18nKeys(code, genGetI18nKeysOptions())
     expect(list).toEqual(['title'])
   })
 
-  it('should get all i18n keys', async () => {
+  it('should get all i18n keys in template', async () => {
     const code = `
     <template>
       <comp :title="t('title')">这是{{t('test')}}</comp>
@@ -53,7 +53,7 @@ describe('#getVueI18nKeys', () => {
     expect(list).toContain('test')
   })
 
-  it('should get all i18n keys', async () => {
+  it('should get all i18n keys in event-attr of template', async () => {
     const code = `
     <template>
       <comp @click="()=>{a=t('title')}">这是{{t('test')}}</comp>
@@ -66,7 +66,7 @@ describe('#getVueI18nKeys', () => {
     expect(list).toContain('test')
   })
 
-  it('should get all i18n keys', async () => {
+  it('should get all i18n keys in v-if of template', async () => {
     const code = `
     <template>
       <comp v-if="t('title')">这是{{t('test')}}</comp>
@@ -79,7 +79,7 @@ describe('#getVueI18nKeys', () => {
     expect(list).toContain('test')
   })
 
-  it('should get no i18n keys', async () => {
+  it('should get no i18n keys if ignored', async () => {
     const code = `
     <template>
       <!--auto-i18n-ignore-->
@@ -91,7 +91,7 @@ describe('#getVueI18nKeys', () => {
     expect(list).toEqual([])
   })
 
-  it('should get all i18n keys', async () => {
+  it('should get all i18n keys in object of template', async () => {
     const code = `
     <template>
       <comp v-if="{a:t('title')}">这是{{t('test')}}</comp>

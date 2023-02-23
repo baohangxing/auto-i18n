@@ -50,7 +50,7 @@ describe('#writeToJsonFile', () => {
   it('should write JSON file', async () => {
     await writeToJsonFile(filePath, name, obj)
     expect(fs.existsSync(jsonPath)).toBe(true)
-    expect(fs.readFileSync(jsonPath).toString()).toMatchSnapshot()
+    expect(fs.readFileSync(jsonPath, 'utf-8')).toMatchSnapshot()
     fs.rmSync(jsonPath)
   })
 })

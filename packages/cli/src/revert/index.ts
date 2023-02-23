@@ -3,9 +3,10 @@ import fs from 'fs'
 import type { FileExtension, I18nCallRules } from '@h1mple/auto-i18n-core'
 import {
   checkInPatterns,
-  getRecursivePaths, initJsParse,
-  initTsxParse, lintFiles, revertJs,
-  revertVue, writeFileSyncForce,
+  getRecursivePaths,
+  initJsParse, initTsxParse,
+  lintFiles, revertJs, revertVue,
+  revertWordByKey, writeFileSyncForce,
 } from '@h1mple/auto-i18n-core'
 import log from '../utils/log'
 import { getAutoConfig } from '../config/config'
@@ -17,6 +18,8 @@ const revertCode = (
   rules: I18nCallRules,
   locale: string,
 ): string => {
+  const getWordByKey = revertWordByKey(locale)
+
   switch (ext) {
     case 'cjs':
     case 'mjs':
@@ -25,20 +28,20 @@ const revertCode = (
       return revertJs(code, {
         rule: rules[ext],
         parse: initJsParse(),
-        locale,
+        getWordByKey,
       })
     case 'ts':
     case 'tsx':
       return revertJs(code, {
         rule: rules[ext],
         parse: initTsxParse(),
-        locale,
+        getWordByKey,
       })
     case 'vue':
       return revertVue(code, {
         rule: rules[ext],
         parse: initTsxParse(),
-        locale,
+        getWordByKey,
       })
     default:
       log.error(`Not support revert .${ext} extension`)
@@ -49,7 +52,7 @@ const revertCode = (
 const revertSingleFile = (filePath: string, locale: string) => {
   const autoConfig = getAutoConfig()
   const ext = path.parse(filePath).ext.slice(1) as FileExtension
-  const source = fs.readFileSync(filePath, 'utf8')
+  const source = fs.readFileSync(filePath, 'utf-8')
   const code = revertCode(source, ext, autoConfig.i18nCallRules, locale)
   return code
 }
@@ -82,7 +85,7 @@ const revert = async (option: RevertCommandOption) => {
       const outputPath = path.join(process.cwd(),
         autoConfig.outputFileDir, `revert-${revertRootName}`, filePath.replace(revertRoot, '.'))
 
-      writeFileSyncForce(outputPath, code, 'utf8')
+      writeFileSyncForce(outputPath, code, 'utf-8')
       if (autoConfig.autoFormat && checkInPatterns(outputPath, autoConfig.autoFormatRules))
         await lintFiles(outputPath)
     }

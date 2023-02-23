@@ -1,8 +1,10 @@
 import path from 'path'
 import { cosmiconfigSync } from 'cosmiconfig'
 import type { CosmiconfigResult } from 'cosmiconfig/dist/types'
+import fsExtra from 'fs-extra'
 import { fgSync } from '../utils/glob'
 import type { AutoBaseConfig, LangJson } from '../types'
+import { getValueByKey } from '..'
 import { CLI_CONFIG_NAME } from './constants'
 import defaultAutoBaseConfig from './defaultAutoBaseConfig'
 
@@ -43,6 +45,7 @@ const getJsonPath = (): {
         break
       }
     }
+    /* c8 ignore next 3 */
     if (!findFlag) {
       throw new Error(`No JSON file(${x}.json) in AutoBaseConfig.localesJsonDirs:`
         + ` ${autoConfig.localesJsonDirs}`)
@@ -60,6 +63,7 @@ const getJsonPath = (): {
         break
       }
     }
+    /* c8 ignore next 2 */
     if (!baseLangJson.path)
       throw new Error(`No base JSON file in AutoBaseConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
   }
@@ -70,4 +74,25 @@ const getJsonPath = (): {
   }
 }
 
-export { getAutoBaseConfig, getJsonPath }
+/* c8 ignore next 18 */
+const revertWordByKey = (locale: string) :((key: string) => string) => {
+  const { baseLangJson, otherLangJsons } = getJsonPath()
+
+  if (!baseLangJson) {
+    return (key: string) => {
+      return key
+    }
+  }
+  let langObj: any = fsExtra.readJsonSync(baseLangJson.path)
+
+  for (const x of otherLangJsons) {
+    if (x.name === locale)
+      langObj = fsExtra.readJsonSync(x.path)
+  }
+  return (key: string) => {
+    const val = getValueByKey(langObj, key)
+    return typeof val === 'string' ? val : ''
+  }
+}
+
+export { getAutoBaseConfig, getJsonPath, revertWordByKey }

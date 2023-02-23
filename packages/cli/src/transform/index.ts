@@ -1,6 +1,7 @@
 import { initJsParse, initTsxParse, transformJs, transformVue } from '@h1mple/auto-i18n-core'
 import type { Collector, FileExtension, I18nCallRules, Log } from '@h1mple/auto-i18n-core'
 import log from '../utils/log'
+import type { AutoConfig } from '../types'
 
 const transform = (
   code: string,
@@ -8,6 +9,7 @@ const transform = (
   rules: I18nCallRules,
   collector: Collector,
   loger: Log<any>,
+  autoConfig: AutoConfig,
   replace = true,
 ): {
   code: string
@@ -23,6 +25,7 @@ const transform = (
         collector,
         replace,
         loger,
+        autoConfig,
       })
     case 'ts':
     case 'tsx':
@@ -32,6 +35,7 @@ const transform = (
         collector,
         replace,
         loger,
+        autoConfig,
       })
     case 'vue':
       return transformVue(code, {
@@ -39,6 +43,7 @@ const transform = (
         collector,
         replace,
         loger,
+        autoConfig,
       })
     default:
       log.error(`Not support transform .${ext} extension`)

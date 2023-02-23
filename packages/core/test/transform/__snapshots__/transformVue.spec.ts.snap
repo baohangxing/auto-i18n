@@ -1,6 +1,26 @@
 // Vitest Snapshot v1
 
-exports[`#transform > transform 1`] = `
+exports[`#transformVue > should transform attributes in vue template 1`] = `
+"<template>
+      <div>{{t('Key of 这')}}{{title}}</div>
+      <comp v-if=\\"t('Key of 吃')\\">{{t('Key of 这是')}}{{\\"什么东西啊\\"}}</comp>
+      <comp @click=\\"() => {
+  a = t('我啊')
+}\\" :title=\\"t('Key of 好呢')\\"/>
+      <!--auto-i18n-ignore-->
+      <comp>忽略</comp>
+    </template>
+
+<script setup>
+import { useI18n } from 'vue-i18n';
+const t = useI18n();
+let title = t('Key of 标题');
+</script>
+
+"
+`;
+
+exports[`#transformVue > should transform vue 1`] = `
 "<template>
       <div>{{t('Key of 这是')}}{{title}}</div>
     </template>

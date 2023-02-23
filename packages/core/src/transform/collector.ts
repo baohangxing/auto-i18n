@@ -1,6 +1,4 @@
-import path from 'path'
 import { createRequire } from 'module'
-import fsExtra from 'fs-extra'
 import { getKeys, getValueByKey } from '../utils/help'
 import type { Collector, Log } from '../types'
 
@@ -22,10 +20,10 @@ class KeyCollector implements Collector {
   inited = false
 
   loger?: Log<any>
-  baseLangJsonPath: string
+  baseLangJsonObj: any
 
-  constructor(baseLangJsonPath: string, loger?: Log<any>) {
-    this.baseLangJsonPath = baseLangJsonPath
+  constructor(baseLangJsonObj: any, loger?: Log<any>) {
+    this.baseLangJsonObj = baseLangJsonObj
     this.loger = loger
   }
 
@@ -43,7 +41,7 @@ class KeyCollector implements Collector {
     let index = 0
 
     while (this.keyZhMap[newKey])
-      newKey = `${getPinyin(chinese)}-{${++index}}`
+      newKey = `${getPinyin(chinese)}-${++index}`
 
     this.keyZhMap[newKey] = chinese
     this.zhKeyMap[chinese] = newKey
@@ -51,10 +49,9 @@ class KeyCollector implements Collector {
     return newKey
   }
 
-  init(keyJsonPath?: string) {
+  init(jsonObj?: any) {
     if (!this.inited) {
-      const baseLangJsonPath = this.baseLangJsonPath
-      const baseLangJsonObj = fsExtra.readJsonSync(baseLangJsonPath)
+      const baseLangJsonObj = this.baseLangJsonObj
 
       const keys = new Set(getKeys(baseLangJsonObj))
       for (const k of keys) {
@@ -63,8 +60,7 @@ class KeyCollector implements Collector {
         this.keyZhMap[k] = v
         this.zhKeyMap[v] = k
       }
-      if (keyJsonPath) {
-        const jsonObj = fsExtra.readJsonSync(path.join(process.cwd(), keyJsonPath))
+      if (jsonObj) {
         const keys = new Set(getKeys(jsonObj))
         for (const k of keys) {
           const v = getValueByKey(jsonObj, k)
@@ -77,8 +73,11 @@ class KeyCollector implements Collector {
           }
         }
       }
+      this.inited = true
     }
   }
 }
+
+export { getPinyin }
 
 export default KeyCollector

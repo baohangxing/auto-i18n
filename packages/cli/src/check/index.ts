@@ -53,7 +53,7 @@ const checkAllTranslated = () => {
   for (const filePath of paths) {
     const autoConfig = getAutoConfig()
     const ext = path.parse(filePath).ext.slice(1) as FileExtension
-    const source = fs.readFileSync(filePath, 'utf8')
+    const source = fs.readFileSync(filePath, 'utf-8')
 
     const keys: string[] = []
     try {
