@@ -10,10 +10,12 @@
     "lint:fix": "pnpm lint --fix",
     "release": "esno ./scripts/release",
     "build": "pnpm -r build",
-    "coverage": "pnpm -r coverage"
+    "coverage": "pnpm -r coverage",
+    "test": "nr --dir ./packages/core coverage && nr --dir ./packages/cli coverage"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
+    "@antfu/ni": "^0.20.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.15",
     "bumpp": "^8.2.1",
