@@ -1,7 +1,8 @@
 {
   "name": "@h1mple/auto-i18n",
   "displayName": "auto-i18n",
-  "version": "0.2.5",
+  "version": "0.2.6",
+  "private": true,
   "description": "A plugin helps you transform your project to an i18n-project automatically",
   "categories": [
     "Other"
