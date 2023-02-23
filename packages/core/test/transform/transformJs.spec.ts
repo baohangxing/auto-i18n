@@ -3,7 +3,7 @@ import type { AutoBaseConfig, Collector } from '../../src/types'
 import { initJsParse } from '../../src/transform'
 import type { TransformJsOptions } from '../../src/transform/transformJs'
 import transformJs from '../../src/transform/transformJs'
-import { defaultAutoBaseConfig } from '../../dist'
+import { defaultAutoBaseConfig } from '../../src'
 
 const genTransOptions = (collector: Collector, autoConfig?: Partial<AutoBaseConfig>): TransformJsOptions => {
   return {
