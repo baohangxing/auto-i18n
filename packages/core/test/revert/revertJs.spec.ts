@@ -20,28 +20,28 @@ describe('#revertJs', async () => {
   it('should get all reverted words in js', () => {
     const content = 'const a = t(\'title\')'
     const code = revertJs(content, genRevertOptions())
-    console.log('code', code)
+    
     expect(code).toMatchSnapshot()
   })
 
   it('should get all reverted words with transCaller and transIdentifier', () => {
     const content = 'const a = this.trans(\'title\')'
     const code = revertJs(content, genRevertOptions({ transCaller: 'this', transIdentifier: 'trans' }))
-    console.log('code', code)
+    
     expect(code).toMatchSnapshot()
   })
 
   it('should get all reverted words with transCaller and transIdentifier', () => {
     const content = 'const a = i18n.$t(\'title\')'
     const code = revertJs(content, genRevertOptions({ transCaller: 'i18n', transIdentifier: '$t' }))
-    console.log('code', code)
+    
     expect(code).toMatchSnapshot()
   })
 
   it('should get no reverted words in string', () => {
     const content = 'const a = `t(\'title\')`'
     const code = revertJs(content, genRevertOptions())
-    console.log('code', code)
+    
     expect(code).toMatchSnapshot()
   })
 })

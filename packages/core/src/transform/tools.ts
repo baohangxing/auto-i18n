@@ -37,7 +37,7 @@ const trimValue = (value: string): string => {
 }
 
 const escapeQuotes = (value: string): string => {
-  return value.replaceAll('\'', '\\\'').replaceAll('"', '\\"')
+  return value.replace(/\'/g, '\\\'').replace(/"/g, '\\"')
 }
 
 const mergeCode = (templateCode: string, scriptCode: string,
