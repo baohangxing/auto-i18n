@@ -9,12 +9,12 @@ describe('#init', async () => {
   it('should init with formating', async () => {
     await init()
     expect(fs.existsSync(filePath)).toBe(true)
-    expect(fs.readFileSync(filePath).toString()).toMatchSnapshot()
+    expect(fs.readFileSync(filePath, 'utf-8')).toMatchSnapshot()
   })
 
   it('should skip init', async () => {
     await init()
-    expect(fs.readFileSync(filePath).toString()).toMatchSnapshot()
+    expect(fs.readFileSync(filePath, 'utf-8')).toMatchSnapshot()
   })
 
   afterAll(async () => {

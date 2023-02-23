@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { I18nCallRule, RevertOptions } from '../../src'
 import { initJsParse, revertJs } from '../../src'
-import { playground } from '../_helps/playground'
 
 const genRevertOptions = (rule?: Partial<I18nCallRule>): RevertOptions => {
   return {
@@ -13,45 +12,36 @@ const genRevertOptions = (rule?: Partial<I18nCallRule>): RevertOptions => {
       ...rule,
     },
     parse: initJsParse(),
-    locale: 'cn',
+    getWordByKey: (str: string) => `Chinese of ${str}`,
   }
 }
 
-describe('#revertJs', () => {
-  it('should get all i18n keys', async () => {
-    let code = ''
-    await playground(async () => {
-      const content = 'const a = t(\'title\')'
-      code = revertJs(content, genRevertOptions())
-    })
-
+describe('#revertJs', async () => {
+  it('should get all reverted words in js', () => {
+    const content = 'const a = t(\'title\')'
+    const code = revertJs(content, genRevertOptions())
+    console.log('code', code)
     expect(code).toMatchSnapshot()
   })
 
-  it('should get all i18n keys', async () => {
-    let code = ''
-    await playground(async () => {
-      const content = 'const a = this.trans(\'title\')'
-      code = revertJs(content, genRevertOptions({ transCaller: 'this', transIdentifier: 'trans' }))
-    })
+  it('should get all reverted words with transCaller and transIdentifier', () => {
+    const content = 'const a = this.trans(\'title\')'
+    const code = revertJs(content, genRevertOptions({ transCaller: 'this', transIdentifier: 'trans' }))
+    console.log('code', code)
     expect(code).toMatchSnapshot()
   })
 
-  it('should get all i18n keys', async () => {
-    let code = ''
-    await playground(async () => {
-      const content = 'const a = i18n.$t(\'title\')'
-      code = revertJs(content, genRevertOptions({ transCaller: 'i18n', transIdentifier: '$t' }))
-    })
+  it('should get all reverted words with transCaller and transIdentifier', () => {
+    const content = 'const a = i18n.$t(\'title\')'
+    const code = revertJs(content, genRevertOptions({ transCaller: 'i18n', transIdentifier: '$t' }))
+    console.log('code', code)
     expect(code).toMatchSnapshot()
   })
 
-  it('should get all i18n keys', async () => {
-    let code = ''
-    await playground(async () => {
-      const content = 'const a = `t(\'title\')`'
-      code = revertJs(content, genRevertOptions())
-    })
+  it('should get no reverted words in string', () => {
+    const content = 'const a = `t(\'title\')`'
+    const code = revertJs(content, genRevertOptions())
+    console.log('code', code)
     expect(code).toMatchSnapshot()
   })
 })

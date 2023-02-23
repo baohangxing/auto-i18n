@@ -2,8 +2,27 @@
 
 exports[`#revertVue > should revert all i18n keys attributes of component 1`] = `""`;
 
-exports[`#revertVue > should revert all i18n keys in script 1`] = `""`;
+exports[`#revertVue > should revert all i18n keys in script 1`] = `
+"<script>let title = t('Chinese of title');</script>
 
-exports[`#revertVue > should revert all i18n keys in template and setupScript 1`] = `""`;
+"
+`;
 
-exports[`#revertVue > should revert no i18n keys 1`] = `""`;
+exports[`#revertVue > should revert all i18n keys in template and setupScript 1`] = `
+"<template>
+        <div>这是{{t('Chinese of dazigao')}}</div>
+      </template>
+
+<script setup>let title = t('Chinese of title');</script>
+
+"
+`;
+
+exports[`#revertVue > should revert no i18n keys 1`] = `
+"<template>
+        <!--auto-i18n-ignore-->
+        <comp v-if=\\"t('title')\\">这是{{t('dazigao')}}</comp>
+      </template>
+
+"
+`;

@@ -1,9 +1,9 @@
 // Vitest Snapshot v1
 
-exports[`#revertJs > should get all i18n keys 1`] = `"const a = t('标题');"`;
+exports[`#revertJs > should get all reverted words in js 1`] = `"const a = t('Chinese of title');"`;
 
-exports[`#revertJs > should get all i18n keys 2`] = `""`;
+exports[`#revertJs > should get all reverted words with transCaller and transIdentifier 1`] = `"const a = this.trans('Chinese of title');"`;
 
-exports[`#revertJs > should get all i18n keys 3`] = `""`;
+exports[`#revertJs > should get all reverted words with transCaller and transIdentifier 2`] = `"const a = i18n.$t('Chinese of title');"`;
 
-exports[`#revertJs > should get all i18n keys 4`] = `""`;
+exports[`#revertJs > should get no reverted words in string 1`] = `"const a = \`t('title')\`;"`;

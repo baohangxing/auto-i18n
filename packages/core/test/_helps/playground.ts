@@ -2,7 +2,19 @@ import path from 'path'
 import fs from 'fs'
 import { CONFIG_FILE_NAME } from '../../src/config/constants'
 
-type PlaygroundFn = (content: { name: string; playgroundRoot: string;outputFileDir: string }) => Promise<void>
+interface PlaygroundContent {
+  name: string
+  playgroundRoot: string
+  outputFileDir: string
+}
+
+type PlaygroundFn = (content: PlaygroundContent) => Promise<void>
+
+interface Task {
+  name: string
+  fn: () => Promise<void>
+  cb: () => void
+}
 
 const getTestPlaygroundRootPath = (name: string) => {
   return path.resolve('test', '_helps', name)
@@ -10,18 +22,15 @@ const getTestPlaygroundRootPath = (name: string) => {
 
 const removeTestPlayground = (name: string) => {
   const pgPath = getTestPlaygroundRootPath(name)
-  if (fs.existsSync(pgPath))
+  if (fs.existsSync(pgPath)) {
     fs.rmSync(pgPath, { force: true, recursive: true })
-  const configPath = path.resolve(CONFIG_FILE_NAME)
-  if (fs.existsSync(configPath))
-    fs.rmSync(configPath)
-
-  process.env._autoTestPlaygroundRuning = undefined
+    const configPath = path.resolve(CONFIG_FILE_NAME)
+    if (fs.existsSync(configPath))
+      fs.rmSync(configPath)
+  }
 }
 
 const createTestPlayground = (name: string) => {
-  process.env._autoTestPlaygroundRuning = name
-
   const pgPath = getTestPlaygroundRootPath(name)
 
   const fromPath = path.resolve('test', '_helps', 'playground')
@@ -31,44 +40,72 @@ const createTestPlayground = (name: string) => {
   fs.cpSync(fromPath, pgPath, { recursive: true })
 
   const configPath = path.join(pgPath, CONFIG_FILE_NAME)
-  let config = fs.readFileSync(configPath).toString()
+  let config = fs.readFileSync(configPath, 'utf-8')
   config = config.replace('__testPlaygroundName__', name)
-  fs.writeFileSync(configPath, config, 'utf8')
+  fs.writeFileSync(configPath, config, 'utf-8')
   fs.cpSync(configPath, path.resolve(CONFIG_FILE_NAME), { force: true })
 }
 
+/**
+ *  //TODO need fix threads problem
+ */
 const playground = (() => {
-  const tasks: (() => Promise<void>)[] = []
+  const tasks: Task[] = []
 
-  const runTask = async () => {
-    if (tasks.length && !process.env._autoTestPlaygroundRuning) {
-      const task = tasks.shift()
-      task && await task()
-      runTask()
+  let _autoTestPlaygroundRuning = false
+
+  const _runTask = async () => {
+    if (tasks.length) {
+      if (!_autoTestPlaygroundRuning) {
+        const task = tasks.shift()
+        if (task) {
+          _autoTestPlaygroundRuning = true
+          await task.fn().finally(() => {
+            task.cb()
+            _autoTestPlaygroundRuning = false
+            _runTask()
+          })
+        }
+      }
     }
   }
 
-  return async (play: PlaygroundFn) => {
-    const task = async () => {
-      const name = `playground_${+new Date()}`
-      const pgPath = getTestPlaygroundRootPath(name)
-
-      createTestPlayground(name)
-      try {
-        await play({
-          name,
-          playgroundRoot: pgPath,
-          outputFileDir: path.join(pgPath, 'output'),
-        })
-      }
-      catch (error) {
-        removeTestPlayground(name)
-        throw error
-      }
-      removeTestPlayground(name)
-    }
+  const addTask = (task: Task) => {
     tasks.push(task)
-    runTask()
+    if (!_autoTestPlaygroundRuning)
+      _runTask()
+  }
+
+  return (play: PlaygroundFn) => {
+    const name = `playground_${+new Date()}_${Math.random().toString().slice(10)}`
+
+    /** for resolve task */
+    return new Promise((resolve) => {
+      addTask({
+        fn: async () => {
+          const pgPath = getTestPlaygroundRootPath(name)
+          createTestPlayground(name)
+          /** for resolve play of  task */
+          return new Promise((_resolve) => {
+            play({
+              name,
+              playgroundRoot: pgPath,
+              outputFileDir: path.join(pgPath, 'output'),
+            }).then(async () => {
+              removeTestPlayground(name)
+              return _resolve(undefined)
+            }).catch(async (error) => {
+              removeTestPlayground(name)
+              throw error
+            })
+          })
+        },
+        cb: () => {
+          resolve(undefined)
+        },
+        name,
+      })
+    })
   }
 })()
 

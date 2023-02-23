@@ -4,6 +4,7 @@ import type { TransformVueOptions } from './transformVue'
 import transformVue from './transformVue'
 import KeyCollector from './collector'
 
+export { getPinyin } from './collector'
 export * from './parse'
 export * from './tools'
 export {

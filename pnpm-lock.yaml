@@ -100,6 +100,7 @@ importers:
       commander: ^9.4.1
       cosmiconfig: ^8.0.0
       ejs: ^3.1.8
+      emittery: ^1.0.1
       eslint: ^8.29.0
       fast-glob: ^3.2.12
       fs-extra: ^11.1.0
@@ -135,6 +136,7 @@ importers:
       commander: 9.5.0
       cosmiconfig: 8.0.0
       ejs: 3.1.8
+      emittery: 1.0.1
       eslint: 8.32.0
       fast-glob: 3.2.12
       fs-extra: 11.1.0
@@ -2354,6 +2356,11 @@ packages:
 
   /electron-to-chromium/1.4.284:
     resolution: {integrity: sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==}
+
+  /emittery/1.0.1:
+    resolution: {integrity: sha512-2ID6FdrMD9KDLldGesP6317G78K7km/kMcwItRtVFva7I/cSEOIaLpewaUb+YLXVwdAp3Ctfxh/V5zIl1sj7dQ==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}

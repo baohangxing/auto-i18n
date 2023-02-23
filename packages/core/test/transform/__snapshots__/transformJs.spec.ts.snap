@@ -1,19 +1,41 @@
 // Vitest Snapshot v1
 
-exports[`#transform > transform 1`] = `
+exports[`#transform > should transform basic code 1`] = `
 "import { useI18n } from 'vue-i18n';
 const t = useI18n();
 let title = t('Key of 标题');"
 `;
 
-exports[`#transform > transform 2`] = `
+exports[`#transform > should transform code 1`] = `
 "import { useI18n } from 'vue-i18n';
 const t = useI18n();
-let title = t('Key of 标题');"
+const title = t('Key of 标题{0}', [msg]);"
 `;
 
-exports[`#transform > transform 3`] = `
-"import { useI18n } from 'vue-i18n';
+exports[`#transform > should transform code in function 1`] = `
+"import fs from 'fs';
+import { useI18n } from 'vue-i18n';
 const t = useI18n();
 let title = console.log(t('Key of 标题'));"
+`;
+
+exports[`#transform > should transform code in template 1`] = `
+"import { useI18n } from 'vue-i18n';
+const t = useI18n();
+const title = t('Key of 标题{msg}', {
+  msg: msg
+});"
+`;
+
+exports[`#transform > should transform code when import 1`] = `
+"import { useI18n } from 'vue-i18n';
+const t = useI18n();
+let x = t('s');
+let title = t('Key of 标题');"
+`;
+
+exports[`#transform > should transform jsx code 1`] = `
+"import { useI18n } from 'vue-i18n';
+const t = useI18n();
+const title = <div>{t('Key of 不好不好')}{aa}</div>;"
 `;

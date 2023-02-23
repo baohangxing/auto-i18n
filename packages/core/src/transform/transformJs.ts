@@ -22,10 +22,9 @@ import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'
 import type { ParseResult } from '@babel/core'
-import type { Collector, I18nCallRule, Log } from '../types'
+import type { AutoBaseConfig, Collector, I18nCallRule, Log } from '../types'
 import { includeChinese } from '../utils/help'
 import { IGNORE_REMARK } from '../config/constants'
-import { getAutoBaseConfig as getAutoConfig } from '../config/config'
 import { escapeQuotes, getCallExpression, getStringLiteral } from './tools'
 
 const require = createRequire(import.meta.url)
@@ -58,6 +57,8 @@ interface TransformJsOptions {
    * Whether handle js in vue
    */
   isJsInVue?: boolean
+
+  autoConfig: AutoBaseConfig
 
   loger?: Log<any>
 
@@ -170,7 +171,7 @@ const getReplaceValue = (rule: I18nCallRule, value: string, replaceValue: string
 }
 
 const transformJs = (code: string, options: TransformJsOptions): GeneratorResult => {
-  const autoConfig = getAutoConfig()
+  const autoConfig = options.autoConfig
 
   const rule = options.rule
   // 文件是否导入过i18n

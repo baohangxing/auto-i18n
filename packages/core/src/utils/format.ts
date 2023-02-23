@@ -57,42 +57,58 @@ const lintFiles = async (paths: string | string[]) => {
   const filePaths = ([] as string[]).concat(paths)
 
   for (let i = 0; i < filePaths.length; i++) {
-    try {
-      const results = await eslint.lintFiles([filePaths[i]])
-      const result = results[0]
-      if (result && result.output)
-        fs.writeFileSync(filePaths[i], result.output, 'utf8')
-    }
-    catch (error) {
-      console.error(error)
+    if (fs.existsSync(filePaths[i])) {
+      try {
+        const results = await eslint.lintFiles([filePaths[i]])
+        const result = results[0]
+        if (result && result.output)
+          fs.writeFileSync(filePaths[i], result.output, 'utf-8')
+      }
+      /* c8 ignore next 3 */
+      catch (error) {
+        console.error(error)
+      }
     }
   }
 }
 
-const lintTextByCreateFile = async (testCode: string, fileExt = 'ts'): Promise<string> => {
-  const tmpPath = path.join(process.cwd(), `___eslint_${new Date().getTime()}.${fileExt}`)
-  fs.writeFileSync(tmpPath, testCode, 'utf8')
-  let result = testCode
-  try {
-    await lintFiles([tmpPath])
-    result = fs.readFileSync(tmpPath, 'utf8')
-    fs.rmSync(tmpPath)
-  }
-  catch (error) {
-    fs.rmSync(tmpPath)
-    throw error
-  }
+// /** Bad idea~~~ */
+// const lintTextByCreateFile = async (testCode: string, fileExt = 'ts'): Promise<string> => {
+//   const tmpPath = path.join(process.cwd(), `___eslint_${new Date().getTime()}.${fileExt}`)
+//   fs.writeFileSync(tmpPath, testCode, 'utf-8')
+//   let result = testCode
+//   try {
+//     await lintFiles([tmpPath])
+//     result = fs.readFileSync(tmpPath, 'utf-8')
 
-  return result
-}
+//     fs.rmSync(tmpPath)
+//   }
+//   catch (error) {
+//     console.error(error)
+//     fs.rmSync(tmpPath)
+//   }
 
-const lintText = async (testCode: string, fileExt = 'ts'): Promise<string> => {
+//   return result
+// }
+
+/**
+ * Only supprot ts / js
+ * @param testCode
+ * @returns
+ */
+const lintText = async (testCode: string): Promise<string> => {
   const eslint = initEslint()
-  const result = await eslint.lintText(testCode)
-  if (result?.[0].output === undefined)
-    return await lintTextByCreateFile(testCode, fileExt)
+  let result: ESLint.LintResult[] = []
+  try {
+    result = await eslint.lintText(testCode)
+  }
+  /* c8 ignore next 4 */
+  catch (e) {
+    console.error(e)
+    return testCode
+  }
 
-  return result?.[0].output
+  return result?.[0].output ?? testCode
 }
 
 export { checkEslintConfigExist, lintFiles, lintText }

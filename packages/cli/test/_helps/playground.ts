@@ -26,14 +26,14 @@ const createTestPlayground = (name: string) => {
   fs.cpSync(fromPath, pgPath, { recursive: true })
 
   const configPath = path.join(pgPath, CONFIG_FILE_NAME)
-  let config = fs.readFileSync(configPath).toString()
+  let config = fs.readFileSync(configPath, 'utf-8')
   config = config.replace('__testPlaygroundName__', name)
-  fs.writeFileSync(configPath, config, 'utf8')
+  fs.writeFileSync(configPath, config, 'utf-8')
   fs.cpSync(configPath, path.resolve(CONFIG_FILE_NAME), { force: true })
 }
 
 /**
- * Create a playground for testing, can't use `expect` in `play`
+ * Create a playground for testing //TODO
  * @param play
  */
 const playground = async (play: PlaygroundFn) => {

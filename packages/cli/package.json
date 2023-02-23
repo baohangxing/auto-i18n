@@ -43,8 +43,8 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "unbuild",
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "test": "vitest  --no-threads",
+    "coverage": "vitest run --coverage  --no-threads"
   },
   "dependencies": {
     "@h1mple/auto-i18n-core": "workspace:^",

@@ -10,22 +10,20 @@ import { parse } from '@vue/compiler-sfc'
 import * as htmlparser2 from 'htmlparser2'
 import mustache from 'mustache'
 import presetTypescript from '@babel/preset-typescript'
-import fsExtra from 'fs-extra'
 import type * as generatorType from '@babel/generator/index'
 import ejs from 'ejs'
-import { getJsonPath } from '../config/config'
 import type { I18nCallRule, Log } from '../types'
 import { IGNORE_REMARK, VUE_COMMENT_TYPE } from '../config/constants'
 import { getFileComment, getStringLiteral, getWrapperTemplate, mergeCode } from '../transform/tools'
 import { initJsParse, initTsxParse } from '../transform/parse'
-import { getValueByKey } from '../utils/help'
 
 type Handler = (source: string, options: RevertOptions,) => string
 
 interface RevertOptions {
   rule: I18nCallRule
   parse: (code: string) => ParseResult | null
-  locale: string
+
+  getWordByKey: (key: string) => string
   /**
    * Whether handle js in vue
    */
@@ -39,30 +37,10 @@ const require = createRequire(import.meta.url)
 const traverse: typeof traverseType.default = require('@babel/traverse').default
 const babelGenerator: typeof generatorType.default = require('@babel/generator').default
 
-const revertWordByKey = (locale: string) :((key: string) => string) => {
-  const { baseLangJson, otherLangJsons } = getJsonPath()
-
-  if (!baseLangJson) {
-    return (key: string) => {
-      return key
-    }
-  }
-  let langObj: any = fsExtra.readJsonSync(baseLangJson.path)
-
-  for (const x of otherLangJsons) {
-    if (x.name === locale)
-      langObj = fsExtra.readJsonSync(x.path)
-  }
-  return (key: string) => {
-    const val = getValueByKey(langObj, key)
-    return typeof val === 'string' ? val : ''
-  }
-}
-
 const revertJs = (code: string, options: RevertOptions): string => {
   const rule = options.rule
 
-  const getWordByKey = revertWordByKey(options.locale)
+  const getWordByKey = options.getWordByKey
 
   const revertAST = (code: string, options: RevertOptions) => {
     function getTraverseOptions() {
@@ -125,8 +103,8 @@ const revertJsSyntax = (source: string, options: RevertOptions): string => {
       importDeclaration: '',
     },
     parse: initTsxParse(),
+    getWordByKey: options.getWordByKey,
     loger: options.loger,
-    locale: options.locale,
   })
 
   let stylizedCode = code
@@ -254,7 +232,7 @@ const revertScript = (source: string, options: RevertOptions): string => {
     loger: options.loger,
     parse: initJsParse([[presetTypescript,
       { isTSX: true, allExtensions: true }]]),
-    locale: options.locale,
+    getWordByKey: options.getWordByKey,
   })
 }
 
