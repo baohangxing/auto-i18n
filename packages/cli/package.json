@@ -1,6 +1,6 @@
 {
   "name": "@h1mple/auto-i18n-cli",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
