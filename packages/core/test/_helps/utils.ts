@@ -15,7 +15,7 @@ const sleep = async <T>(ms: number, reslut: T): Promise<T> => {
 }
 
 const uniPath = (p: string): string => {
-  return p.replaceAll('\\', '/')
+  return p.replace(/\\/g, '/')
 }
 
 const trimRootPath = (paths: string[], rootPath?: string): string[] => {
