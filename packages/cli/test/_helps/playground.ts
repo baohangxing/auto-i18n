@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import { CONFIG_FILE_NAME } from '@h1mple/auto-i18n-core'
+import { CONFIG_FILE_NAME } from '../../src/config/constants'
 
 type PlaygroundFn = (content: { name: string; playgroundRoot: string;outputFileDir: string }) => Promise<void>
 

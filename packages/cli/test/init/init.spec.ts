@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import { afterAll, describe, expect, it } from 'vitest'
-import { CONFIG_FILE_NAME } from '@h1mple/auto-i18n-core'
+import { CONFIG_FILE_NAME } from '../../src/config/constants'
 import { init } from '../../src/command/init'
 
 describe('#init', async () => {
