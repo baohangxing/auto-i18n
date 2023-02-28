@@ -94,21 +94,21 @@ export interface AutoConfig extends AutoBaseConfig {
    */
   outputXlsxNameBy: {
     /**
-     * Name of files which created by command `auto genXlsx`
+     * Name of files which created by command `auto-i18n genXlsx`
      *
      * @default `genXlsx`
      */
     genXlsx: string
 
     /**
-     * Name of files which created by command `auto trans`.
+     * Name of files which created by command `auto-i18n trans`.
      *
      * @default `trans`
      */
     trans: string
 
     /**
-     * Name of files which created by command `auto check`.
+     * Name of files which created by command `auto-i18n check`.
      *
      * @default `check`
      */
