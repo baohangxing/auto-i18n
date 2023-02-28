@@ -1,7 +1,7 @@
 {
   "name": "@h1mple/auto-i18n",
   "displayName": "auto-i18n",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": true,
   "description": "A vscode extension helps you transform your project to an i18n-project automatically",
   "categories": [
