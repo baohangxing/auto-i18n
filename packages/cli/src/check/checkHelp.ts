@@ -5,7 +5,7 @@ import {
 } from '@h1mple/auto-i18n-core'
 import type { FileExtension, I18nCallRules } from '../types'
 
-import loger from '../utils/log'
+import logger from '../utils/log'
 
 const getAppendI18nKeysUsed = (code: string, rxI18Keys: RegExp[]): string[] => {
   let m: any
@@ -43,7 +43,7 @@ const getI18nKeys = (
       res.push(...getJsI18nKeys(code, {
         rule: rules[ext],
         parse: initJsParse(),
-        loger,
+        logger,
       }))
       break
     case 'ts':
@@ -51,14 +51,14 @@ const getI18nKeys = (
       res.push(...getJsI18nKeys(code, {
         rule: rules[ext],
         parse: initTsxParse(),
-        loger,
+        logger,
       }))
       break
     case 'vue':
       res.push(...getVueI18nKeys(code, {
         rule: rules[ext],
         parse: initTsxParse(),
-        loger,
+        logger,
       }))
       break
     default:

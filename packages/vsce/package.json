@@ -11,12 +11,30 @@
   "engines": {
     "vscode": "^1.75.0"
   },
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "contributes": {
     "commands": [
       {
-        "command": "auto-i18n.helloWorld",
-        "title": "Hello World"
+        "command": "auto-i18n.transformCompare",
+        "title": "Compare Text with content i18n transformed",
+        "category": "auto-i18n"
+      },
+      {
+        "command": "auto-i18n.transform",
+        "title": "Transform content i18n",
+        "category": "auto-i18n"
+      },
+      {
+        "command": "auto-i18n.revertCompare",
+        "title": "Compare Text with content i18n reverted",
+        "category": "auto-i18n"
+      },
+      {
+        "command": "auto-i18n.revert",
+        "title": "Revert i18n content transformed",
+        "category": "auto-i18n"
       }
     ]
   },

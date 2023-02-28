@@ -10,7 +10,7 @@ import type { TransCommandOption } from '../types/config'
 import { transform } from '../transform'
 import { getAutoConfig, getOutputFileDir } from '../config/config'
 import { createFileName } from '../utils/help'
-import loger from '../utils/log'
+import logger from '../utils/log'
 import { updateBaseLocale, updateLocales } from './update'
 
 const trans = async (option: TransCommandOption) => {
@@ -18,13 +18,13 @@ const trans = async (option: TransCommandOption) => {
 
   const baseLangJsonObj = fsExtra.readJsonSync(autoConfig.baseLocale)
 
-  const collector = new KeyCollector(baseLangJsonObj, loger)
+  const collector = new KeyCollector(baseLangJsonObj, logger)
 
   const transformSingleFile = (filePath: string, replace: boolean) => {
     const autoConfig = getAutoConfig()
     const ext = path.parse(filePath).ext.slice(1) as FileExtension
     const source = fs.readFileSync(filePath, 'utf-8')
-    const { code } = transform(source, ext, autoConfig.i18nCallRules, collector, loger, autoConfig, replace)
+    const { code } = transform(source, ext, autoConfig.i18nCallRules, collector, logger, autoConfig, replace)
     return code
   }
 

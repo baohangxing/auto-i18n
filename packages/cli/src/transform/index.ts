@@ -8,7 +8,7 @@ const transform = (
   ext: FileExtension,
   rules: I18nCallRules,
   collector: Collector,
-  loger: Log<any>,
+  logger: Log<any>,
   autoConfig: AutoConfig,
   replace = true,
 ): {
@@ -24,7 +24,7 @@ const transform = (
         parse: initJsParse(),
         collector,
         replace,
-        loger,
+        logger,
         autoConfig,
       })
     case 'ts':
@@ -34,7 +34,7 @@ const transform = (
         parse: initTsxParse(),
         collector,
         replace,
-        loger,
+        logger,
         autoConfig,
       })
     case 'vue':
@@ -42,7 +42,7 @@ const transform = (
         rule: rules[ext],
         collector,
         replace,
-        loger,
+        logger,
         autoConfig,
       })
     default:

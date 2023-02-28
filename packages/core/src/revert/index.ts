@@ -29,7 +29,7 @@ interface RevertOptions {
    */
   isJsInVue?: boolean
 
-  loger?: Log<any>
+  logger?: Log<any>
 }
 
 const require = createRequire(import.meta.url)
@@ -104,7 +104,7 @@ const revertJsSyntax = (source: string, options: RevertOptions): string => {
     },
     parse: initTsxParse(),
     getWordByKey: options.getWordByKey,
-    loger: options.loger,
+    logger: options.logger,
   })
 
   let stylizedCode = code
@@ -133,11 +133,11 @@ const revertTemplate = (code: string, options: RevertOptions): string => {
             }
             else {
               if (key.match(/^[@]/)) {
-                options.loger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+                options.logger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
                 attrs += ` ${key}="${attrValue}"`
               }
               else {
-                options.loger?.verbose(`pleace check the changing of attributes: ${key}`)
+                options.logger?.verbose(`pleace check the changing of attributes: ${key}`)
                 attrs += ` ${key}`
               }
             }
@@ -155,11 +155,11 @@ const revertTemplate = (code: string, options: RevertOptions): string => {
           }
           else if (attrValue === '') {
             if (key.match(/^[@]/)) {
-              options.loger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+              options.logger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
               attrs += ` ${key}="${attrValue}"`
             }
             else {
-              options.loger?.verbose(`pleace check the changing of attributes: ${key}`)
+              options.logger?.verbose(`pleace check the changing of attributes: ${key}`)
               attrs += ` ${key}`
             }
           }
@@ -229,7 +229,7 @@ const revertScript = (source: string, options: RevertOptions): string => {
   return revertJs(source, {
     rule: options.rule,
     isJsInVue: true,
-    loger: options.loger,
+    logger: options.logger,
     parse: initJsParse([[presetTypescript,
       { isTSX: true, allExtensions: true }]]),
     getWordByKey: options.getWordByKey,
@@ -254,7 +254,7 @@ const revertVue = (
 ): string => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    options.loger?.error('Parse vue error', errors)
+    options.logger?.error('Parse vue error', errors)
     return ''
   }
 

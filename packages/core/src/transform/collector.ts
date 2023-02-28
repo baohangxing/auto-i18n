@@ -19,18 +19,18 @@ class KeyCollector implements Collector {
 
   inited = false
 
-  loger?: Log<any>
+  logger?: Log<any>
   baseLangJsonObj: any
 
-  constructor(baseLangJsonObj: any, loger?: Log<any>) {
+  constructor(baseLangJsonObj: any, logger?: Log<any>) {
     this.baseLangJsonObj = baseLangJsonObj
-    this.loger = loger
+    this.logger = logger
   }
 
   add(chinese: string) {
     if (!this.zhKeyMap[chinese])
       this.unExistZhSet.add(chinese)
-    this.loger?.verbose('Extract Chinese: ', `${chinese}: ${this.getKey(chinese)}`)
+    this.logger?.verbose('Extract Chinese: ', `${chinese}: ${this.getKey(chinese)}`)
   }
 
   getKey(chinese: string): string {
@@ -65,7 +65,7 @@ class KeyCollector implements Collector {
         for (const k of keys) {
           const v = getValueByKey(jsonObj, k)
           if (this.keyZhMap[k] && this.keyZhMap[k] !== v) {
-            this.loger?.error(`JSON key ${k} have 2 kinds of val: ${this.keyZhMap[k]} and ${v}`)
+            this.logger?.error(`JSON key ${k} have 2 kinds of val: ${this.keyZhMap[k]} and ${v}`)
           }
           else {
             this.keyZhMap[k] = v

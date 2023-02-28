@@ -5,7 +5,7 @@ import type { Log } from '@h1mple/auto-i18n-core'
 import colors from 'ansi-colors'
 import { LOG_PREFIX } from '../config/constants'
 
-class Loger implements Log<InspectOptions> {
+class Logger implements Log<InspectOptions> {
   logPrefix = ''
 
   logOptions: InspectOptions = {
@@ -73,8 +73,8 @@ class Loger implements Log<InspectOptions> {
   }
 }
 
-const loger = new Loger(LOG_PREFIX)
+const logger = new Logger(LOG_PREFIX)
 
-export { Loger }
+export { Logger }
 
-export default loger
+export default logger

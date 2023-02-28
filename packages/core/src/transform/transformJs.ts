@@ -60,7 +60,7 @@ interface TransformJsOptions {
 
   autoConfig: AutoBaseConfig
 
-  loger?: Log<any>
+  logger?: Log<any>
 
   collector: Collector
 }
@@ -307,7 +307,7 @@ const transformJs = (code: string, options: TransformJsOptions): GeneratorResult
               slotParams = isEmpty(params) ? undefined : params
             }
             else {
-              options.loger?.error('AutoConfig.transInterpolationsMode must is '
+              options.logger?.error('AutoConfig.transInterpolationsMode must is '
                 + '\'NamedInterpolationMode\' or \'ListInterpolationMode\'')
             }
 

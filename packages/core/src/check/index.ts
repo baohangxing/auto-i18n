@@ -17,7 +17,7 @@ interface GetI18nKeysOptions {
   rule: I18nCallRule
   parse: (code: string) => ParseResult | null
 
-  loger?: Log<any>
+  logger?: Log<any>
 }
 
 const require = createRequire(import.meta.url)
@@ -88,7 +88,7 @@ const getJsSyntaxI18nKeys = (source: string, options: GetI18nKeysOptions): strin
         importDeclaration: '',
       },
       parse: initTsxParse(),
-      loger: options.loger,
+      logger: options.logger,
     },
   )
 }
@@ -161,7 +161,7 @@ const getVueI18nKeys = (
 ): string[] => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    options.loger?.error('Parse vue error', errors)
+    options.logger?.error('Parse vue error', errors)
     return []
   }
 

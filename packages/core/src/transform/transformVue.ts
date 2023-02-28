@@ -26,7 +26,7 @@ interface TransformVueOptions {
 
   replace: boolean
 
-  loger?: Log<any>
+  logger?: Log<any>
 
   collector: Collector
 
@@ -91,11 +91,11 @@ const handleTemplate = (code: string, options: TransformVueOptions): string => {
             }
             else {
               if (key.match(/^[@]/)) {
-                options.loger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+                options.logger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
                 attrs += ` ${key}="${attrValue}"`
               }
               else {
-                options.loger?.verbose(`pleace check the changing of attributes: ${key}`)
+                options.logger?.verbose(`pleace check the changing of attributes: ${key}`)
                 attrs += ` ${key}`
               }
             }
@@ -127,11 +127,11 @@ const handleTemplate = (code: string, options: TransformVueOptions): string => {
           }
           else if (attrValue === '') {
             if (key.match(/^[@]/)) {
-              options.loger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
+              options.logger?.verbose(`pleace check the changing of attributes: ${key}="${attrValue}"`)
               attrs += ` ${key}="${attrValue}"`
             }
             else {
-              options.loger?.verbose(`pleace check the changing of attributes: ${key}`)
+              options.logger?.verbose(`pleace check the changing of attributes: ${key}`)
               attrs += ` ${key}`
             }
           }
@@ -244,7 +244,7 @@ const transformVue = (
 } => {
   const { descriptor, errors } = parse(code)
   if (errors.length > 0) {
-    options.loger?.error('Parse vue error', errors)
+    options.logger?.error('Parse vue error', errors)
     return {
       code,
     }
