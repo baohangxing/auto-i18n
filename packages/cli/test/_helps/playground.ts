@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import fsExtra from 'fs-extra'
 import { CONFIG_FILE_NAME } from '../../src/config/constants'
 
 type PlaygroundFn = (content: { name: string; playgroundRoot: string;outputFileDir: string }) => Promise<void>
@@ -23,13 +24,13 @@ const createTestPlayground = (name: string) => {
   if (fs.existsSync(pgPath))
     removeTestPlayground(name)
 
-  fs.cpSync(fromPath, pgPath, { recursive: true })
+  fsExtra.copySync(fromPath, pgPath, { recursive: true })
 
   const configPath = path.join(pgPath, CONFIG_FILE_NAME)
   let config = fs.readFileSync(configPath, 'utf-8')
   config = config.replace('__testPlaygroundName__', name)
   fs.writeFileSync(configPath, config, 'utf-8')
-  fs.cpSync(configPath, path.resolve(CONFIG_FILE_NAME), { force: true })
+  fsExtra.copySync(configPath, path.resolve(CONFIG_FILE_NAME), { overwrite: true })
 }
 
 /**
