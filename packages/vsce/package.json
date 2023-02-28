@@ -3,7 +3,7 @@
   "displayName": "auto-i18n",
   "version": "0.2.6",
   "private": true,
-  "description": "A plugin helps you transform your project to an i18n-project automatically",
+  "description": "A vscode extension helps you transform your project to an i18n-project automatically",
   "categories": [
     "Other"
   ],
@@ -30,6 +30,12 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile",
     "test": "node ./out/test/runTest.js"
+  },
+  "dependencies": {
+    "@h1mple/auto-i18n-core": "workspace:^",
+    "lodash.isequal": "4.5.0",
+    "lodash.omit": "4.5.0",
+    "vscode-extension-telemetry": "^0.1.7"
   },
   "devDependencies": {
     "@types/glob": "^8.0.1",

@@ -10,9 +10,8 @@
 
 ---
 
-## 0.3.0
+参考[约定式提交](https://www.conventionalcommits.org/zh-hans/v1.0.0/) - 一种用于给提交信息增加人机可读含义的规范
 
-`2023-03-01`
+[changelogen Configuration](https://github.com/unjs/changelogen/blob/main/src/config.ts)
 
-- 🐞
-- 🌟  
+详细更新日志[见Releases](https://github.com/baohangxing/auto-i18n/releases)
