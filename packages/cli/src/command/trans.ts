@@ -8,7 +8,7 @@ import {
 import fsExtra from 'fs-extra'
 import type { TransCommandOption } from '../types/config'
 import { transform } from '../transform'
-import { getAutoConfig, getOutputFileDir } from '../config/config'
+import { getAutoConfig, getJsonPath, getOutputFileDir } from '../config/config'
 import { createFileName } from '../utils/help'
 import logger from '../utils/log'
 import { updateBaseLocale, updateLocales } from './update'
@@ -16,7 +16,10 @@ import { updateBaseLocale, updateLocales } from './update'
 const trans = async (option: TransCommandOption) => {
   const autoConfig = getAutoConfig()
 
-  const baseLangJsonObj = fsExtra.readJsonSync(autoConfig.baseLocale)
+  const { baseLangJson } = getJsonPath()
+  if (!baseLangJson?.path)
+    return
+  const baseLangJsonObj = fsExtra.readJsonSync(baseLangJson.path)
 
   const collector = new KeyCollector(baseLangJsonObj, logger)
 

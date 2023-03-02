@@ -39,7 +39,11 @@ const init = async () => {
       config.autoFormat = true
 
     const code
-    = `module.exports = ${serialize(config, {
+    = `// @ts-check
+/** @typedef {import('@h1mple/auto-i18n-cli').AutoConfig} AutoConfig **/
+
+/** @type AutoConfig */
+module.exports = ${serialize(config, {
       unsafe: true,
     })}`
 
