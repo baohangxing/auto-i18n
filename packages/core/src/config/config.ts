@@ -10,7 +10,7 @@ import defaultAutoBaseConfig from './defaultAutoBaseConfig'
 
 const readLocalAutoBaseConfig = (configPath?: string): AutoBaseConfig | null => {
   const explorer = cosmiconfigSync(CLI_CONFIG_NAME)
-  const result: CosmiconfigResult = configPath ? explorer.load(configPath) : explorer.search()
+  const result: CosmiconfigResult = explorer.search(configPath)
 
   return result?.config
 }
@@ -21,11 +21,11 @@ const getAutoBaseConfig = (defaultConfig = defaultAutoBaseConfig, configPath?: s
   return autoConfig
 }
 
-const getJsonPath = (): {
+const getJsonPath = (defaultConfig = defaultAutoBaseConfig, configPath?: string): {
   baseLangJson: LangJson | undefined
   otherLangJsons: LangJson[]
 } => {
-  const autoConfig = getAutoBaseConfig()
+  const autoConfig = getAutoBaseConfig(defaultConfig, configPath)
 
   let otherLangJsons: LangJson[] = []
 

@@ -22,8 +22,8 @@ const checkInPatterns = (path: string, patterns: string[] | string): boolean => 
 }
 
 /** get absolute paths by a dir or file path recursively */
-const getRecursivePaths = (dirOrFile: string): string[] => {
-  const dirOrFilePath = path.join(process.cwd(), dirOrFile)
+const getRecursivePaths = (dirOrFile: string, cwd = process.cwd()): string[] => {
+  const dirOrFilePath = path.join(cwd, dirOrFile)
 
   if (!fs.existsSync(dirOrFilePath))
     return []

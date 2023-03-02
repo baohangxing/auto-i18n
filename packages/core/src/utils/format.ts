@@ -41,8 +41,8 @@ const checkEslintConfigExist = (cwd = process.cwd(), recursive = false): [boolea
   }
 }
 
-const initEslint = () => {
-  const [useEslintrc, path] = checkEslintConfigExist(process.cwd(), true)
+const initEslint = (cwd = process.cwd()) => {
+  const [useEslintrc, path] = checkEslintConfigExist(cwd, true)
   const eslint = new ESLint({
     cwd: useEslintrc ? path : process.cwd(),
     useEslintrc,
@@ -51,8 +51,8 @@ const initEslint = () => {
   return eslint
 }
 
-const lintFiles = async (paths: string | string[]) => {
-  const eslint = initEslint()
+const lintFiles = async (paths: string | string[], cwd = process.cwd()) => {
+  const eslint = initEslint(cwd)
 
   const filePaths = ([] as string[]).concat(paths)
 
@@ -96,18 +96,25 @@ const lintFiles = async (paths: string | string[]) => {
  * @param testCode
  * @returns
  */
-const lintText = async (testCode: string): Promise<string> => {
-  const eslint = initEslint()
+const lintText = async (
+  testCode: string,
+  cwd = process.cwd(),
+  options?: {
+    filePath?: string | undefined
+    warnIgnored?: boolean | undefined
+  },
+): Promise<string> => {
+  const eslint = initEslint(cwd)
   let result: ESLint.LintResult[] = []
   try {
-    result = await eslint.lintText(testCode)
+    result = await eslint.lintText(testCode, options)
   }
   /* c8 ignore next 4 */
   catch (e) {
     console.error(e)
     return testCode
   }
-
+  console.dir(result, { depth: 4 })
   return result?.[0].output ?? testCode
 }
 
