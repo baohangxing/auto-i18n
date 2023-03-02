@@ -1,71 +1,27 @@
-# auto-i18n README
+<br />
 
-This is the README for your extension "auto-i18n". After writing up a brief description, we recommend including the following sections.
+<p align="center">
+<img src="./images/logo.svg" style="width:200px" />
+</p>
 
-## Features
+<p align="center">
+一个可以快速将中文项目中的中文替换成 i18n 国际化标记的插件。
+</p>
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 如何使用
 
-For example if there is an image subfolder under your extension project workspace:
+在使用前请在先安装 [@h1mple/auto-i18n-cli](https://github.com/baohangxing/auto-i18n/blob/main/packages/cli/README.md), 并进行初始的配置（后续版本会在插件中集成所有的功能）
 
-\!\[feature X\]\(images/feature-x.png\)
+使用前需要将`AutoConfig`中的`localesJsonDirs`进行重新配置，例如：
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```txt
+localesJsonDirs: [
+    "/Users/code/work/project-name/src/lang/locales/**.json",
+],
+```
 
-## Requirements
+之后在 vscode 中安装本插件，进入想要进行操作的文件中，对应的操作会在邮件的菜单中出现。
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## 演示
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+![example](./images/example.gif)

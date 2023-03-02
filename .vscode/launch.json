@@ -10,10 +10,10 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}/packages/vsc-plugin"
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vsce"
       ],
       "outFiles": [
-        "${workspaceFolder}/packages/vsc-plugin/dist/**/*.js"
+        "${workspaceFolder}/packages/vsce/dist/**/*.js"
       ],
       "preLaunchTask": "${defaultBuildTask}"
     },
@@ -22,12 +22,12 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}/packages/vsc-plugin",
-        "--extensionTestsPath=${workspaceFolder}/packages/vsc-plugin/out/test/suite/index"
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vsce",
+        "--extensionTestsPath=${workspaceFolder}/packages/vsce/out/test/suite/index"
       ],
       "outFiles": [
-        "${workspaceFolder}/packages/vsc-plugin/out/**/*.js",
-        "${workspaceFolder}/packages/vsc-plugin/dist/**/*.js"
+        "${workspaceFolder}/packages/vsce/out/**/*.js",
+        "${workspaceFolder}/packages/vsce/dist/**/*.js"
       ],
       "preLaunchTask": "tasks: watch-tests"
     }

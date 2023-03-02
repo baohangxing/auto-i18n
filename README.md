@@ -1,5 +1,8 @@
 <br />
-<h1 align="center" bold>auto-i18n</h1>
+
+<p align="center">
+<img src="./images/logo.svg" style="width:250px" />
+</p>
 
 <p align="center">
 一个可以快速将中文项目中的中文替换成 i18n 国际化标记的工具库。
