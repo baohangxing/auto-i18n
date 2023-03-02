@@ -62,7 +62,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "dependencies": {
-    "@h1mple/auto-i18n-core": "^0.2.8",
+    "@h1mple/auto-i18n-core": "^0.2.7",
     "fs-extra": "^11.1.0",
     "lodash.isequal": "4.5.0",
     "lodash.omit": "4.5.0"
