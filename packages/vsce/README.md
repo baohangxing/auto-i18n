@@ -1,7 +1,7 @@
 <br />
 
 <p align="center">
-<img src="./images/logo.svg" style="width:200px" />
+<img src="./images/logo.png" style="width:300px" />
 </p>
 
 <p align="center">
@@ -25,3 +25,7 @@ localesJsonDirs: [
 ## 演示
 
 ![example](./images/example.gif)
+
+## issues
+
+任何疑问或者问题 请提 issues: <https://github.com/baohangxing/auto-i18n/issues>

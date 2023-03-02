@@ -1,7 +1,7 @@
 <br />
 
 <p align="center">
-<img src="./images/logo.svg" style="width:250px" />
+<img src="https://github.com/baohangxing/auto-i18n/raw/main/images/logo.svg" style="width:250px" />
 </p>
 
 <p align="center">

@@ -2,7 +2,7 @@
   "publisher": "h1mple",
   "name": "auto-i18n",
   "displayName": "auto-i18n",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "private": true,
   "description": "A vscode extension helps you transform your project to an i18n-project automatically",
   "author": "h1mple",
@@ -15,12 +15,12 @@
     "Other"
   ],
   "main": "./dist/extension.js",
-  "icon": "images/logo.png",
+  "icon": "./images/logo_128.png",
   "engines": {
     "vscode": "^1.75.0"
   },
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "contributes": {
     "commands": [
