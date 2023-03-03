@@ -15,7 +15,7 @@ import { changePackageVersion } from './utils'
 
 const { version: oldVersion } = readJSONSync('package.json')
 
-execSync('bumpp --no-push --no-tag --no-push', { stdio: 'inherit' })
+execSync('bumpp --no-commit --no-push --no-tag --no-push', { stdio: 'inherit' })
 
 const { version } = readJSONSync('package.json')
 
@@ -46,7 +46,7 @@ exports[`#format > should lint text 1`] = `
 const sortObjectKey = (obj: any): any => {
   if (!obj)
     return {}
-  const a: any = {}; const keys = Object.keys(obj).sort(lexicalComparator)
+  const a: any = {}; const keys = Object.keys(obj).sort()
   for (const key of keys) {
     if (typeof obj[key] === 'object')
       a[key] = sortObjectKey(obj[key])
@@ -55,5 +55,6 @@ const sortObjectKey = (obj: any): any => {
   }
   return a
 }
+export { sortObjectKey }
 "
 `;

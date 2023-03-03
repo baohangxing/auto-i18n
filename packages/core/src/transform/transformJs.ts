@@ -55,7 +55,7 @@ interface TransformJsOptions {
   /**
    * Whether handle js in vue
    */
-  isJsInVue?: boolean
+  isJsInTemplate?: boolean
 
   autoConfig: AutoBaseConfig
 
@@ -202,10 +202,13 @@ const transformJs = (code: string, options: TransformJsOptions): GeneratorResult
         },
 
         StringLiteral(path: NodePath<StringLiteral>) {
-          if (includeChinese(path.node.value) && options.isJsInVue && isPropDefaultStringLiteralNode(path)) {
+          if (includeChinese(path.node.value)
+            && options.isJsInTemplate
+            && isPropDefaultStringLiteralNode(path)) {
             collector.add(path.node.value)
             if (options.replace) {
-              const expression = `() => ${getCallExpression(rule, collector.getKey(path.node.value))}`
+              const expression
+                = `() => ${getCallExpression(rule, collector.getKey(path.node.value))}`
               path.replaceWith(template.expression(expression)())
               hasTransformed = true
             }
@@ -414,7 +417,7 @@ const transformJs = (code: string, options: TransformJsOptions): GeneratorResult
 
   const ast = transformAST(code, options)
 
-  if (!hasImportI18n && hasTransformed && ast) {
+  if (!hasImportI18n && hasTransformed && ast && !options.isJsInTemplate) {
     const { importDeclaration, variableDeclaration } = rule
     const program = ast.program
     const lastImportIndex = program.body.findIndex(x => x.type !== 'ImportDeclaration')

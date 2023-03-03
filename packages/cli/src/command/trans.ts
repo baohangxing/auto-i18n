@@ -38,7 +38,9 @@ const trans = async (option: TransCommandOption) => {
   else
     paths = fgSync(autoConfig.includes)
 
-  const jsonObj = fsExtra.readJsonSync(path.join(process.cwd(), option.templateFile))
+  const jsonObj = option.templateFile
+    ? fsExtra.readJsonSync(path.join(process.cwd(), option.templateFile))
+    : undefined
   collector.init(jsonObj)
   for (const filePath of paths) {
     const code = transformSingleFile(filePath, option.modifyMode)

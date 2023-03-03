@@ -38,14 +38,17 @@ describe('#format', () => {
     */
     const  sortObjectKey = (obj: any): any => {
     if (!obj)   return {}
-    const a: any = {};const  keys =    Object.keys( obj ).sort(lexicalComparator)
-    for (const key of keys) { if (typeof obj[key] === 'object')
+    const a: any = {};const  keys =    Object.keys( obj ).sort()
+    for (const key of keys) { 
+      if (typeof obj[key] === 'object')
         a[key] = sortObjectKey(obj[key])
       else
         a[key] = obj[key]
     }
       return a
-    }`
+    } 
+    export {sortObjectKey}
+    `
 
     const reslut = await lintText(content)
     expect(reslut).toMatchSnapshot()

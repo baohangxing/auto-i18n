@@ -20,6 +20,25 @@ let title = t('Key of 标题');
 "
 `;
 
+exports[`#transformVue > should transform attributes in vue template 2`] = `
+"<template>
+    <div class=\\"home\\">
+      <img alt=\\"Vue logo\\" src=\\"../assets/logo.png\\"/>
+      <HelloWorld :msg=\\"t('Key of 你好') + t('Key of 世界')\\"/>
+      {{hi}}
+    </div>
+  </template>
+
+<script lang=\\"ts\\" setup>
+import HelloWorld from '@/components/HelloWorld.vue';
+import { useI18n } from 'vue-i18n';
+const t = useI18n();
+const hi = t('Key of 你好a');
+</script>
+
+"
+`;
+
 exports[`#transformVue > should transform vue 1`] = `
 "<template>
       <div>{{t('Key of 这是')}}{{title}}</div>

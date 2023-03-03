@@ -27,7 +27,7 @@ interface RevertOptions {
   /**
    * Whether handle js in vue
    */
-  isJsInVue?: boolean
+  isJsInTemplate?: boolean
 
   logger?: Log<any>
 }
@@ -228,7 +228,7 @@ const revertTemplate = (code: string, options: RevertOptions): string => {
 const revertScript = (source: string, options: RevertOptions): string => {
   return revertJs(source, {
     rule: options.rule,
-    isJsInVue: true,
+    isJsInTemplate: false,
     logger: options.logger,
     parse: initJsParse([[presetTypescript,
       { isTSX: true, allExtensions: true }]]),

@@ -57,6 +57,7 @@ const handleTemplate = (code: string, options: TransformVueOptions): string => {
       {
         rule: options.rule,
         parse: initTsxParse(),
+        isJsInTemplate: true,
         replace: options.replace,
         collector: options.collector,
         autoConfig: options.autoConfig,
@@ -108,6 +109,7 @@ const handleTemplate = (code: string, options: TransformVueOptions): string => {
           const isVueDirective = key.startsWith(':') || key.startsWith('@') || key.startsWith('v-')
           if (includeChinese(attrValue) && isVueDirective) {
             const source = parseJsSyntax(attrValue)
+            console.log(source, attrValue)
             // 处理属性类似于:xx="'xx'"，这种属性值不是js表达式的情况
             // attrValue === source即属性值不是js表达式
             // attrValue.startsWith是为了排除:xx="t('中文')"的情况
@@ -216,7 +218,7 @@ const handleScript = (source: string, options: TransformVueOptions): string => {
   const { code } = transformJs(source, {
     rule: options.rule,
     replace: options.replace,
-    isJsInVue: true,
+    isJsInTemplate: false,
     parse: initTsxParse(),
     collector: options.collector,
     autoConfig: options.autoConfig,
