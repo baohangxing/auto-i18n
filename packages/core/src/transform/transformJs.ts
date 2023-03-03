@@ -17,7 +17,7 @@ import type {
 } from '@babel/types'
 import type { GeneratorResult } from '@babel/generator'
 import template from '@babel/template'
-import { isEmpty, isObject } from 'lodash'
+import { isEmpty, isObject } from 'lodash-es'
 import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'

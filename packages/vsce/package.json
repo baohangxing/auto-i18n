@@ -2,7 +2,7 @@
   "publisher": "h1mple",
   "name": "auto-i18n",
   "displayName": "auto-i18n",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": true,
   "description": "A vscode extension helps you transform your project to an i18n-project automatically",
   "author": "h1mple",
@@ -62,10 +62,8 @@
     "test": "node ./out/test/runTest.js"
   },
   "dependencies": {
-    "@h1mple/auto-i18n-core": "^0.2.8",
-    "fs-extra": "^11.1.0",
-    "lodash.isequal": "4.5.0",
-    "lodash.omit": "4.5.0"
+    "@h1mple/auto-i18n-core": "^0.3.2",
+    "fs-extra": "^11.1.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
