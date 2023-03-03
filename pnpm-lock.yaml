@@ -93,7 +93,6 @@ importers:
       '@types/ejs': ^3.1.1
       '@types/eslint': ^8.4.10
       '@types/fs-extra': ^9.0.13
-      '@types/lodash-es': ^4.17.6
       '@types/mustache': ^4.2.2
       '@types/serialize-javascript': ^5.0.2
       '@vitest/coverage-c8': ^0.28.4
@@ -107,7 +106,6 @@ importers:
       fast-glob: ^3.2.12
       fs-extra: ^11.1.0
       htmlparser2: ^8.0.1
-      lodash-es: ^4.17.21
       mustache: ^4.2.0
       node-xlsx: ^0.21.0
       pinyin-pro: ^3.13.0
@@ -143,7 +141,6 @@ importers:
       fast-glob: 3.2.12
       fs-extra: 11.1.0
       htmlparser2: 8.0.1
-      lodash-es: 4.17.21
       mustache: 4.2.0
       node-xlsx: 0.21.0
       pinyin-pro: 3.13.1
@@ -157,7 +154,6 @@ importers:
       '@types/ejs': 3.1.2
       '@types/eslint': 8.21.1
       '@types/fs-extra': 9.0.13
-      '@types/lodash-es': 4.17.6
       '@types/mustache': 4.2.2
       '@types/serialize-javascript': 5.0.2
       '@vitest/coverage-c8': 0.28.5
@@ -1365,16 +1361,6 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-    dev: true
-
-  /@types/lodash-es/4.17.6:
-    resolution: {integrity: sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==}
-    dependencies:
-      '@types/lodash': 4.14.191
-    dev: true
-
-  /@types/lodash/4.14.191:
-    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
     dev: true
 
   /@types/mdast/3.0.10:
@@ -3343,10 +3329,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
-
-  /lodash-es/4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}

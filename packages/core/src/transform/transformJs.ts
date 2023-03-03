@@ -17,7 +17,6 @@ import type {
 } from '@babel/types'
 import type { GeneratorResult } from '@babel/generator'
 import template from '@babel/template'
-import { isEmpty, isObject } from 'lodash-es'
 import t from '@babel/types'
 import type * as traverseType from '@babel/traverse/index'
 import type * as generatorType from '@babel/generator/index'
@@ -70,7 +69,7 @@ const getObjectExpression = (obj: NamedInterpolationParams): ObjectExpression =>
   Object.keys(obj).forEach((k) => {
     const tempValue = obj[k]
     let newValue: Expression
-    if (isObject(tempValue))
+    if (typeof tempValue !== 'string')
       newValue = tempValue.value
     else
       newValue = t.identifier(tempValue)
@@ -85,7 +84,7 @@ const getArrayExpression = (params: ListInterpolationParams): ArrayExpression =>
   const ObjectPropertyArr: Expression [] = []
   params.forEach((tempValue) => {
     let newValue: Expression
-    if (isObject(tempValue))
+    if (typeof tempValue !== 'string')
       newValue = tempValue.value
     else
       newValue = t.identifier(tempValue)
@@ -271,7 +270,7 @@ const transformJs = (code: string, options: TransformJsOptions): GeneratorResult
                 }
               })
 
-              slotParams = isEmpty(params) ? undefined : params
+              slotParams = Object.keys(params).length === 0 ? undefined : params
             }
             else if (autoConfig.transInterpolationsMode === 'ListInterpolationMode') {
               let index = 0
@@ -304,7 +303,7 @@ const transformJs = (code: string, options: TransformJsOptions): GeneratorResult
                 }
               })
 
-              slotParams = isEmpty(params) ? undefined : params
+              slotParams = params.length === 0 ? undefined : params
             }
             else {
               options.logger?.error('AutoConfig.transInterpolationsMode must is '

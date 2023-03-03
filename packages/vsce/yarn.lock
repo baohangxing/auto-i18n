@@ -377,10 +377,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.35.0.tgz#b7569632b0b788a0ca0e438235154e45d42813a7"
   integrity sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==
 
-"@h1mple/auto-i18n-core@^0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@h1mple/auto-i18n-core/-/auto-i18n-core-0.2.8.tgz#b7d94236bb22f8783ced0568ba71812073bbe204"
-  integrity sha512-ctbX8q2IsaYr9PFD0KEIVD/kYnEwD1IxCSB+3d7tG8kzpR+eViW5eRYoGpiU3Xtm8NMLa+JCk2fo2iv3PM1O1A==
+"@h1mple/auto-i18n-core@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@h1mple/auto-i18n-core/-/auto-i18n-core-0.3.2.tgz#53092d4916328c417d340b191dd2ffb9adaa9514"
+  integrity sha512-JJXKjEM1vfPVM/1he+M+5LuQSDR2N3qmePLwu4Ak1oqygFTqphIv8GWNqDFt+KdWL6qdxZySR/tk0d4Y8FkhZw==
   dependencies:
     "@babel/core" "^7.20.12"
     "@babel/generator" "^7.20.7"
@@ -409,7 +409,7 @@
     fast-glob "^3.2.12"
     fs-extra "^11.1.0"
     htmlparser2 "^8.0.1"
-    lodash "^4.17.21"
+    lodash-es "^4.17.21"
     mustache "^4.2.0"
     node-xlsx "^0.21.0"
     pinyin-pro "^3.13.0"
@@ -2071,15 +2071,15 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+
 lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
-
-lodash@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@4.1.0:
   version "4.1.0"
