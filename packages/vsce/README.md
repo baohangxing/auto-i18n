@@ -1,7 +1,7 @@
 <br />
 
 <p align="center">
-<img src="./images/logo.png" style="width:300px" />
+<img src="https://github.com/baohangxing/auto-i18n/blob/main/packages/vsce/images/logo.png?raw=true" style="width:300px" />
 </p>
 
 <p align="center">
@@ -24,8 +24,12 @@ localesJsonDirs: [
 
 ## 演示
 
-![example](./images/example.gif)
+![example](https://github.com/baohangxing/auto-i18n/blob/main/packages/vsce/images/example.gif?raw=true)
 
 ## issues
 
-任何疑问或者问题 请提 issues: <https://github.com/baohangxing/auto-i18n/issues>
+任何问题 请提 issues: <https://github.com/baohangxing/auto-i18n/issues>
+
+## 问题
+
+- 为何这个 package 使用 yarn 进行包管理, 而不是统一使用 pnpm: <https://github.com/microsoft/vscode-vsce/issues/421>

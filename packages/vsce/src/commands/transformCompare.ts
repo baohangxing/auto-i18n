@@ -17,7 +17,7 @@ const transformCompareCommand: Command = {
       const textTransformed = transform(text, ext).code
 
       const filePath = path.join(dir, `${name}_eslint_${Math.random().toString().slice(6)}.${ext}`)
-      console.log(filePath)
+
       const textLinted = await lintText(textTransformed, getDocumentWorkspaceFolder(), {
         filePath,
       })
