@@ -1,3 +1,16 @@
 {
-  "dazigao": "タイプスクリプト"
+  "dazigao": "タイプスクリプト",
+  "dazigao2": "[JA]打字稿",
+  "guanyuyemian": "[JA]关于页面",
+  "hexinwendang": "[JA]核心文档",
+  "jibenlianjie": "[JA]基本链接",
+  "luntan": "[JA]论坛",
+  "luyouqi": "[JA]路由器",
+  "nihao": "[JA]你好",
+  "shengtaixitong": "[JA]生态系统",
+  "shequliaotian": "[JA]社区聊天",
+  "shijie": "[JA]世界",
+  "tuite": "[JA]推特",
+  "xinwen": "[JA]新闻",
+  "zheshiyige{about}": "[JA]这是一个{about}"
 }

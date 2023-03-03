@@ -1,5 +1,9 @@
+// @ts-check
+/** @typedef {import('@h1mple/auto-i18n-cli').AutoConfig} AutoConfig **/
+
+/** @type AutoConfig */
 module.exports = {
-  localesJsonDirs: ['**/locales/**.json'],
+  localesJsonDirs: ['**/locales/**.json', '!test/**'],
   locales: ['JA', 'cN', 'ko-kr'],
   baseLocale: 'cN',
   untransSymbol: (locale) => {
@@ -8,9 +12,56 @@ module.exports = {
   includes: ['src/**/*.{js,cjs,ts,mjs,jsx,tsx,vue}'],
   outputFileDir: './',
   transInterpolationsMode: 'NamedInterpolationMode',
-  i18nCallRules: { js: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' }, ts: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' }, cjs: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' }, mjs: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' }, jsx: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' }, tsx: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' }, vue: { transCaller: '', transIdentifier: 't', variableDeclaration: 'const { t } = useI18n();', importDeclaration: 'import { useI18n } from "vue-i18n";' } },
+  i18nCallRules:
+  {
+    js: {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration: 'import { useI18n } from "vue-i18n";',
+    },
+    ts:
+    {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration: 'import { useI18n } from "vue-i18n";',
+    },
+    cjs: {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration: 'import { useI18n } from "vue-i18n";',
+    },
+    mjs: {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration: 'import { useI18n } from "vue-i18n";',
+    },
+    jsx: {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration: 'import { useI18n } from "vue-i18n";',
+    },
+    tsx: {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration:
+        'import { useI18n } from "vue-i18n";',
+    },
+    vue:
+    {
+      transCaller: '',
+      transIdentifier: 't',
+      variableDeclaration: 'const { t } = useI18n();',
+      importDeclaration: 'import { useI18n } from "vue-i18n";',
+    },
+  },
   checkUsageMatchAppend: [],
   autoFormat: true,
   autoFormatRules: ['src/**/*.{js,cjs,ts,mjs,jsx,tsx,vue}'],
-  outputXlsxNameBy: { trans: 'trans', genXlsx: 'genXlsx', check: 'check' }
+  outputXlsxNameBy: { trans: 'trans', genXlsx: 'genXlsx', check: 'check' },
 }

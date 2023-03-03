@@ -1,3 +1,16 @@
 {
-  "dazigao": "타자기"
+  "dazigao": "타자기",
+  "dazigao2": "[KO-KR]打字稿",
+  "guanyuyemian": "[KO-KR]关于页面",
+  "hexinwendang": "[KO-KR]核心文档",
+  "jibenlianjie": "[KO-KR]基本链接",
+  "luntan": "[KO-KR]论坛",
+  "luyouqi": "[KO-KR]路由器",
+  "nihao": "[KO-KR]你好",
+  "shengtaixitong": "[KO-KR]生态系统",
+  "shequliaotian": "[KO-KR]社区聊天",
+  "shijie": "[KO-KR]世界",
+  "tuite": "[KO-KR]推特",
+  "xinwen": "[KO-KR]新闻",
+  "zheshiyige{about}": "[KO-KR]这是一个{about}"
 }
