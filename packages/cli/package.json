@@ -1,6 +1,6 @@
 {
   "name": "@h1mple/auto-i18n-cli",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
@@ -37,8 +37,7 @@
     "dist",
     "bin",
     "global.d.ts",
-    "README.md",
-    "demo"
+    "README.md"
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
