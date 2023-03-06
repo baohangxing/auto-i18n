@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import { checkInPatterns, lintFiles, sortObjectKey } from '@h1mple/auto-i18n-core'
+import { checkInPatterns, lintFiles, sortObjectKey } from '@yostar/auto-i18n-core'
 import { getAutoConfig } from '../config/config'
 
 const createFileName = (fileName = ''): string => {

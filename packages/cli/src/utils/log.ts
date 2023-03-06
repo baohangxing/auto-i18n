@@ -1,7 +1,7 @@
 import type { InspectOptions } from 'node:util'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
-import type { Log } from '@h1mple/auto-i18n-core'
+import type { Log } from '@yostar/auto-i18n-core'
 import colors from 'ansi-colors'
 import { LOG_PREFIX } from '../config/constants'
 

@@ -14,4 +14,4 @@
 
 [changelogen Configuration](https://github.com/unjs/changelogen/blob/main/src/config.ts)
 
-详细更新日志[见Releases](https://github.com/baohangxing/auto-i18n/releases)
+详细更新日志[见Releases](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/releases)

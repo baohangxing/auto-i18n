@@ -1,5 +1,5 @@
 import path from 'path'
-import { defaultAutoBaseConfig, getAutoBaseConfig, getJsonPath } from '@h1mple/auto-i18n-core'
+import { defaultAutoBaseConfig, getAutoBaseConfig, getJsonPath } from '@yostar/auto-i18n-core'
 import type { AutoConfig } from '../types/config'
 import defaultAutoConfig from './defaultAutoConfig'
 

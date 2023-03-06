@@ -1,16 +1,16 @@
 {
-  "name": "@h1mple/auto-i18n-cli",
+  "name": "@yostar/auto-i18n-cli",
   "version": "0.3.4",
   "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
-  "homepage": "https://github.com/baohangxing/auto-i18n/packages/cli#readme",
+  "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/baohangxing/auto-i18n.git"
+    "url": "git+https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n.git"
   },
   "bugs": {
-    "url": "https://github.com/baohangxing/auto-i18n/issues"
+    "url": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/issues"
   },
   "keywords": [
     "vue",
@@ -46,7 +46,7 @@
     "coverage": "vitest run --coverage  --no-threads"
   },
   "dependencies": {
-    "@h1mple/auto-i18n-core": "workspace:^",
+    "@yostar/auto-i18n-core": "workspace:^",
     "ansi-colors": "^4.1.3",
     "chalk": "^5.2.0",
     "cli-progress": "^3.12.0",

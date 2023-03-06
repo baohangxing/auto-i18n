@@ -2,7 +2,7 @@ import {
   getJsI18nKeys,
   getVueI18nKeys,
   initJsParse, initTsxParse,
-} from '@h1mple/auto-i18n-core'
+} from '@yostar/auto-i18n-core'
 import type { FileExtension, I18nCallRules } from '../types'
 
 import logger from '../utils/log'

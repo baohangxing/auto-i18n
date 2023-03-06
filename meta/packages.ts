@@ -5,13 +5,13 @@ interface Packages {
 
 const packages: Packages[] = [{
   path: './packages/cli',
-  name: '@h1mple/auto-i18n-cli',
+  name: '@yostar/auto-i18n-cli',
 }, {
   path: './packages/core',
-  name: '@h1mple/auto-i18n-core',
+  name: '@yostar/auto-i18n-core',
 }, {
   path: './packages/vsce',
-  name: '@h1mple/auto-i18n',
+  name: 'auto-i18n',
 }]
 
 export { packages }

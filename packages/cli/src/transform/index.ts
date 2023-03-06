@@ -1,5 +1,5 @@
-import { initJsParse, initTsxParse, transformJs, transformVue } from '@h1mple/auto-i18n-core'
-import type { Collector, FileExtension, I18nCallRules, Log } from '@h1mple/auto-i18n-core'
+import { initJsParse, initTsxParse, transformJs, transformVue } from '@yostar/auto-i18n-core'
+import type { Collector, FileExtension, I18nCallRules, Log } from '@yostar/auto-i18n-core'
 import log from '../utils/log'
 import type { AutoConfig } from '../types'
 

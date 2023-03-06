@@ -4,8 +4,8 @@ import fsExtra from 'fs-extra'
 import {
   fgSync, getKeys,
   getValueByKey,
-} from '@h1mple/auto-i18n-core'
-import type { FileExtension } from '@h1mple/auto-i18n-core'
+} from '@yostar/auto-i18n-core'
+import type { FileExtension } from '@yostar/auto-i18n-core'
 import log from '../utils/log'
 import { getAutoConfig, getJsonPath, getOutputFileDir, isUnTransed } from '../config/config'
 import { writeXlsxFile } from '../utils/excel'

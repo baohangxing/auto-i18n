@@ -1,7 +1,7 @@
 <br />
 
 <p align="center">
-<img src="https://github.com/baohangxing/auto-i18n/blob/main/packages/vsce/images/logo.png?raw=true" style="width:300px" />
+<img src="https://z4a.net/images/2023/03/07/logo.png" style="width:300px" />
 </p>
 
 <p align="center">
@@ -10,7 +10,7 @@
 
 ## 如何使用
 
-在使用前请在先安装 [@h1mple/auto-i18n-cli](https://github.com/baohangxing/auto-i18n/blob/main/packages/cli/README.md), 并进行初始的配置（后续版本会在插件中集成所有的功能）
+在使用前请在先安装 [@yostar/auto-i18n-cli](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli), 并进行初始的配置（后续版本会在插件中集成所有的功能）
 
 使用前需要将`AutoConfig`中的`localesJsonDirs`进行重新配置，例如：
 
@@ -24,11 +24,11 @@ localesJsonDirs: [
 
 ## 演示
 
-![example](https://github.com/baohangxing/auto-i18n/blob/main/packages/vsce/images/example.gif?raw=true)
+![example.gif](https://z4a.net/images/2023/03/07/example.gif)
 
 ## issues
 
-任何问题 请提 issues: <https://github.com/baohangxing/auto-i18n/issues>
+任何问题 请提 issues: <https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/issues>
 
 ## 问题
 

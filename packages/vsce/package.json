@@ -6,10 +6,10 @@
   "private": true,
   "description": "A vscode extension helps you transform your project to an i18n-project automatically",
   "author": "h1mple",
-  "homepage": "https://github.com/baohangxing/auto-i18n/tree/main/packages/vsce/README.md",
-  "repository": "https://github.com/baohangxing/auto-i18n/tree/main/packages/vsce",
+  "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/vsce",
+  "repository": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/vsce",
   "bugs": {
-    "url": "https://github.com/baohangxing/auto-i18n/issues"
+    "url": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/issues"
   },
   "categories": [
     "Other"
@@ -62,7 +62,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "dependencies": {
-    "@h1mple/auto-i18n-core": "^0.3.4",
+    "@yostar/auto-i18n-core": "^0.3.4",
     "fs-extra": "^11.1.0"
   },
   "devDependencies": {

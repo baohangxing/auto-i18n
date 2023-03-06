@@ -4,8 +4,8 @@ import {
   initTsxParse,
   transformJs,
   transformVue,
-} from '@h1mple/auto-i18n-core'
-import type { FileExtension } from '@h1mple/auto-i18n-core'
+} from '@yostar/auto-i18n-core'
+import type { FileExtension } from '@yostar/auto-i18n-core'
 import * as fsExtra from 'fs-extra'
 import logger from './logger'
 import { getAutoBaseConfigBindWorkspace, getJsonPathBindWorkspace } from './tools'

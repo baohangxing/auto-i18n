@@ -1,5 +1,5 @@
 // @ts-check
-/** @typedef {import('@h1mple/auto-i18n-cli').AutoConfig} AutoConfig **/
+/** @typedef {import('@yostar/auto-i18n-cli').AutoConfig} AutoConfig **/
 
 /** @type AutoConfig */
 module.exports = {

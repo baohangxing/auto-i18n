@@ -1,20 +1,17 @@
 <br />
+
+<div align="center">
 <h1 align="center" bold>auto-i18n-cli</h1>
+</div>
 
-<p align="center">
+<div align="center">
 这是一个可以快速将中文项目替换成 i18n 国际化标记的命令工具, 除此之外, 它还具备智能初始化, json 语言包 xlsx 导出, json 语言包更新以及检测是否翻译完全等功能。
-</p>
-
-<p align="center">
-<a href="https://www.npmjs.com/package/@h1mple/auto-i18n-cli">
-<img alt="NPM version" src="https://img.shields.io/npm/v/@h1mple/auto-i18n-cli?label=%40h1mple%2Fauto-i18n-cli&color=c95f8b&amp;"></a>
-</p>
+</div>
 
 <br />
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [功能](#%E5%8A%9F%E8%83%BD)
 - [快速开始](#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
@@ -37,6 +34,7 @@
   - [vue 转换示例](#vue-%E8%BD%AC%E6%8D%A2%E7%A4%BA%E4%BE%8B)
 - [通配符语法](#%E9%80%9A%E9%85%8D%E7%AC%A6%E8%AF%AD%E6%B3%95)
   - [基础语法](#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
+- [CHANGELOG](#changelog)
 - [注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -66,19 +64,19 @@
 - 第一步: 安装
 
 ```sh
-npm i @h1mple/auto-i18n-cli -D
+npm i @yostar/auto-i18n-cli -D
 ```
 
 or
 
 ```sh
-yarn add @h1mple/auto-i18n-cli -D
+yarn add @yostar/auto-i18n-cli -D
 ```
 
 or
 
 ```sh
-pnpm i @h1mple/auto-i18n-cli -D
+pnpm i @yostar/auto-i18n-cli -D
 ```
 
 - 第二步: 给你项目添加 I18n 库，创建 locales 文件夹以及多语言 json 文件
@@ -507,7 +505,7 @@ export default Example
 
 ### vue 转换示例
 
-完整的示例可见 [vue-demo](https://github.com/baohangxing/auto-i18n/tree/main/packages/cli/demo/vue-demo)
+完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli/demo/vue-demo)
 
 转换前
 
@@ -571,6 +569,10 @@ const handleClick = () => {
 - `file-[01].js` — matches files: `file-0.js`, `file-1.js`.
 
 更多信息可以参考 [fast-glob 的 Pattern syntax 说明](https://github.com/mrmlnc/fast-glob#pattern-syntax)
+
+## CHANGELOG
+
+见 [Releases](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/releases)
 
 ## 注意事项
 

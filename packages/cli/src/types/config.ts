@@ -1,7 +1,7 @@
 import type {
   AutoBaseConfig, FileExtension,
   I18nCallRule, TransInterpolationsMode,
-} from '@h1mple/auto-i18n-core'
+} from '@yostar/auto-i18n-core'
 
 export interface AutoConfig extends AutoBaseConfig {
   /**

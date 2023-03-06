@@ -2,7 +2,7 @@
 
 exports[`#init > should init with formating 1`] = `
 "// @ts-check
-/** @typedef {import('@h1mple/auto-i18n-cli').AutoConfig} AutoConfig **/
+/** @typedef {import('@yostar/auto-i18n-cli').AutoConfig} AutoConfig **/
 
 /** @type AutoConfig */
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 
 exports[`#init > should skip init 1`] = `
 "// @ts-check
-/** @typedef {import('@h1mple/auto-i18n-cli').AutoConfig} AutoConfig **/
+/** @typedef {import('@yostar/auto-i18n-cli').AutoConfig} AutoConfig **/
 
 /** @type AutoConfig */
 module.exports = {

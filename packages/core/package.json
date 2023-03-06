@@ -1,16 +1,16 @@
 {
-  "name": "@h1mple/auto-i18n-core",
+  "name": "@yostar/auto-i18n-core",
   "version": "0.3.4",
   "description": "The core library of auto-i18n.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
-  "homepage": "https://github.com/baohangxing/auto-i18n/packages/core#readme",
+  "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/core",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/baohangxing/auto-i18n.git"
+    "url": "git+https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n.git"
   },
   "bugs": {
-    "url": "https://github.com/baohangxing/auto-i18n/issues"
+    "url": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/issues"
   },
   "keywords": [
     "vue",
