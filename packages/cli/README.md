@@ -64,18 +64,6 @@
 - 第一步: 安装
 
 ```sh
-npm i @yostar/auto-i18n-cli -D
-```
-
-or
-
-```sh
-yarn add @yostar/auto-i18n-cli -D
-```
-
-or
-
-```sh
 pnpm i @yostar/auto-i18n-cli -D
 ```
 

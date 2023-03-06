@@ -1,12 +1,16 @@
 <br />
 
+<div align="center">
 <p align="center">
 <img src="https://z4a.net/images/2023/03/07/logo.png" style="width:300px" />
 </p>
+</div>
 
+<div align="center">
 <p align="center">
-一个可以快速将中文项目中的中文替换成 i18n 国际化标记的插件。
+一个可以快速将中文项目中的中文替换成 i18n 国际化标记的 vscode 插件。
 </p>
+</div>
 
 ## 如何使用
 
