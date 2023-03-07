@@ -3,7 +3,7 @@ import path from 'path'
 import fsExtra from 'fs-extra'
 
 execSync(
-  'conventional-changelog -p angular -i CHANGELOG.md -s -r 100 -n ./.changelog.js'
+  'conventional-changelog -p angular -i CHANGELOG.md -s -r 0 -n ./.changelog.js'
   , { stdio: 'inherit' },
 )
 
