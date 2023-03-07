@@ -20,4 +20,4 @@ Auto-i18n 项目采用 monorepo 结构
 
 ## CHANGELOG
 
-见 [Releases](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/releases)
+见 <https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md>

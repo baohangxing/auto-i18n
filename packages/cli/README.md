@@ -560,7 +560,7 @@ const handleClick = () => {
 
 ## CHANGELOG
 
-见 [Releases](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/releases)
+见 <https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md>
 
 ## 注意事项
 

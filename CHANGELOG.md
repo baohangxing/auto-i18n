@@ -1,17 +1,198 @@
-# 更新日志
+## [0.3.7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.5...v0.3.7) (2023-03-07)
 
-`auto-i18n` 严格遵循 [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
 
-#### 发布周期
+### ✨ Features | 新功能
 
-- 修订版本号：每周末会进行日常 bugfix 更新。（如果有紧急的 bugfix，则任何时候都可发布）
-- 次版本号：每月发布一个带有新特性的向下兼容的版本。
-- 主版本号：含有破坏性更新和新特性，不在发布周期内。
+* 1213release v0.3.6 ([7bd6d482](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/7bd6d48209ce763a1ae6f92733571bd1b1e10dc4))
+* dededede ([641269f6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/641269f6399204ed6d490781ba8246b938638de0))
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* release v0.3.6 ([5afa694c](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/5afa694cd368f6e9e01bd519628cebabee9b7a75))
+
+
+
+## [0.3.5](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.4...v0.3.5) (2023-03-06)
+
+
+
+## [0.3.4](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.1...v0.3.4) (2023-03-03)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **core:** transform syntax in vue template attribution error ([c3ef07f6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c3ef07f685c662f7024be63532163ad553f5e481))
+
+
+
+## [0.3.1](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.2.7...v0.3.1) (2023-03-03)
+
+
+### ✨ Features | 新功能
+
+* **cli:** add ts-check in config when inited by cli ([6edd8ce0](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/6edd8ce07beeecb60b9ccaec76fca3b7345e9593))
+* **core:** add cwd options in initText and glob.ts ([be153a8c](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/be153a8ca239f77d7187b3da086f576f71669f06))
+* **vsce:** finish frist command comparing tranformed text with source ([051de295](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/051de295d5c299d5bf28e750d04160b5ccd86a97))
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **core:** replace fs.cpSync [#6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/issues/6) ([eaf3aa4e](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/eaf3aa4ebffc89bd3796374f23deecc89a881718))
+* **vsce:** change package manager with yarn to fix package error ([742d2dcc](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/742d2dccabe40ee9b16861787b110a89b81c0c8c))
+
+
+
+## [0.2.7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.7...v0.2.7) (2023-02-28)
+
+
+### ✨ Features | 新功能
+
+* 完善 transform Collector ([6a630f06](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/6a630f06bbec5750d57a9c6b3d09457e6d674505))
+* 完善子命令trans的逻辑 ([935b1488](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/935b14884d23fe19cc02b477a6313251b41bfd14))
+* 完善vue解析中属性值的一些特殊逻辑 ([c044be61](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c044be61b2a451048d6d911aca547eba1a0fc352))
+* 新增功能revert ([87713500](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/87713500838253fd6a377b41180a68380972360c))
+* 一些迁移的修改 ([ae45ec81](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ae45ec815e1116998b46aa16fea51ff22f37a8ff))
+* add conventional-changelog ([01c02b9d](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/01c02b9d94b80719a89b5baf8828403dd9c1ad90))
+* add cosmiconfig ([dcb7c71b](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/dcb7c71b0f65d36ad91eb1f7a9a6c13cf4f487b1))
+* add test scripts ([28f8299a](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/28f8299abdafc422c09771e24ee7157af3e41ca7))
+* add transInterpolationsMode config ([83c591a7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/83c591a75c5c6938e4752ad4e816030949319134))
+* add vitest ([3e139baa](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/3e139baab6b71fd849265838fe96e45af5b5e67c))
+* add vue demo ([0dbd4c31](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/0dbd4c31177928483219637bae93a2a27946b551))
+* refactor 1/2 ([00fefd43](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/00fefd4368c3e234d56e9ce34603fee078d666ab))
+* refactor test ([ed8bcd00](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ed8bcd008b0b728249c5efdcaa43b49b99a1d999))
+* refactor test ([c4c117fe](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c4c117fed1050a4e60635c7785f17a8b91d16096))
+* Update .gitlab-ci.yml file ([ab60f979](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ab60f979f97758159c02222d70915eea421940de))
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **core:** replace fs.cpSync [#6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/issues/6) ([e55ecc83](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/e55ecc83f496ca73d31e4ef24431ae3a88b98169))
+* ignore deme eslint check ([d37cb12a](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/d37cb12a47ecab0862281d1dc391f348ff904056))
+* replace replaceAll ([c6d081e9](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c6d081e9a43ad3238cbdd2075e67cc950b345018))
+* replace replaceAll ([7ac3e341](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/7ac3e3412363a67e21e34534273ea07afd51d834))
+* revert format error path ([929514f5](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/929514f5c910667b8d087e75d69dc313eaefa71f))
+* update not clear deleted key ([fc3bfc19](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/fc3bfc19408e0995b7bffb156b7507583458b8fa))
+* update not clear deleted key ([5bb5dd16](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/5bb5dd16922bbcf71769e28880297c957c4e0f03))
+
+
+
+## [0.0.7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.6...v0.0.7) (2022-12-19)
+
+
+### ✨ Features | 新功能
+
+* add updateLocales command ([ca317f4d](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ca317f4db156b3d9aa9b52a507491daa930e0daf))
+* finish generateXlsx and updateLocalesFromXlsx ([9f0d8dbc](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/9f0d8dbc7df2cb7ec92e9ad504c4ac66850d5e0f))
+
+
+
+## [0.0.6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.5...v0.0.6) (2022-12-17)
+
+
+
+## [0.0.5](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.4...v0.0.5) (2022-12-17)
+
+
+
+## [0.0.4](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/8627a69a6f538932fc21f1ff63fcec3014377830...v0.0.4) (2022-12-17)
+
+
+### ✨ Features | 新功能
+
+* add updateLocales command and types ([9ff66136](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/9ff661361f06833c0f0fea79192adf80b23e62ef))
+* init ([c7684af6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c7684af6219ad2330688bf52bb1e5385d72197e9))
+* init ([8627a69a](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/8627a69a6f538932fc21f1ff63fcec3014377830))
+
+
+
+## [0.3.6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.5...v0.3.6) (2023-03-07)
+
+### ✨ Features | 新功能
+
+* 1213release v0.3.6 ([7bd6d482](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/7bd6d48209ce763a1ae6f92733571bd1b1e10dc4))
+* dededede ([641269f6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/641269f6399204ed6d490781ba8246b938638de0))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* release v0.3.6 ([5afa694c](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/5afa694cd368f6e9e01bd519628cebabee9b7a75))
+
+## [0.3.5](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.4...v0.3.5) (2023-03-06)
+
+## [0.3.4](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.1...v0.3.4) (2023-03-03)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **core:** transform syntax in vue template attribution error ([c3ef07f6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c3ef07f685c662f7024be63532163ad553f5e481))
+
+## [0.3.1](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.2.7...v0.3.1) (2023-03-03)
+
+### ✨ Features | 新功能
+
+* **cli:** add ts-check in config when inited by cli ([6edd8ce0](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/6edd8ce07beeecb60b9ccaec76fca3b7345e9593))
+* **core:** add cwd options in initText and glob.ts ([be153a8c](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/be153a8ca239f77d7187b3da086f576f71669f06))
+* **vsce:** finish frist command comparing tranformed text with source ([051de295](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/051de295d5c299d5bf28e750d04160b5ccd86a97))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **core:** replace fs.cpSync [#6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/issues/6) ([eaf3aa4e](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/eaf3aa4ebffc89bd3796374f23deecc89a881718))
+* **vsce:** change package manager with yarn to fix package error ([742d2dcc](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/742d2dccabe40ee9b16861787b110a89b81c0c8c))
+
+## [0.2.7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.7...v0.2.7) (2023-02-28)
+
+### ✨ Features | 新功能
+
+* 完善 transform Collector ([6a630f06](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/6a630f06bbec5750d57a9c6b3d09457e6d674505))
+* 完善子命令trans的逻辑 ([935b1488](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/935b14884d23fe19cc02b477a6313251b41bfd14))
+* 完善vue解析中属性值的一些特殊逻辑 ([c044be61](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c044be61b2a451048d6d911aca547eba1a0fc352))
+* 新增功能revert ([87713500](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/87713500838253fd6a377b41180a68380972360c))
+* 一些迁移的修改 ([ae45ec81](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ae45ec815e1116998b46aa16fea51ff22f37a8ff))
+* add conventional-changelog ([01c02b9d](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/01c02b9d94b80719a89b5baf8828403dd9c1ad90))
+* add cosmiconfig ([dcb7c71b](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/dcb7c71b0f65d36ad91eb1f7a9a6c13cf4f487b1))
+* add test scripts ([28f8299a](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/28f8299abdafc422c09771e24ee7157af3e41ca7))
+* add transInterpolationsMode config ([83c591a7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/83c591a75c5c6938e4752ad4e816030949319134))
+* add vitest ([3e139baa](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/3e139baab6b71fd849265838fe96e45af5b5e67c))
+* add vue demo ([0dbd4c31](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/0dbd4c31177928483219637bae93a2a27946b551))
+* refactor 1/2 ([00fefd43](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/00fefd4368c3e234d56e9ce34603fee078d666ab))
+* refactor test ([ed8bcd00](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ed8bcd008b0b728249c5efdcaa43b49b99a1d999))
+* refactor test ([c4c117fe](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c4c117fed1050a4e60635c7785f17a8b91d16096))
+* Update .gitlab-ci.yml file ([ab60f979](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ab60f979f97758159c02222d70915eea421940de))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **core:** replace fs.cpSync [#6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/issues/6) ([e55ecc83](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/e55ecc83f496ca73d31e4ef24431ae3a88b98169))
+* ignore deme eslint check ([d37cb12a](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/d37cb12a47ecab0862281d1dc391f348ff904056))
+* replace replaceAll ([c6d081e9](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c6d081e9a43ad3238cbdd2075e67cc950b345018))
+* replace replaceAll ([7ac3e341](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/7ac3e3412363a67e21e34534273ea07afd51d834))
+* revert format error path ([929514f5](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/929514f5c910667b8d087e75d69dc313eaefa71f))
+* update not clear deleted key ([fc3bfc19](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/fc3bfc19408e0995b7bffb156b7507583458b8fa))
+* update not clear deleted key ([5bb5dd16](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/5bb5dd16922bbcf71769e28880297c957c4e0f03))
+
+## [0.0.7](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.6...v0.0.7) (2022-12-19)
+
+### ✨ Features | 新功能
+
+* add updateLocales command ([ca317f4d](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/ca317f4db156b3d9aa9b52a507491daa930e0daf))
+* finish generateXlsx and updateLocalesFromXlsx ([9f0d8dbc](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/9f0d8dbc7df2cb7ec92e9ad504c4ac66850d5e0f))
+
+## [0.0.6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.5...v0.0.6) (2022-12-17)
+
+## [0.0.5](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.0.4...v0.0.5) (2022-12-17)
+
+## [0.0.4](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/8627a69a6f538932fc21f1ff63fcec3014377830...v0.0.4) (2022-12-17)
+
+### ✨ Features | 新功能
+
+* add updateLocales command and types ([9ff66136](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/9ff661361f06833c0f0fea79192adf80b23e62ef))
+* init ([c7684af6](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/c7684af6219ad2330688bf52bb1e5385d72197e9))
+* init ([8627a69a](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/8627a69a6f538932fc21f1ff63fcec3014377830))
 
 ---
 
-参考[约定式提交](https://www.conventionalcommits.org/zh-hans/v1.0.0/) - 一种用于给提交信息增加人机可读含义的规范
+## 参考
 
-[changelogen Configuration](https://github.com/unjs/changelogen/blob/main/src/config.ts)
+* [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
 
-详细更新日志[见Releases](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/releases)
+* [约定式提交](https://www.conventionalcommits.org/zh-hans/v1.0.0/) - 一种用于给提交信息增加人机可读含义的规范
+
+* [Angular Contributing Guidelines](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit)

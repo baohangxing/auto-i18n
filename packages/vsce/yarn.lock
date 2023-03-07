@@ -755,10 +755,10 @@
   resolved "http://npm.yo-star.com/@xtuc%2flong/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yostar/auto-i18n-core@^0.3.4":
-  version "0.3.5"
-  resolved "http://npm.yo-star.com/@yostar%2fauto-i18n-core/-/auto-i18n-core-0.3.5.tgz#9a9884f6f7ce35b8ae7b4b5919c8ceac3fb9de25"
-  integrity sha512-EkOTZAqR0faz444/0cxuQJPFBlkfxZgR3n9GQ6Ahg9cxIb3r7pBaaQ309u5FJuFmIxYa0TUqiLUvLxOkTKQKwA==
+"@yostar/auto-i18n-core@^0.3.6":
+  version "0.3.6"
+  resolved "http://npm.yo-star.com/@yostar%2fauto-i18n-core/-/auto-i18n-core-0.3.6.tgz#313ebbfb41dd6901643bba6d4f4a3482d5af89b2"
+  integrity sha512-aGjwszkv5zeozjhF079Yq0huMccxRe+CgRfGB1eV5yPnyelNhzYjaGdnYf6CobKLUgik0374UoA/D1kXkj3kVw==
   dependencies:
     "@babel/core" "^7.20.12"
     "@babel/generator" "^7.20.7"
