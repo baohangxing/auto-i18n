@@ -7,14 +7,17 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "auto:init": "auto-i18n init",
-    "auto:help": "auto-i18n help check",
-    "auto:update": "auto-i18n update",
-    "auto:genlsx": "auto-i18n genlsx",
-    "auto:update2": "auto-i18n update -t ./1.xlsx",
-    "auto:trans": "auto-i18n trans",
-    "auto:trans-modify": "auto-i18n trans --modify",
-    "auto:check": "auto-i18n check"
+    "resetAll": "esno ./scripts/resetAll",
+    "auto-i18n:init": "auto-i18n init",
+    "auto-i18n:trans-one": "auto-i18n trans ./src/views/HomeView.vue",
+    "auto-i18n:trans-one-modify": "auto-i18n trans ./src/views/HomeView.vue --modify",
+    "auto-i18n:trans-one-with-json": "auto-i18n trans ./src/views/HomeView.vue --modify -t ./trans-key.json",
+    "auto-i18n:trans-all": "auto-i18n trans",
+    "auto-i18n:trans-all-modify": "auto-i18n trans --modify",
+    "auto-i18n:update": "auto-i18n update",
+    "auto-i18n:genlsx": "auto-i18n genlsx",
+    "auto-i18n:update-by-xlsx": "auto-i18n update -t ./1.xlsx",
+    "auto-i18n:check": "auto-i18n check"
   },
   "dependencies": {
     "core-js": "^3.8.3",
@@ -25,7 +28,6 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@yostar/auto-i18n-cli": "^0.3.4",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -36,11 +38,13 @@
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-standard": "^6.1.0",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "@yostar/auto-i18n-cli": "^0.3.6",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^8.0.3",
+    "esno": "^0.16.3",
     "typescript": "^4.9.4"
   }
 }

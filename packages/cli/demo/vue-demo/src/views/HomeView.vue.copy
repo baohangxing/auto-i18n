@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png"/>
-    <HelloWorld :msg="'你好' + '世界'"/>
+    <HelloWorld :msg="'标题'"/>
     {{ hi }}
   </div>
 </template>
