@@ -117,12 +117,12 @@ const updateLocalesFromXlsx = async (filePath: string) => {
       const newJsonObj = sortObjectKey(langJsonObj)
 
       for (const { data } of res) {
-        const keyIndex = typeof data[0] === 'string' ? data[0].indexOf(KEY_SYMBOL_IN_XLSX) : -1
-        const langIndex = typeof data[0] === 'string' ? data[0].indexOf(langJson.name) : -1
+        const keyIndex = Array.isArray(data[0]) ? data[0].indexOf(KEY_SYMBOL_IN_XLSX) : -1
+        const langIndex = Array.isArray(data[0]) ? data[0].indexOf(langJson.name) : -1
 
         if (keyIndex !== -1 && langIndex !== -1) {
           for (const aLine of data.slice(1)) {
-            if (typeof aLine === 'string' && typeJsonKeySet.has(aLine[keyIndex])) {
+            if (Array.isArray(aLine) && typeJsonKeySet.has(aLine[keyIndex])) {
               if (aLine[langIndex]) {
                 setValueByKey(
                   newJsonObj,
