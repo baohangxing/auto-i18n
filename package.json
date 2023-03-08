@@ -12,9 +12,8 @@
     "auto-publish": "esno ./scripts/publish",
     "build": "pnpm -r build",
     "coverage": "pnpm -r coverage",
-    "pretest": "pnpm run build",
     "changelog": "esno ./scripts/changelog",
-    "test": "nr --dir ./packages/core coverage && nr --dir ./packages/cli coverage"
+    "test": "pnpm run build && nr --dir ./packages/core coverage && nr --dir ./packages/cli coverage"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
