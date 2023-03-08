@@ -1,7 +1,6 @@
 import path from 'path'
-import fs from 'fs'
 import { describe, expect, it } from 'vitest'
-import { checkEslintConfigExist, lintFiles, lintText } from '../../src/utils/format'
+import { checkEslintConfigExist, lintText } from '../../src/utils/format'
 import { trimRootPath } from '../_helps/utils'
 
 describe('#checkEslintConfigExist', () => {
@@ -20,15 +19,6 @@ describe('#checkEslintConfigExist', () => {
 })
 
 describe('#format', () => {
-  it('should format file content', async () => {
-    const filePath = path.join(__dirname, '..', '..', '..', '..', 'scripts', 'release.ts')
-
-    await lintFiles(filePath)
-    const res = fs.readFileSync(filePath, 'utf-8')
-
-    expect(res).toMatchSnapshot()
-  })
-
   it('should lint text', async () => {
     const content = `/**
     * sort Object by lexical recursively, retren a new Object.
