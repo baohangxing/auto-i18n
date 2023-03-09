@@ -1,7 +1,6 @@
 dist/
 node_modules
 node_modules/
-demo/
 patches/
 !packages/.vitepress
 !/.eslintrc.js

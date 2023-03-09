@@ -493,7 +493,7 @@ export default Example
 
 ### vue 转换示例
 
-完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli/demo/vue-demo)
+完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/demo/vue-demo)
 
 转换前
 

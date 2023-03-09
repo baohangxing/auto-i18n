@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint": "eslint --cache .",
+    "lint:fix": "pnpm lint --fix",
     "resetAll": "esno ./scripts/resetAll",
     "auto-i18n:init": "auto-i18n init",
     "auto-i18n:trans-one": "auto-i18n trans ./src/views/HomeView.vue",
@@ -28,22 +29,15 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
+    "@antfu/eslint-config": "^0.34.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "@vue/eslint-config-standard": "^6.1.0",
-    "@vue/eslint-config-typescript": "^9.1.0",
     "@yostar/auto-i18n-cli": "^0.3.8",
-    "eslint": "^7.32.0",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-vue": "^8.0.3",
+    "eslint": "^8.27.0",
     "esno": "^0.16.3",
     "typescript": "^4.9.4"
   }

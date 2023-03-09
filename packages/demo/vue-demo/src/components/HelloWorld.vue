@@ -1,18 +1,33 @@
+<script lang="ts" setup>
+import { defineProps } from 'vue'
+
+const props = defineProps<{
+  msg: string
+}>()
+
+const h3 = '你好'
+</script>
+
 <template>
   <div>
     <h3>{{ h3 }}</h3>
     <h3>{{ props.msg }}</h3>
     <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank"
-          rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank"
-          rel="noopener">路由器</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank"
-          rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank"
-          rel="noopener">eslint</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank"
-          rel="noopener">打字稿</a></li>
+      <li>
+        <a>babel</a>
+      </li>
+      <li>
+        <a>路由器</a>
+      </li>
+      <li>
+        <a>vuex</a>
+      </li>
+      <li>
+        <a>eslint</a>
+      </li>
+      <li>
+        <a>打字稿</a>
+      </li>
     </ul>
     <h3>基本链接</h3>
     <ul>
@@ -26,25 +41,14 @@
     <ul>
       <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
       <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a>
+      <li>
+        <a>vue-devtools</a>
       </li>
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
   </div>
 </template>
-
-<script lang="ts" setup>
-
-import { defineProps } from 'vue'
-
-const h3 = '你好'
-
-const props = defineProps<{
-  msg: string
-}>()
-
-</script>
 
 <style scoped>
 h3 {
