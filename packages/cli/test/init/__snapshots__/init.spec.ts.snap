@@ -7,8 +7,8 @@ exports[`#init > should init with formating 1`] = `
 /** @type AutoConfig */
 module.exports = {
   localesJsonDirs: ['**/locales/**.json', '!test/**'],
-  locales: ['JA', 'cN', 'ko-kr'],
-  baseLocale: 'cN',
+  locales: [],
+  baseLocale: '',
   untransSymbol: (locale) => {
     return \`[\${locale.toUpperCase()}]\`
   },
@@ -31,8 +31,8 @@ exports[`#init > should skip init 1`] = `
 /** @type AutoConfig */
 module.exports = {
   localesJsonDirs: ['**/locales/**.json', '!test/**'],
-  locales: ['JA', 'cN', 'ko-kr'],
-  baseLocale: 'cN',
+  locales: [],
+  baseLocale: '',
   untransSymbol: (locale) => {
     return \`[\${locale.toUpperCase()}]\`
   },
