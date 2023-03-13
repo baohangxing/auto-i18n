@@ -1,5 +1,5 @@
 import path from 'path'
-import fs from 'fs'
+import fs, { existsSync, rmSync, writeFileSync } from 'fs'
 import fsExtra from 'fs-extra'
 import { CONFIG_FILE_NAME } from '../../src/config/constants'
 
@@ -23,12 +23,12 @@ const getTestPlaygroundRootPath = (name: string) => {
 
 const removeTestPlayground = (name: string) => {
   const pgPath = getTestPlaygroundRootPath(name)
-  if (fs.existsSync(pgPath)) {
+  if (fs.existsSync(pgPath))
     fs.rmSync(pgPath, { force: true, recursive: true })
-    const configPath = path.resolve(CONFIG_FILE_NAME)
-    if (fs.existsSync(configPath))
-      fs.rmSync(configPath)
-  }
+
+  const configPath = path.resolve(CONFIG_FILE_NAME)
+  if (fs.existsSync(configPath))
+    fs.rmSync(configPath, { force: true, recursive: true })
 }
 
 const createTestPlayground = (name: string) => {
@@ -47,33 +47,50 @@ const createTestPlayground = (name: string) => {
   fsExtra.copySync(configPath, path.resolve(CONFIG_FILE_NAME), { overwrite: true })
 }
 
-/**
- *  //TODO need fix threads problem
- */
 const playground = (() => {
   const tasks: Task[] = []
 
-  let _autoTestPlaygroundRuning = false
+  const _runName = '._playgroundRuning'
+  const _runNameFilePath = path.resolve(process.cwd(), _runName)
+
+  const _getAutoTestPlaygroundRuning = () => {
+    return existsSync(_runNameFilePath)
+  }
+
+  const _setAutoTestPlaygroundRuning = (status: boolean) => {
+    if (status)
+      !_getAutoTestPlaygroundRuning() && writeFileSync(path.resolve(process.cwd(), _runName), '1', 'utf-8')
+    else
+      _getAutoTestPlaygroundRuning() && rmSync(path.resolve(process.cwd(), _runName))
+  }
 
   const _runTask = async () => {
     if (tasks.length) {
-      if (!_autoTestPlaygroundRuning) {
+      if (!_getAutoTestPlaygroundRuning()) {
         const task = tasks.shift()
         if (task) {
-          _autoTestPlaygroundRuning = true
+          _setAutoTestPlaygroundRuning(true)
+          console.log(task.name, 'Runing')
           await task.fn().finally(() => {
             task.cb()
-            _autoTestPlaygroundRuning = false
+            console.log(task.name, 'Runing End')
+            _setAutoTestPlaygroundRuning (false)
             _runTask()
           })
         }
+      }
+      else {
+        setTimeout(() => {
+          _runTask()
+        }, 500)
       }
     }
   }
 
   const addTask = (task: Task) => {
+    console.log(tasks.length, 'tasks Runing, ', 'add', task.name)
     tasks.push(task)
-    if (!_autoTestPlaygroundRuning)
+    if (!_getAutoTestPlaygroundRuning())
       _runTask()
   }
 
@@ -86,7 +103,7 @@ const playground = (() => {
         fn: async () => {
           const pgPath = getTestPlaygroundRootPath(name)
           createTestPlayground(name)
-          /** for resolve play of  task */
+          /** for resolve play of task */
           return new Promise((_resolve) => {
             play({
               name,

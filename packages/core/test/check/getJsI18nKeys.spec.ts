@@ -40,8 +40,7 @@ describe('#getJsI18nKeys', () => {
     expect(list).toEqual([])
   })
 
-  // TODO
-  it.skip('should get all i18n keys in template', async () => {
+  it('should get all i18n keys in template', async () => {
     const code = 'const a = t(`test`) '
     const list = getJsI18nKeys(code, genGetI18nKeysOptions())
     expect(list).toEqual(['test'])

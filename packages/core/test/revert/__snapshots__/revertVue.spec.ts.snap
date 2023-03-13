@@ -1,6 +1,25 @@
 // Vitest Snapshot v1
 
-exports[`#revertVue > should revert all i18n keys attributes of component 1`] = `""`;
+exports[`#revertVue > should revert all i18n keys attributes of component 1`] = `
+"<template>
+        <comp v-if=\\"t('Chinese of title')\\"> 这是 {{t('Chinese of dazigao')}}</comp>
+        <comp disabled :propA=\\"''\\" @click=\\"\\"> 这是 {{t('Chinese of dazigao')}}</comp>
+        <comp @click=\\"() => {
+  a = t('Chinese of title')
+}\\" :title=\\"t('Chinese of title')\\">这是{{t('Chinese of dazigao')}}</comp>
+
+        <!--auto-i18n-ignore-->
+        <comp v-if=\\"t('title')\\"> 这是 {{t('dazigao')}}</comp>
+        <!--auto-i18n-ignore-->
+        <comp disabled :propA=\\"''\\" @click=\\"\\"> 这是 {{t('dazigao')}}</comp>
+        <!--auto-i18n-ignore-->
+        <comp @click=\\"()=>{a=t('title')}\\" :title=\\"t('title')\\">这是{{t('dazigao')}}</comp>
+      </template>
+
+<script>let a = '';</script>
+
+"
+`;
 
 exports[`#revertVue > should revert all i18n keys in script 1`] = `
 "<script>let title = t('Chinese of title');</script>
@@ -15,6 +34,9 @@ exports[`#revertVue > should revert all i18n keys in template and setupScript 1`
 
 <script setup>let title = t('Chinese of title');</script>
 
+<style>
+      div{ width: 10px; }
+      </style>
 "
 `;
 

@@ -38,31 +38,37 @@ const getJsI18nKeys = (code: string, options: GetI18nKeysOptions): string[] => {
           const { transCaller, transIdentifier } = rule
           const callee = node.callee
 
+          let mayIsArguments = false
+
           // 无调用对象的情况，例如 t('xx')
-          if (!transCaller && callee.type === 'Identifier' && callee.name === transIdentifier) {
-            if (node.arguments[0] && node.arguments[0].type === 'StringLiteral')
-              res.add(node.arguments[0].value)
-          }
+          if (!transCaller && callee.type === 'Identifier' && callee.name === transIdentifier)
+            mayIsArguments = true
 
           // 有调用对象的情况，例如this.$t('xx')、i18n.$t('xx')
           if (callee.type === 'MemberExpression') {
             if (callee.property && callee.property.type === 'Identifier') {
               if (callee.property.name === transIdentifier) {
                 // 处理形如i18n.$t('xx')的情况
-                if (callee.object.type === 'Identifier' && callee.object.name === transCaller) {
-                  if (node.arguments[0] && node.arguments[0].type === 'StringLiteral')
-                    res.add(node.arguments[0].value)
-                }
+                if (callee.object.type === 'Identifier' && callee.object.name === transCaller)
+                  mayIsArguments = true
+
                 // 处理形如this.$t('xx')的情况
-                if (callee.object.type === 'ThisExpression' && transCaller === 'this') {
-                  if (node.arguments[0] && node.arguments[0].type === 'StringLiteral')
-                    res.add(node.arguments[0].value)
-                }
+                if (callee.object.type === 'ThisExpression' && transCaller === 'this')
+                  mayIsArguments = true
               }
             }
           }
-        },
 
+          if (mayIsArguments && node.arguments[0]) {
+            if (node.arguments[0].type === 'StringLiteral')
+              res.add(node.arguments[0].value)
+
+            if (node.arguments[0].type === 'TemplateLiteral'
+              && node.arguments[0].expressions.length === 0
+              && node.arguments[0].quasis?.[0].value.raw !== '')
+              res.add(node.arguments[0].quasis[0].value.raw)
+          }
+        },
       }
     }
 

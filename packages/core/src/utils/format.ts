@@ -64,7 +64,7 @@ const lintFiles = async (paths: string | string[], cwd = process.cwd()) => {
         if (result && result.output)
           fs.writeFileSync(filePaths[i], result.output, 'utf-8')
       }
-      /* c8 ignore next 3 */
+      /* c8 ignore next 4 */
       catch (error) {
         console.error(error)
       }

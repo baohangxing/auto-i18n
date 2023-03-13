@@ -45,7 +45,7 @@ const getJsonPath = (defaultConfig = defaultAutoBaseConfig, configPath?: string)
         break
       }
     }
-    /* c8 ignore next 3 */
+    /* c8 ignore next 4 */
     if (!findFlag) {
       throw new Error(`No JSON file(${x}.json) in AutoBaseConfig.localesJsonDirs:`
         + ` ${autoConfig.localesJsonDirs}`)
@@ -63,7 +63,7 @@ const getJsonPath = (defaultConfig = defaultAutoBaseConfig, configPath?: string)
         break
       }
     }
-    /* c8 ignore next 2 */
+    /* c8 ignore next 4 */
     if (!baseLangJson.path)
       throw new Error(`No base JSON file in AutoBaseConfig.localesJsonDirs: ${autoConfig.localesJsonDirs}`)
   }
@@ -74,7 +74,6 @@ const getJsonPath = (defaultConfig = defaultAutoBaseConfig, configPath?: string)
   }
 }
 
-/* c8 ignore next 18 */
 const revertWordByKey = (locale: string) :((key: string) => string) => {
   const { baseLangJson, otherLangJsons } = getJsonPath()
 
@@ -91,7 +90,7 @@ const revertWordByKey = (locale: string) :((key: string) => string) => {
   }
   return (key: string) => {
     const val = getValueByKey(langObj, key)
-    return typeof val === 'string' ? val : ''
+    return typeof val === 'string' ? val : key
   }
 }
 

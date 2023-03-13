@@ -1,9 +1,10 @@
 // Vitest Snapshot v1
 
 exports[`#transform > should transform basic code 1`] = `
-"import { useI18n } from 'vue-i18n';
+"import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 const t = useI18n();
-let title = t('Key of 标题');"
+let title = ref(t('Key of 标题'));"
 `;
 
 exports[`#transform > should transform code 1`] = `
@@ -24,7 +25,26 @@ exports[`#transform > should transform code in template 1`] = `
 const t = useI18n();
 const title = t('Key of 标题{msg}', {
   msg: msg
+});
+const title1 = t('Key of 标题1{slot1}标题1{slot2}', {
+  slot1: 1221,
+  slot2: 12121
+});
+const title2 = t('Key of 标题2{slot1}', {
+  slot1: title + title1
+});
+const title3 = t('Key of {msg}标题3{msg}', {
+  msg: msg
 });"
+`;
+
+exports[`#transform > should transform code in template when transInterpolationsMode is ListInterpolationMode 1`] = `
+"import { useI18n } from 'vue-i18n';
+const t = useI18n();
+const title = t('Key of 标题{0}', [msg]);
+const title1 = t('Key of 标题1{0}标题1{1}', [1221, 12121]);
+const title2 = t('Key of 标题2{0}', [title + title1]);
+const title3 = t('Key of {0}标题3{1}', [msg, msg]);"
 `;
 
 exports[`#transform > should transform code when import 1`] = `

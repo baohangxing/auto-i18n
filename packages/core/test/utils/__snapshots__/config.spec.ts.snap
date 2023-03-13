@@ -1,0 +1,113 @@
+// Vitest Snapshot v1
+
+exports[`#config > ##getAutoBaseConfig > should get the default config 1`] = `
+{
+  "baseLocale": "",
+  "i18nCallRules": {
+    "cjs": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "js": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "jsx": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "mjs": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "ts": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "tsx": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "vue": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+  },
+  "locales": [],
+  "localesJsonDirs": [
+    "**/locales/**.json",
+    "!test/**",
+  ],
+  "transInterpolationsMode": "NamedInterpolationMode",
+}
+`;
+
+exports[`#config > ##getAutoBaseConfig > should get the default config by file path 1`] = `
+{
+  "baseLocale": "",
+  "i18nCallRules": {
+    "cjs": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "js": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "jsx": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "mjs": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "ts": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "tsx": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+    "vue": {
+      "importDeclaration": "import { useI18n } from \\"vue-i18n\\";",
+      "transCaller": "",
+      "transIdentifier": "t",
+      "variableDeclaration": "const { t } = useI18n();",
+    },
+  },
+  "locales": [],
+  "localesJsonDirs": [
+    "**/locales/**.json",
+    "!test/**",
+  ],
+  "transInterpolationsMode": "NamedInterpolationMode",
+}
+`;

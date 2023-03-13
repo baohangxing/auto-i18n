@@ -24,7 +24,8 @@ describe('#transform', () => {
   it('should transform basic code', async () => {
     const words: string[] = []
     const reslut = transformJs(`
-    let title = "标题"
+    import { ref } from \'vue\'
+    let title = ref("标题")
     `, genTransOptions(
       {
         add(str) {
@@ -83,8 +84,12 @@ describe('#transform', () => {
   it('should transform code in template', async () => {
     const words: string[] = []
     const reslut = transformJs(
-      // eslint-disable-next-line no-template-curly-in-string
-      'const title = `标题\$\{msg\}`'
+
+      `const title = \`标题\$\{msg\}\`
+      const title1 = \`标题1\$\{1221\}标题1\$\{12121\}\`
+      const title2 = \`标题2\$\{title + title1\}\`
+      const title3 = \`\${msg}标题3\$\{msg\}\`
+      `
       , genTransOptions(
         {
           add(str) {
@@ -95,7 +100,37 @@ describe('#transform', () => {
           },
         }),
     )
-    expect(words).toEqual(['标题{msg}'])
+    expect(words).toEqual(['标题{msg}',
+      '标题1{slot1}标题1{slot2}',
+      '标题2{slot1}',
+      '{msg}标题3{msg}'])
+    expect(reslut.code).toMatchSnapshot()
+  })
+
+  it('should transform code in template when transInterpolationsMode is ListInterpolationMode', async () => {
+    const words: string[] = []
+    const reslut = transformJs(
+      `const title = \`标题\$\{msg\}\`
+      const title1 = \`标题1\$\{1221\}标题1\$\{12121\}\`
+      const title2 = \`标题2\$\{title + title1\}\`
+      const title3 = \`\${msg}标题3\$\{msg\}\`
+      `
+      , genTransOptions(
+        {
+          add(str) {
+            words.push(str)
+          },
+          getKey(str: string) {
+            return `Key of ${str}`
+          },
+        }, {
+          transInterpolationsMode: 'ListInterpolationMode',
+        }),
+    )
+    expect(words).toEqual(['标题{0}',
+      '标题1{0}标题1{1}',
+      '标题2{0}',
+      '{0}标题3{1}'])
     expect(reslut.code).toMatchSnapshot()
   })
 

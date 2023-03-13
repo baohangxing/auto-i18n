@@ -19,6 +19,7 @@ const updateBaseLocale = async (replaceObj?: any) => {
   const { baseLangJson } = getJsonPath()
   const autoConfig = getAutoConfig()
 
+  /* c8 ignore next 4 */
   if (!baseLangJson) {
     log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
     return
@@ -45,6 +46,7 @@ const updateLocales = async () => {
   const autoConfig = getAutoConfig()
   const { baseLangJson, otherLangJsons } = getJsonPath()
 
+  /* c8 ignore next 4 */
   if (!baseLangJson) {
     log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
     return
@@ -105,6 +107,7 @@ const updateLocalesFromXlsx = async (filePath: string) => {
 
   const { baseLangJson, otherLangJsons } = getJsonPath()
   if (res) {
+    /* c8 ignore next 5 */
     if (!baseLangJson) {
       const autoConfig = getAutoConfig()
       log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)

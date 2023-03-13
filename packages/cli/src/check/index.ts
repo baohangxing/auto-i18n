@@ -16,7 +16,7 @@ const checkAllTranslated = () => {
   const autoConfig = getAutoConfig()
 
   const { baseLangJson, otherLangJsons } = getJsonPath()
-
+  /* c8 ignore next 4 */
   if (!baseLangJson) {
     log.error(`No ${autoConfig.baseLocale} JSON file in ${autoConfig.localesJsonDirs}`)
     return
