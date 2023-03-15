@@ -1,3 +1,7 @@
+## [0.4.1](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.4.0...v0.4.1) (2023-03-15)
+
+
+
 # [0.4.0](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/compare/v0.3.8...v0.4.0) (2023-03-15)
 
 
