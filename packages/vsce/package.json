@@ -25,26 +25,36 @@
   "contributes": {
     "commands": [
       {
+        "command": "auto-i18n.getTransformKey",
+        "title": "i18n key 提取",
+        "category": "auto-i18n"
+      },
+      {
         "command": "auto-i18n.transformCompare",
-        "title": "i18n提取 对比预览",
+        "title": "i18n 提取对比预览",
         "category": "auto-i18n"
       },
       {
         "command": "auto-i18n.transform",
-        "title": "i18n提取",
+        "title": "i18n 提取",
         "category": "auto-i18n"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "auto-i18n.transformCompare",
+          "command": "auto-i18n.getTransformKey",
           "group": "auto-i18n@1",
           "when": "editorTextFocus"
         },
         {
-          "command": "auto-i18n.transform",
+          "command": "auto-i18n.transformCompare",
           "group": "auto-i18n@2",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "auto-i18n.transform",
+          "group": "auto-i18n@3",
           "when": "editorTextFocus"
         }
       ]

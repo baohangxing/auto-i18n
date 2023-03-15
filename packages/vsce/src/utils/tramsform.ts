@@ -1,33 +1,25 @@
 import {
-  KeyCollector,
   initJsParse,
   initTsxParse,
   transformJs,
   transformVue,
 } from '@yostar/auto-i18n-core'
-import type { FileExtension } from '@yostar/auto-i18n-core'
-import * as fsExtra from 'fs-extra'
+import type {
+  FileExtension,
+
+  KeyCollector,
+} from '@yostar/auto-i18n-core'
 import logger from './logger'
-import { getAutoBaseConfigBindWorkspace, getJsonPathBindWorkspace } from './tools'
+import { getAutoBaseConfigBindWorkspace } from './tools'
 
 const transform = (
   code: string,
   ext: FileExtension,
+  collector: KeyCollector,
   replace = true,
 ): {
   code: string
 } => {
-  const { baseLangJson } = getJsonPathBindWorkspace()
-  if (!baseLangJson?.path) {
-    return {
-      code: '',
-    }
-  }
-  const baseLangJsonObj = fsExtra.readJsonSync(baseLangJson.path)
-
-  const collector = new KeyCollector(baseLangJsonObj, logger)
-  collector.init()
-
   const autoConfig = getAutoBaseConfigBindWorkspace()
 
   const rules = autoConfig.i18nCallRules

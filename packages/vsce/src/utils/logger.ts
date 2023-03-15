@@ -24,8 +24,8 @@ class Logger implements Log<any> {
     vscode.window.showInformationMessage(msg)
   }
 
-  public error = (errMsg: string, detail?: any) => {
-    vscode.window.showErrorMessage(errMsg, detail)
+  public error = (errMsg: string, ...detail: any) => {
+    vscode.window.showErrorMessage(errMsg, ...detail)
   }
 
   /**

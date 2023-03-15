@@ -3,10 +3,10 @@ import type { TextDocumentContentProvider } from 'vscode'
 import { EXTENSION_SCHEME } from '../config/constants'
 
 export const extractTextKey = (uri: vscode.Uri): string =>
-  uri.path.match(/^text\/([a-z\d]+)/)?.[1] ?? ''
+  uri.path.match(/^text\/([a-zA-Z_0-9]+)/)?.[1] ?? ''
 
-const makeUriString = (): string =>
-    `${EXTENSION_SCHEME}:text/${Math.random().toString().slice(4)}`
+const makeUriString = (name?: string): string =>
+    `${EXTENSION_SCHEME}:text/${name}_${Math.random().toString().slice(10)}`
 
 class ContentProvider implements TextDocumentContentProvider {
   private readonly data: [string, string][]
@@ -16,7 +16,7 @@ class ContentProvider implements TextDocumentContentProvider {
   }
 
   set(key: string, text: string): void {
-    this.data.unshift([key.match(/text\/([a-z\d]+)/)?.[1] ?? '', text])
+    this.data.unshift([key.match(/text\/([a-zA-Z_0-9]+)/)?.[1] ?? '', text])
     if (this.data.length > 10)
       this.data.pop()
   }
@@ -46,4 +46,4 @@ const diffCommand = (source: string, compare: string, title = '源文件 <-> 转
     , title)
 }
 
-export { contentProvider, diffCommand }
+export { contentProvider, makeUriString, diffCommand }
