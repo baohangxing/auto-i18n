@@ -28,6 +28,7 @@ export interface Collector {
   add: (str: string) => void
 
   getKey: (str: string) => string
+
 }
 
 export interface LangJson {

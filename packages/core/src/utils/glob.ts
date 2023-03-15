@@ -6,6 +6,7 @@ import type { Options } from 'fast-glob'
 const fgOptions: Options = {
   absolute: true,
   ignore: ['**/node_modules/**', '**/*.d.ts'],
+  deep: 100,
 }
 
 /** get absolute paths with the glob patterns */
