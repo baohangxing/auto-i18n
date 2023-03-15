@@ -59,7 +59,7 @@ const trans = async (option: TransCommandOption) => {
 
     const obj: any = {}
     for (const x of collector.unExistZhSet)
-      obj[x] = x
+      obj[collector.getKey(x)] = x
 
     fs.writeFileSync(jsonPath, JSON.stringify(sortObjectKey(obj), undefined, 2), 'utf-8')
     if (autoConfig.autoFormat && checkInPatterns(jsonPath, autoConfig.autoFormatRules))
