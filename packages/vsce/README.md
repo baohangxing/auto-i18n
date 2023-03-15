@@ -16,15 +16,7 @@
 
 在使用前请在先安装 [@yostar/auto-i18n-cli](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli), 并进行初始的配置（后续版本会在插件中集成所有的功能）
 
-使用前需要将`AutoConfig`中的`localesJsonDirs`进行重新配置，例如：
-
-```txt
-localesJsonDirs: [
-    "/Users/code/work/project-name/src/lang/locales/**.json",
-],
-```
-
-之后在 vscode 中安装本插件，进入想要进行操作的文件中，对应的操作会在邮件的菜单中出现。
+之后在 vscode 插件市场中安装本插件，进入想要进行操作的文件中，对应的操作会在邮件的菜单中出现。
 
 ## 演示
 
@@ -37,3 +29,13 @@ localesJsonDirs: [
 ## 问题
 
 - 为何这个 package 使用 yarn 进行包管理, 而不是统一使用 pnpm: <https://github.com/microsoft/vscode-vsce/issues/421>
+
+- Error: EBADF: bad file descriptor, lstat '/dev/fd/10'
+
+请将 `AutoConfig`中的`localesJsonDirs` 通配符前加上项目的绝对目录 例如 例如：
+
+```txt
+localesJsonDirs: [
+    "/Users/code/work/project-name/src/lang/locales/**.json",
+],
+```

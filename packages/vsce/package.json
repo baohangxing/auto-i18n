@@ -72,7 +72,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "dependencies": {
-    "@yostar/auto-i18n-core": "^0.3.6",
+    "@yostar/auto-i18n-core": "^0.4.0",
     "fs-extra": "^11.1.0"
   },
   "devDependencies": {

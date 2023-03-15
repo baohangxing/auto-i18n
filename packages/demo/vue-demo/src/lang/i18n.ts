@@ -39,8 +39,8 @@ const changeLanguage = (locale: LocaleOption) => {
   if (locale === language)
     return
   if (locale === navigatorLanguage)
-    localStorage.removeItem(GMLocalStorageKey);
-  else
+    localStorage.removeItem(GMLocalStorageKey)
+  if (locale !== navigatorLanguage)
     localStorage.setItem(GMLocalStorageKey, locale)
   location.reload()
 }
