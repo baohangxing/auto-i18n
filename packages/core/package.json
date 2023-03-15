@@ -1,6 +1,6 @@
 {
   "name": "@yostar/auto-i18n-core",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "The core library of auto-i18n.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
