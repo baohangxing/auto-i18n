@@ -59,6 +59,12 @@
 - [x] 支持使用通配符配置各个命令的操作范围
 - [x] 支持自定义命令生成的文件的输出路径以及文件名
 
+### 它不可以做 [使用需知]
+
+- ❌ 不支持翻译图片
+- ❌ 不支持翻译非 babel 可解析的语言，比如服务器中的 go、客户端中的 java, Swift等
+- ❌ 不支持直接转换项目 node_modules 中的第三方库
+
 ## 快速开始
 
 - 第一步: 安装
@@ -560,7 +566,7 @@ const handleClick = () => {
 
 ## CHANGELOG
 
-见 <https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md>
+见 [CHANGELOG.md](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md)
 
 ## 注意事项
 
