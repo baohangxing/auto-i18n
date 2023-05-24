@@ -1,7 +1,7 @@
 // 还原所有修改
 import type { PathLike } from 'fs'
 import { existsSync, readFileSync, writeFileSync } from 'fs'
-import { getRecursivePaths, writeFileSyncForce } from '@yostar/auto-i18n-core'
+import { getRecursivePaths, writeFileSyncForce } from '@h1mple/auto-i18n-core'
 
 const copyTo = (formPath: PathLike, toPath: string) => {
   if (existsSync(formPath)) {

@@ -3,7 +3,7 @@ import fsExtra from 'fs-extra'
 import {
   getKeys, getValueByKey, setValueByKey,
   sortObjectKey,
-} from '@yostar/auto-i18n-core'
+} from '@h1mple/auto-i18n-core'
 import {
   writeToJsonFile,
 } from '../utils/help'

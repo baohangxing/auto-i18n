@@ -3,7 +3,7 @@ import {
   defaultAutoBaseConfig,
   getAutoBaseConfig,
   getJsonPath,
-} from '@yostar/auto-i18n-core'
+} from '@h1mple/auto-i18n-core'
 
 const getDocumentWorkspaceFolder = (): string | undefined => {
   const fileName = vscode.window.activeTextEditor?.document.fileName

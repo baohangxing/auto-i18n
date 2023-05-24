@@ -51,7 +51,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### init
 
-详细可见[init 文档](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli#init)
+详细可见[init 文档](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli#init)
 
 删除 根目录下的 `auto.config.cjs` 文件
 
@@ -63,7 +63,7 @@ pnpm run auto:init
 
 ### trans
 
-详细可见[trans 文档](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli#trans)
+详细可见[trans 文档](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli#trans)
 
 运行
 
@@ -73,7 +73,7 @@ pnpm run auto:trans-modify
 
 ### check
 
-详细可见[check 文档](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli#check)
+详细可见[check 文档](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli#check)
 
 运行
 
@@ -83,7 +83,7 @@ pnpm run auto:check
 
 ### genlsx
 
-详细可见[genlsx 文档](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli#genlsx)
+详细可见[genlsx 文档](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli#genlsx)
 
 运行
 
@@ -93,7 +93,7 @@ pnpm run auto:genlsx
 
 ### update
 
-详细可见[update 文档](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli#update)
+详细可见[update 文档](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli#update)
 
 删除或者添加 `src/lang/locales/cN.json` 中的一个语言字段
 

@@ -1,10 +1,10 @@
 import path from 'path'
 import fs from 'fs'
-import type { FileExtension } from '@yostar/auto-i18n-core'
+import type { FileExtension } from '@h1mple/auto-i18n-core'
 import {
   KeyCollector, checkInPatterns,
   fgSync, getRecursivePaths, lintFiles, sortObjectKey,
-} from '@yostar/auto-i18n-core'
+} from '@h1mple/auto-i18n-core'
 import fsExtra from 'fs-extra'
 import type { TransCommandOption } from '../types/config'
 import { transform } from '../transform'

@@ -755,7 +755,7 @@
   resolved "http://npm.yo-star.com/@xtuc%2flong/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yostar/auto-i18n-core@^0.4.0":
+"@h1mple/auto-i18n-core@^0.4.0":
   version "0.4.0"
   resolved "http://npm.yo-star.com/@yostar%2fauto-i18n-core/-/auto-i18n-core-0.4.0.tgz#e9fdba36866efc28506a62e49070386dc1ebb471"
   integrity sha512-6xoWeFrT7m6092HnTISB2r7vEkYaa6JWR+EQyX5j2LAZL/Hz8CvhTPKSKyjfut+bOgSrutB8Xh2ZasZ1+Hhg4A==

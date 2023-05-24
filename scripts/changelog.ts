@@ -12,14 +12,7 @@ const changelogPath = path.resolve('.', 'CHANGELOG.md')
 let content = fsExtra.readFileSync(changelogPath, 'utf-8')
 
 const repalceItems: [string | RegExp, string][] = [
-  [
-    /https:\/\/gitcn\.yostar\.net\/hangxing\.bao\/auto-i18n\/commits\//g,
-    'https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/commit/',
-  ],
-  [
-    /https:\/\/gitcn\.yostar\.net\/hangxing\.bao\/auto-i18n\//g,
-    'https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/',
-  ],
+
 ]
 
 repalceItems.forEach(([text, repalceText]) => {

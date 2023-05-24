@@ -70,7 +70,7 @@
 - 第一步: 安装
 
 ```sh
-pnpm i @yostar/auto-i18n-cli -D
+pnpm i @h1mple/auto-i18n-cli -D
 ```
 
 - 第二步: 给你项目添加 I18n 库，创建 locales 文件夹以及多语言 json 文件
@@ -499,7 +499,7 @@ export default Example
 
 ### vue 转换示例
 
-完整的示例可见 [vue-demo](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/demo/vue-demo)
+完整的示例可见 [vue-demo](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/demo/vue-demo)
 
 转换前
 
@@ -566,7 +566,7 @@ const handleClick = () => {
 
 ## CHANGELOG
 
-见 [CHANGELOG.md](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md)
+见 [CHANGELOG.md](https://github.com/baohangxing/yo-auto-i18n/blob/main/CHANGELOG.md)
 
 ## 注意事项
 

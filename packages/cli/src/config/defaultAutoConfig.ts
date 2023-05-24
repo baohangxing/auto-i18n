@@ -1,4 +1,4 @@
-import type { I18nCallRule } from '@yostar/auto-i18n-core'
+import type { I18nCallRule } from '@h1mple/auto-i18n-core'
 import type { AutoConfig } from '../types'
 
 const getCommonI18nCallRule = (): I18nCallRule => {

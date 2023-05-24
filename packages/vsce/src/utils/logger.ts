@@ -1,5 +1,5 @@
 import type { InspectOptions } from 'node:util'
-import type { Log } from '@yostar/auto-i18n-core'
+import type { Log } from '@h1mple/auto-i18n-core'
 import * as vscode from 'vscode'
 import { PROJECT_NAME } from '../config/constants'
 

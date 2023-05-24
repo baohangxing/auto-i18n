@@ -2,7 +2,7 @@ import path from 'path'
 import { cosmiconfigSync } from 'cosmiconfig'
 import fs from 'fs-extra'
 import serialize from 'serialize-javascript'
-import { checkEslintConfigExist, fgSync, lintFiles } from '@yostar/auto-i18n-core'
+import { checkEslintConfigExist, fgSync, lintFiles } from '@h1mple/auto-i18n-core'
 import { CLI_CONFIG_NAME } from '../config/constants'
 import log from '../utils/log'
 import defaultAutoConfig from '../config/defaultAutoConfig'
@@ -40,7 +40,7 @@ const init = async () => {
 
     const code
     = `// @ts-check
-/** @typedef {import('@yostar/auto-i18n-cli').AutoConfig} AutoConfig **/
+/** @typedef {import('@h1mple/auto-i18n-cli').AutoConfig} AutoConfig **/
 
 /** @type AutoConfig */
 module.exports = ${serialize(config, {

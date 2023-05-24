@@ -5,7 +5,7 @@
 </div>
 
 <div align="center">
-一个可以快速将中文项目中的中文替换成 i18n 国际化标记的工具库。
+一个可以快速将中文项目中的中文替换成 i18n 国际化标记的工具库
 </div>
 
 ## 介绍
@@ -20,4 +20,4 @@ Auto-i18n 项目采用 monorepo 结构
 
 ## CHANGELOG
 
-见 [CHANGELOG.md](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md)
+见 [CHANGELOG.md](https://github.com/baohangxing/yo-auto-i18n/blob/main/CHANGELOG.md)

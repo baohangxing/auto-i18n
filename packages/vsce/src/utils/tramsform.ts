@@ -3,12 +3,12 @@ import {
   initTsxParse,
   transformJs,
   transformVue,
-} from '@yostar/auto-i18n-core'
+} from '@h1mple/auto-i18n-core'
 import type {
   FileExtension,
 
   KeyCollector,
-} from '@yostar/auto-i18n-core'
+} from '@h1mple/auto-i18n-core'
 import logger from './logger'
 import { getAutoBaseConfigBindWorkspace } from './tools'
 

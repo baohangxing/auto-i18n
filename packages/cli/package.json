@@ -1,16 +1,16 @@
 {
-  "name": "@yostar/auto-i18n-cli",
-  "version": "0.4.2",
+  "name": "@h1mple/auto-i18n-cli",
+  "version": "0.5.0",
   "description": "A CLI tool helps you transform your project to an i18n-project automatically.",
   "author": "H1mple<https://github.com/baohangxing>",
   "license": "MIT",
-  "homepage": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli",
+  "homepage": "https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli",
   "repository": {
     "type": "git",
-    "url": "git+https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n.git"
+    "url": "git@github.com:baohangxing/yo-auto-i18n.git"
   },
   "bugs": {
-    "url": "https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/issues"
+    "url": "https://github.com/baohangxing/yo-auto-i18n/issues"
   },
   "keywords": [
     "vue",
@@ -46,21 +46,21 @@
     "coverage": "vitest run --coverage  --no-threads"
   },
   "dependencies": {
-    "@yostar/auto-i18n-core": "workspace:^",
+    "@h1mple/auto-i18n-core": "workspace:^",
     "ansi-colors": "^4.1.3",
     "chalk": "^5.2.0",
     "cli-progress": "^3.12.0",
-    "commander": "^9.4.1",
-    "cosmiconfig": "^8.0.0",
-    "fs-extra": "^11.1.0",
-    "node-xlsx": "^0.21.0",
-    "serialize-javascript": "^6.0.0"
+    "commander": "^9.5.0",
+    "cosmiconfig": "^8.1.3",
+    "fs-extra": "^11.1.1",
+    "node-xlsx": "^0.21.2",
+    "serialize-javascript": "^6.0.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/serialize-javascript": "^5.0.2",
-    "@vitest/coverage-c8": "^0.28.4",
+    "@vitest/coverage-c8": "^0.31.1",
     "rimraf": "^3.0.2",
-    "vitest": "^0.28.4"
+    "vitest": "^0.31.1"
   }
 }

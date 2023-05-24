@@ -14,7 +14,7 @@
 
 ## 如何使用
 
-在使用前请在先安装 [@yostar/auto-i18n-cli](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/tree/main/packages/cli), 并进行初始的配置（后续版本会在插件中集成所有的功能）
+在使用前请在先安装 [@h1mple/auto-i18n-cli](https://github.com/baohangxing/yo-auto-i18n/tree/main/packages/cli), 并进行初始的配置（后续版本会在插件中集成所有的功能）
 
 之后在 vscode 插件市场中安装本插件，进入想要进行操作的文件中，对应的操作会在邮件的菜单中出现。
 
@@ -24,7 +24,7 @@
 
 ## issues
 
-任何问题 请提 issues: <https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/issues>
+任何问题 请提 issues: <https://github.com/baohangxing/yo-auto-i18n/issues>
 
 ## 问题
 

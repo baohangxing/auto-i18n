@@ -5,10 +5,10 @@ interface Packages {
 
 const packages: Packages[] = [{
   path: './packages/cli',
-  name: '@yostar/auto-i18n-cli',
+  name: '@h1mple/auto-i18n-cli',
 }, {
   path: './packages/core',
-  name: '@yostar/auto-i18n-core',
+  name: '@h1mple/auto-i18n-core',
 }, {
   path: './packages/vsce',
   name: 'auto-i18n',

@@ -1,13 +1,13 @@
 import path from 'path'
 import fs from 'fs'
-import type { FileExtension, I18nCallRules } from '@yostar/auto-i18n-core'
+import type { FileExtension, I18nCallRules } from '@h1mple/auto-i18n-core'
 import {
   checkInPatterns,
   getRecursivePaths,
   initJsParse, initTsxParse,
   lintFiles, revertJs, revertVue,
   revertWordByKey, writeFileSyncForce,
-} from '@yostar/auto-i18n-core'
+} from '@h1mple/auto-i18n-core'
 import log from '../utils/log'
 import { getAutoConfig } from '../config/config'
 import type { RevertCommandOption } from '../types'

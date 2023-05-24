@@ -8,7 +8,7 @@
 - 次版本号：每月发布一个带有新特性的向下兼容的版本。
 - 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
-## 详情见 [Releases](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/releases) 和 [CHANGELOG](https://gitcn.yostar.net:8888/hangxing.bao/auto-i18n/-/blob/main/CHANGELOG.md)
+## 详情见 [Releases](https://github.com/baohangxing/yo-auto-i18n/releases) 和 [CHANGELOG](https://github.com/baohangxing/yo-auto-i18n/blob/main/CHANGELOG.md)
 
 ---
 参考

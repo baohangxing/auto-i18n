@@ -1,5 +1,5 @@
 import fsExtra from 'fs-extra'
-import { getKeys, getValueByKey } from '@yostar/auto-i18n-core'
+import { getKeys, getValueByKey } from '@h1mple/auto-i18n-core'
 import { getAutoConfig, getJsonPath, getOutputFileDir, isUnTransed } from '../config/config'
 import { KEY_SYMBOL_IN_XLSX } from '../config/constants'
 import { writeXlsxFile } from '../utils/excel'
